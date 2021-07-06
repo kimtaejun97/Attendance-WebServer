@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th ="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragment/header :: headerFragment"/>
+</head>
+
+<body>
+    <h1>출석 관리 시스템</h1>
+    <hr>
+
+    <table class="table">
+        <thead>
+            <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
+        </thead>
+        <tbody>
+            <tr th:each="lecture : ${lectures}">
+                <td th:text="${lecture.lectureName}"></td>
+                <td th:text="${lecture.lectureCode}"></td>
+                <td th:text="${lecture.lectureRoom}"></td>
+            </tr>
+        </tbody>
+
+
+    </table>
+
+    <button class ="btn btn-info" id="btn-addLecture">강의 등록</button>
+
+
+    <th:block th:replace="fragment/footer :: footerFragment"/>
+</body>
+</html>

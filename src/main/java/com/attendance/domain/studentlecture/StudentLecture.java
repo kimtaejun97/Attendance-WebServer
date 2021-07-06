@@ -25,5 +25,6 @@ public class StudentLecture {
     public StudentLecture(String studentId, String lectureCode){
         this.studentId = studentId;
         this.lectureCode = lectureCode;
+
     }
 }
