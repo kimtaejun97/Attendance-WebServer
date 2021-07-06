@@ -22,6 +22,7 @@ dependencies {
 
     // lombok
     implementation 'org.projectlombok:lombok'
+    implementation 'junit:junit:4.12'
     annotationProcessor('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
 
@@ -29,7 +30,6 @@ dependencies {
 //    runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'junit:junit:4.12'
 }
 
 test {
