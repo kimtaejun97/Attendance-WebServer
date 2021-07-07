@@ -4,13 +4,18 @@ import com.attendance.domain.lecture.Lecture;
 import lombok.*;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class LectureSaveRequestDto {
+
+    @NotEmpty
     private String lectureCode;
+    @NotEmpty
     private String lectureName;
+    @NotEmpty
     private String lectureRoom;
 
     @Builder

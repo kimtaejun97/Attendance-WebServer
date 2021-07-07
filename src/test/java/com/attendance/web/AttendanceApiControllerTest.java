@@ -3,7 +3,7 @@ package com.attendance.web;
 import com.attendance.domain.lecture.Lecture;
 import com.attendance.domain.lecture.LectureRepository;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class AttendanceApiControllerTest {
@@ -36,8 +36,9 @@ public class AttendanceApiControllerTest {
 
     @Test
     public void addLecture() throws Exception {
-        String jsonData = "{\"lectureName\":\"programming\",\"lectureCode\":\"abc123\",\"lectureRoom\":\"211호\"}";
 
+        String jsonData = "{\"lectureName\":\"programming\",\"lectureCode\":\"abc123\",\"lectureRoom\":\"211호\"}";
+        String wrongJsonData = "{\"lectureName\":\"programming\",\"lectureCode\":\"abc123\"}";
 
         mockMvc.perform(post("/api/lecture")
             .content(jsonData)
@@ -46,11 +47,18 @@ public class AttendanceApiControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("programming"))
                 .andDo(print());
+
         Lecture lecture = lectureRepository.findAll().get(0);
 
         assertThat(lecture.getLectureName()).isEqualTo("programming");
         assertThat(lecture.getLectureCode()).isEqualTo("abc123");
         assertThat(lecture.getLectureRoom()).isEqualTo("211호");
+
+        mockMvc.perform(post("/api/lecture")
+                .content(wrongJsonData)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
 
 
 

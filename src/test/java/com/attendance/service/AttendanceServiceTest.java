@@ -3,12 +3,17 @@ package com.attendance.service;
 import com.attendance.domain.lecture.Lecture;
 import com.attendance.domain.lecture.LectureRepository;
 import com.attendance.web.dto.LectureSaveRequestDto;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class AttendanceServiceTest {
 
@@ -18,8 +23,14 @@ public class AttendanceServiceTest {
     @Autowired
     AttendanceService attendanceService;
 
+    @Before
+    public void cleanup(){
+        lectureRepository.deleteAll();
+    }
+
     @Test
     public void addLecture(){
+
         String name = "프로그래밍";
         String code = "asd123";
         String room = "211호";
