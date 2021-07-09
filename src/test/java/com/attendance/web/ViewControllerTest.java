@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-public class IndexControllerTest {
+public class ViewControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -32,6 +32,14 @@ public class IndexControllerTest {
 
     @Test
     public void index() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
+
+    }
+
+    @Test
+    public void admin() throws Exception {
         String lectureCode = "AVB214";
         String lectureName = "Spring";
         String lectureRoom = "211호";
@@ -49,13 +57,45 @@ public class IndexControllerTest {
         when(mockAttendanceService.showLectureList()).thenReturn(lectures);
 
 
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/admin"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"))
+                .andExpect(view().name("admin"))
                 .andExpect(model().attributeExists("lectures"))
                 .andExpect(model().attribute("lectures", IsCollectionWithSize.hasSize(1)))
                 .andExpect(model().attribute("lectures",contains(lectures.get(0))));
+    }
+
+    @Test
+    public void attendance() throws Exception {
+
+        mockMvc.perform(get("/attendance"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("attendance"));
+    }
+
+    @Test
+    public void my_lecture() throws Exception {
+
+        mockMvc.perform(get("/my_lecture"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("my_lecture"));
+    }
+
+    @Test
+    public void signup() throws Exception {
+
+        mockMvc.perform(get("/signup"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("signup"));
 
     }
 
+    @Test
+    public void student_list() throws Exception {
+
+        mockMvc.perform(get("/student_list"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("student_list"));
+
+    }
 }
