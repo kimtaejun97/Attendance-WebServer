@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-
-<html lang="ko" xmlns:th ="http://www.thymeleaf.org">
+<html xmlns:th ="http://www.thymeleaf.org">
 
 <head>
     <th:block th:replace="fragment/header :: headerFragment"/>
 </head>
-
 <body>
-    <h1>출석 관리 시스템</h1>
-    <hr>
+<h1>출석부 시스템 메인 화면.</h1>
+<!--TODO ROLE_ADMIN 만 볼 수 있도록.JS에서 admin.html로 이동하기.-->
+<button class="btn btn-primary">관리 페이지</button>
 
-    <table class="table">
-        <thead>
-            <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
-        </thead>
-        <tbody>
-            <tr th:each="lecture : ${lectures}">
-                <td th:text="${lecture.lectureName}"></td>
-                <td th:text="${lecture.lectureCode}"></td>
-                <td th:text="${lecture.lectureRoom}"></td>
-            </tr>
-        </tbody>
+<!--TODO ROLE_STUDENT 만 볼 수 있도록.-->
+<button class="btn btn-primary">나의 강의</button>
+<button class="btn btn-primary">출석 하기</button>
 
+<!--TODO 로그인하지 않은 상태에서만 보이개.-->
+<button class="btn btn-primary">로그인</button>
+<button class="btn btn-primary">회원 가입</button>
 
-    </table>
+<!--TODO 로그인 상태에서만 보이개.-->
+<button class="btn btn-primary">로그아웃</button>
 
-    <button class ="btn btn-info" id="btn-addLecture">강의 등록</button>
-
-
-    <th:block th:replace="fragment/footer :: footerFragment"/>
+<th:block th:replace="fragment/footer :: footerFragment"/>
 </body>
 </html>

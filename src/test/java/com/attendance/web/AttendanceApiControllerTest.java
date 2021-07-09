@@ -26,7 +26,6 @@ public class AttendanceApiControllerTest {
     @Autowired
     LectureRepository lectureRepository;
 
-    @Autowired
     MockMvc mockMvc;
 
     @Before

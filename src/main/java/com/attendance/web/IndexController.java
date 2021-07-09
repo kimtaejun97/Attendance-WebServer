@@ -16,7 +16,7 @@ public class IndexController {
     public String showLectureList(Model model){
         model.addAttribute("lectures",attendanceService.showLectureList());
 
-        return "index";
+        return "admin";
     }
 
 }
