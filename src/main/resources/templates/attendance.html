@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th ="http://www.thymeleaf.org">
+<head th:replace="fragments :: headerFragment"></head>
 
-<head>
-    <th:block th:replace="fragment/header :: headerFragment"/>
-</head>
 <body>
 <h1>출석 현황</h1>
 <hr>
 <!--TODO 출석은 실시간이기 때문에 Sesstion에 저장하지 않고 그떄 그때 쿼리.-->
-<th:block th:replace="fragment/footer :: footerFragment"/>
+<th:block th:replace="fragmentsr :: footerFragment"/>
 </body>
 </html>

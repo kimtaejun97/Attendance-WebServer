@@ -1,8 +1,8 @@
 package com.attendance.web;
 
-import com.attendance.domain.lecture.Lecture;
-import com.attendance.service.AttendanceService;
-import com.attendance.web.dto.LectureListResponseDto;
+import com.attendance.modules.lecture.Lecture;
+import com.attendance.modules.attendance.AttendanceService;
+import com.attendance.modules.lecture.dto.LectureListResponseDto;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,9 +84,9 @@ public class ViewControllerTest {
     @Test
     public void signup() throws Exception {
 
-        mockMvc.perform(get("/signup"))
+        mockMvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("signup"));
+                .andExpect(view().name("sign-up"));
 
     }
 

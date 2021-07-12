@@ -1,12 +1,12 @@
 package com.attendance.service;
 
-import com.attendance.domain.lecture.Lecture;
-import com.attendance.domain.lecture.LectureRepository;
-import com.attendance.web.dto.LectureSaveRequestDto;
+import com.attendance.modules.attendance.AttendanceService;
+import com.attendance.modules.lecture.Lecture;
+import com.attendance.modules.lecture.LectureRepository;
+import com.attendance.modules.lecture.dto.LectureSaveRequestDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;

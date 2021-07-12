@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th ="http://www.thymeleaf.org">
+<head th:replace="fragments :: headerFragment"></head>
 
-<head>
-    <th:block th:replace="fragment/header :: headerFragment"/>
-</head>
 <body>
 <h1>출석부 시스템 메인 화면.</h1>
 <!--TODO ROLE_ADMIN 만 볼 수 있도록.JS에서 admin.html로 이동하기.-->
@@ -15,11 +13,12 @@
 
 <!--TODO 로그인하지 않은 상태에서만 보이게.-->
 <button class="btn btn-primary">로그인</button>
-<button class="btn btn-primary">회원 가입</button>
+
+<a href="#" th:href="@{/sign-up}" >회원 가입</a>
 
 <!--TODO 로그인 상태에서만 보이게.-->
 <button class="btn btn-primary">로그아웃</button>
 
-<th:block th:replace="fragment/footer :: footerFragment"/>
+<th:block th:replace="fragments :: footerFragment"/>
 </body>
 </html>

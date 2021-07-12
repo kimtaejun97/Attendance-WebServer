@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: headerFragment"></head>
+
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>계정 생성</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="needs-validation col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input id="email" type="email" th:field="*{email}" class="form-control"
+                       placeholder="your@jnu.ac.kr" aria-describedby="emailHelp" required>
+                <small id="emailHelp" class="form-text text-muted">
+                    전남대학교 학교 이메일을 적어주세요.
+                </small>
+                <small class="invalid-feedback">이메일을 확인하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">패스워드</label>
+                <input id="password" type="password" th:field="*{password}" class="form-control"
+                       aria-describedby="passwordHelp" required minlength="8" maxlength="50" placeholder="password">
+                <small id="passwordHelp" class="form-text text-muted">
+                    8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                </small>
+                <small class="invalid-feedback">패스워드를 확인하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
+            </div>
+            <div class="form-group">
+                <label for="adminCode">관리자 코드</label>
+                <input id="adminCode" type="text" th:field="*{adminCode}" class="form-control"
+                       aria-describedby="codeHelp"  placeholder="Admin Code">
+                <small id="codeHelp" class="form-text text-muted">
+                    관리자 라면? 관리자 코드를 입력해주세요. 학생이라면 빈 칸으로 비워주세요.
+                </small>
+                <small class="invalid-feedback">관리자 코드를 확인하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('adminCode')}" th:errors="*{adminCode}">Admin Code Error</small>
+            </div>
+
+            <div class="form-group">
+                <div class="d-grid gap-2 ">
+                    <button class="btn btn-primary" type="submit"
+                            aria-describedby="submitHelp">가입하기</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+<script th:replace="fragments :: form-validation"></script>
+<th:block th:replace="fragments :: footerFragment"/>
+
+</body>
+</html>

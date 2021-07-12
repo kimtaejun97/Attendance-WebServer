@@ -1,7 +1,7 @@
 package com.attendance.web;
 
-import com.attendance.domain.lecture.Lecture;
-import com.attendance.domain.lecture.LectureRepository;
+import com.attendance.modules.lecture.Lecture;
+import com.attendance.modules.lecture.LectureRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
