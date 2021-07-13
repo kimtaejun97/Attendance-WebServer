@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class AccountService  {
+public class AccountService implements UserDetailsService{
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -67,7 +67,7 @@ public class AccountService  {
 
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                account.getNickname(),
+                new UserAccount(account),
                 account.getPassword(),
                 List.of(new SimpleGrantedAuthority(account.getRole().getKey()))
         );
@@ -77,14 +77,16 @@ public class AccountService  {
 
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Account account = accountRepository.findByEmail(username);
-//        if(account == null){
-//            account = accountRepository.findByNickName(username);
-//        }
-//
-//        return null;
-//
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String nameOrEmail) throws UsernameNotFoundException {
+        Account account = accountRepository.findByEmail(nameOrEmail);
+        if(account == null){
+            account = accountRepository.findByNickname(nameOrEmail);
+        }
+        if(account == null){
+            throw new UsernameNotFoundException(nameOrEmail);
+        }
+        return new UserAccount(account);
+
+    }
 }

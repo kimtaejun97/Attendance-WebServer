@@ -2,8 +2,7 @@
 <html l xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments :: headerFragment" ></head>
 <body class =bg-light>
-
-<!--<th:block th:replace="fragments :: navFragment"/>-->
+<nav th:replace="fragments :: navFragment"> </nav>
 
 <div class="py-5 text-center" th:if="${error}">
     <p class="lead">이메일 확인</p>
