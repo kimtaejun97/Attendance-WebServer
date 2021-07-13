@@ -1,23 +1,22 @@
-package com.attendance.modules.attendance;
+package com.attendance.modules.lecture;
 
-import com.attendance.modules.lecture.LectureRepository;
-import com.attendance.modules.lecture.dto.LectureListResponseDto;
-import com.attendance.modules.lecture.dto.LectureSaveRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.attendance.modules.lecture.form.LectureListResponseDto;
+import com.attendance.modules.lecture.form.LectureForm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Transactional
+@RequiredArgsConstructor
 @Service
-public class AttendanceService {
+public class LectureService {
 
-    @Autowired
-    LectureRepository lectureRepository;
+    private final LectureRepository lectureRepository;
 
-    @Transactional
-    public String addLecture(LectureSaveRequestDto lectureSaveRequestDto) {
+    public String addLecture(LectureForm lectureSaveRequestDto) {
+
         return lectureRepository.save(lectureSaveRequestDto.toEntity()).getLectureName();
     }
 

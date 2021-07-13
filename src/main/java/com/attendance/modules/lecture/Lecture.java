@@ -1,15 +1,15 @@
 package com.attendance.modules.lecture;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Getter
+@Getter @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Lecture {
 
@@ -22,11 +22,5 @@ public class Lecture {
     @Column(nullable = false)
     private String lectureRoom;
 
-    @Builder
-    public Lecture(String lectureCode, String lectureName, String lectureRoom){
-        this.lectureCode = lectureCode;
-        this.lectureName = lectureName;
-        this.lectureRoom = lectureRoom;
-    }
 
 }

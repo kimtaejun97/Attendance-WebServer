@@ -7,13 +7,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class AttendanceRepositoryTest {
+class AttendanceRepositoryTest {
 
     @Autowired
     AttendanceRepository attendanceRepository;
 
     @Test
-    public void save(){
+    void save(){
         String attendaceCode = "S";
         String attendanceDate = "2021-07-05";
         String studentId = "164160";

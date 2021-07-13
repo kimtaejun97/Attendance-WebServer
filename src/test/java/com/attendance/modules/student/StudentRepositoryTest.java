@@ -8,13 +8,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
-public class StudentRepositoryTest {
+class StudentRepositoryTest {
 
     @Autowired
     StudentRepository studentRepository;
 
     @Test
-    public void save(){
+    void save(){
         String studentId = "164160";
         String studentName = "bigave";
 

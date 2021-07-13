@@ -1,10 +1,7 @@
 package com.attendance.modules.account;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,7 +85,8 @@ class AccountControllerTest {
             .param("adminCode","")
             .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+                .andExpect(authenticated());
 
 
         Account account = accountRepository.findByEmail("test@email.com");
@@ -95,6 +94,8 @@ class AccountControllerTest {
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
+        assertThat(account.getRole()).isEqualTo(Role.USER);
+
 
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
 
@@ -111,13 +112,16 @@ class AccountControllerTest {
             .param("adminCode","Admin1234")
             .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+                .andExpect(authenticated());
+
 
         Account account = accountRepository.findByEmail("test@email.com");
         assertThat(account.getNickname()).isEqualTo("bigave");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
+        assertThat(account.getRole()).isEqualTo(Role.ADMIN);
 
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
 
@@ -167,7 +171,7 @@ class AccountControllerTest {
                 .build();
         Account newAccount = accountRepository.save(account);
         newAccount.generateEmailCheckToken();
-
+        newAccount.setRole(Role.USER);
 
         mockMvc.perform(get("/check-email-token")
                 .param("token","asdasd")
@@ -188,8 +192,7 @@ class AccountControllerTest {
                 .build();
         Account newAccount = accountRepository.save(account);
         newAccount.generateEmailCheckToken();
-
-
+        newAccount.setRole(Role.USER);
 
         mockMvc.perform(get("/check-email-token")
         .param("token",newAccount.getEmailCheckToken())

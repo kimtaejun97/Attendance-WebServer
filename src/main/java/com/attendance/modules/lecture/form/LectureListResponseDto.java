@@ -1,4 +1,4 @@
-package com.attendance.modules.lecture.dto;
+package com.attendance.modules.lecture.form;
 
 import com.attendance.modules.lecture.Lecture;
 import lombok.Getter;

@@ -1,6 +1,5 @@
 package com.attendance.modules.account;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +39,8 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.createNewAccount(signUpForm);
+        Account account = accountService.createNewAccount(signUpForm);
+        accountService.login(account);
 
         return "redirect:/";
 
