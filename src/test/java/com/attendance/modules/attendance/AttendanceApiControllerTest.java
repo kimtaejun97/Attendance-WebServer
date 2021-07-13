@@ -1,4 +1,4 @@
-package com.attendance.web;
+package com.attendance.modules.attendance;
 
 import com.attendance.modules.lecture.Lecture;
 import com.attendance.modules.lecture.LectureRepository;

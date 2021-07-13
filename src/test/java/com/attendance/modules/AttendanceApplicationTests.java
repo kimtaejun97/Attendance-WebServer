@@ -1,4 +1,4 @@
-package com.attendance;
+package com.attendance.modules;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

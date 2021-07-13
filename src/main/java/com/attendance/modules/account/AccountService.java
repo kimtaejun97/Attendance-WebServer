@@ -3,6 +3,7 @@ package com.attendance.modules.account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService  {
 
     private final AccountRepository accountRepository;
-
+    private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
     public void createNewAccount(SignUpForm signUpForm) {
         Account account = Account.builder()
+                .nickname(signUpForm.getNickname())
                 .email(signUpForm.getEmail())
-                .password(signUpForm.getPassword())
+                .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .build();
 
-        account.generateEmailCheckToken();
         Account newAccount = accountRepository.save(account);
+        account.generateEmailCheckToken();
 
         sendEmail(newAccount);
 

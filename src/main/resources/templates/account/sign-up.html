@@ -10,13 +10,24 @@
     </div>
     <div class="row justify-content-center">
         <form class="needs-validation col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+            <div class="form-group">
+
+                <label for="nickname">닉네임</label>
+                <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                       placeholder="NickName" aria-describedby="nicknameHelp" required>
+                <small id="nicknameHelp" class="form-text text-muted">
+                    닉네임을 적어주세요. 5-20자 사이 특수문자는 -,_만 포함 합니다.
+                </small>
+                <small class="invalid-feedback">닉네임을 확인하세요</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">NickName Error</small>
+            </div>
 
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input id="email" type="email" th:field="*{email}" class="form-control"
                        placeholder="your@jnu.ac.kr" aria-describedby="emailHelp" required>
                 <small id="emailHelp" class="form-text text-muted">
-                    전남대학교 학교 이메일을 적어주세요.
+                    이메일을 적어주세요. 인증 메일을 전송합니다.
                 </small>
                 <small class="invalid-feedback">이메일을 확인하세요.</small>
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
@@ -32,6 +43,7 @@
                 <small class="invalid-feedback">패스워드를 확인하세요.</small>
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
             </div>
+
             <div class="form-group">
                 <label for="adminCode">관리자 코드</label>
                 <input id="adminCode" type="text" th:field="*{adminCode}" class="form-control"

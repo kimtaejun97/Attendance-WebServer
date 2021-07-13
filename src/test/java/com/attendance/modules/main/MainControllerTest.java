@@ -1,4 +1,4 @@
-package com.attendance.web;
+package com.attendance.modules.main;
 
 import com.attendance.modules.lecture.Lecture;
 import com.attendance.modules.attendance.AttendanceService;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-public class ViewControllerTest {
+public class MainControllerTest {
 
     @Autowired
     MockMvc mockMvc;

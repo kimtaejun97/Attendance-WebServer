@@ -1,4 +1,4 @@
-package com.attendance.service;
+package com.attendance.modules.attendance;
 
 import com.attendance.modules.attendance.AttendanceService;
 import com.attendance.modules.lecture.Lecture;

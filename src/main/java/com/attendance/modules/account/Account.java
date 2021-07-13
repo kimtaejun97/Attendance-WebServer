@@ -14,11 +14,10 @@ public class Account {
     @Id @GeneratedValue
     private Long id;
 
-    private String name;
-    private String password;
+    @Column(unique = true)
+    private String nickname;
 
-    //학생이라면 학번
-    private String code;
+    private String password;
 
     @Column(unique = true)
     private String email;
