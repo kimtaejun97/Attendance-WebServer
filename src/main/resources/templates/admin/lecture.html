@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: headerFragment"></head>
+
+<body>
+<nav th:replace="fragments :: navFragment"> </nav>
+<div class="card text-center">
+    <div class="card-group">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">강의 명</h5>
+                <p class="card-text" th:text="${lecture.lectureName}"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">강의 코드</h5>
+                <p class="card-text" th:text="${lecture.lectureCode}"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">강의</h5>
+                <p class="card-text" th:text="${lecture.lectureRoom}"></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<h2 class="py-3 text-center">수강생 목록</h2>
+
+<div class="container">
+    <table class="table">
+        <thead>
+
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td><a th:text="${student.getStudentId()}" href="#" th:href="@{'/lecture/' + ${lecture.lectureCode}}"></a></td>
+            <td th:text="${student.getStudentName()}"></td>
+            <td><button class="btn-btn-danger">제거</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-grid gap-2">
+        <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{/create-lecture}">학생 등록</a>
+    </div>
+</div>
+
+
+
+<!--TODO 강의 정보 및 수강생 목록-->
+<!--TODO 수강생 클릭시 학생 정보, 삭제-->
+
+<th:block th:replace="fragments :: footerFragment"/>
+</body>
+</html>

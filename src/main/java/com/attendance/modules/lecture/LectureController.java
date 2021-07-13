@@ -3,31 +3,33 @@ package com.attendance.modules.lecture;
 import com.attendance.modules.lecture.form.LectureFormValidator;
 import com.attendance.modules.lecture.form.LectureListResponseDto;
 import com.attendance.modules.lecture.form.LectureForm;
+import com.attendance.modules.student.Student;
+import com.attendance.modules.student.StudentRepository;
+import com.attendance.modules.studentlecture.StudentLecture;
+import com.attendance.modules.studentlecture.StudentLectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 public class LectureController {
 
     private final LectureService lectureService;
+    private final LectureRepository lectureRepository;
 
-    private final LectureFormValidator lectureFormValidator;
+    private final StudentLectureRepository studentLectureRepository;
 
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(lectureFormValidator);
-    }
+    private final StudentRepository studentRepository;
+
+
 
     @GetMapping("/my-lecture")
     public String my_lecture(){
@@ -55,5 +57,19 @@ public class LectureController {
 
         lectureService.addLecture(lectureForm);
         return "redirect:/admin-page";
+    }
+
+    @GetMapping("/lecture/{lectureCode}")
+    public String lectureInfo (@PathVariable String lectureCode, Model model){
+        Lecture lecture = lectureRepository.findByLectureCode(lectureCode);
+
+        List<Student> students = lectureService.getStudentFromLectureCode(lectureCode);
+
+        model.addAttribute(lecture);
+        model.addAttribute("students",students);
+
+        return "admin/lecture";
+
+
     }
 }

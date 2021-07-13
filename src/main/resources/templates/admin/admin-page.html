@@ -7,24 +7,26 @@
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
 
-    <h1>출석 관리 시스템</h1>
+<h3 class="py-3 card-title text-center">출석부 시스템</h3>
     <hr>
 
+<div class="container">
     <table class="table">
         <thead>
-            <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
+        <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
         </thead>
         <tbody>
-            <tr th:each="lecture : ${lectures}">
-                <td th:text="${lecture.lectureName}"></td>
-                <td th:text="${lecture.lectureCode}"></td>
-                <td th:text="${lecture.lectureRoom}"></td>
-            </tr>
+        <tr th:each="lecture : ${lectures}">
+            <td><a th:text="${lecture.lectureName}" href="#" th:href="@{'/lecture/' + ${lecture.lectureCode}}"></a></td>
+            <td th:text="${lecture.lectureCode}"></td>
+            <td th:text="${lecture.lectureRoom}"></td>
+        </tr>
         </tbody>
     </table>
     <div class="d-grid gap-2">
-        <button class ="btn btn-outline-primary " id="btn-addLecture">강의 등록</button>
+        <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{/create-lecture}">강의 추가</a>
     </div>
+</div>
 
     <th:block th:replace="fragments :: footerFragment"/>
 </body>

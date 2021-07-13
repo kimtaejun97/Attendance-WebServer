@@ -13,7 +13,6 @@ import javax.persistence.Id;
 @Entity
 public class Student {
 
-    @Column(name = "studentId")
     @Id
     private String studentId;
 

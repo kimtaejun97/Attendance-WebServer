@@ -2,6 +2,10 @@ package com.attendance.modules.lecture;
 
 import com.attendance.modules.lecture.form.LectureListResponseDto;
 import com.attendance.modules.lecture.form.LectureForm;
+import com.attendance.modules.student.Student;
+import com.attendance.modules.student.StudentRepository;
+import com.attendance.modules.studentlecture.StudentLecture;
+import com.attendance.modules.studentlecture.StudentLectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,10 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
 
+    private final StudentRepository studentRepository;
+
+    private final StudentLectureRepository studentLectureRepository;
+
     public String addLecture(LectureForm lectureSaveRequestDto) {
 
         return lectureRepository.save(lectureSaveRequestDto.toEntity()).getLectureName();
@@ -24,5 +32,15 @@ public class LectureService {
         return lectureRepository.findAll().stream()
                 .map(LectureListResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<Student> getStudentFromLectureCode(String lectureCode) {
+        List<StudentLecture> studentLectures = studentLectureRepository.findAllByLectureCode(lectureCode);
+        var students = studentLectures.stream()
+                .map(studentLecture ->
+                        studentRepository.findByStudentId(studentLecture.getStudentId()))
+                .collect(Collectors.toList());
+
+        return students;
     }
 }

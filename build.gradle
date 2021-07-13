@@ -25,6 +25,7 @@ dependencies {
     // lombok
     implementation 'org.projectlombok:lombok'
     implementation 'junit:junit:4.12'
+    implementation 'org.jetbrains:annotations:20.1.0'
     annotationProcessor('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
 
