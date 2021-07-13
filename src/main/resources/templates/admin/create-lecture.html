@@ -31,7 +31,9 @@
                     강의를 식별하기위한 코드를 적어주세요.
                 </small>
                 <small class="invalid-feedback">강의 코드를 확인하세요.</small>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('lectureCode')}" th:errors="*{lectureCode}">Lecture Code Error</small>
+                <div>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('lectureCode')}" th:errors="*{lectureCode}">Lecture Code Error</small>
+                </div>
             </div>
 
             <div class="form-group">

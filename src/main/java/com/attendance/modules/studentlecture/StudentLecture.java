@@ -16,13 +16,13 @@ public class StudentLecture {
     private Long Id;
 
     @Column(nullable = false)
-    private String studentId;
+    private Long studentId;
 
     @Column(nullable = false)
     private String lectureCode;
 
     @Builder
-    public StudentLecture(String studentId, String lectureCode){
+    public StudentLecture(Long studentId, String lectureCode){
         this.studentId = studentId;
         this.lectureCode = lectureCode;
 

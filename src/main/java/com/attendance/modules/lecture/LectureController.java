@@ -4,9 +4,6 @@ import com.attendance.modules.lecture.form.LectureFormValidator;
 import com.attendance.modules.lecture.form.LectureListResponseDto;
 import com.attendance.modules.lecture.form.LectureForm;
 import com.attendance.modules.student.Student;
-import com.attendance.modules.student.StudentRepository;
-import com.attendance.modules.studentlecture.StudentLecture;
-import com.attendance.modules.studentlecture.StudentLectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,11 +21,12 @@ public class LectureController {
     private final LectureService lectureService;
     private final LectureRepository lectureRepository;
 
-    private final StudentLectureRepository studentLectureRepository;
+    private final LectureFormValidator lectureFormValidator;
 
-    private final StudentRepository studentRepository;
-
-
+    @InitBinder("lectureForm")
+    public void initBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(lectureFormValidator);
+    }
 
     @GetMapping("/my-lecture")
     public String my_lecture(){

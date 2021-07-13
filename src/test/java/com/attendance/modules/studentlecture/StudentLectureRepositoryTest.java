@@ -14,17 +14,14 @@ public class StudentLectureRepositoryTest {
 
     @Test
     public void save() {
-        String studentId = "164160";
         String lectureCode = "ASDV123";
 
         StudentLecture studentLecture = StudentLecture.builder()
-                .studentId(studentId)
                 .lectureCode(lectureCode)
                 .build();
 
         StudentLecture result = studentLectureRepository.save(studentLecture);
 
-        assertThat(result.getStudentId()).isEqualTo(studentId);
         assertThat(result.getLectureCode()).isEqualTo(lectureCode);
 
     }

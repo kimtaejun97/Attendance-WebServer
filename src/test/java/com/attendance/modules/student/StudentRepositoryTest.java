@@ -19,7 +19,6 @@ class StudentRepositoryTest {
         String studentName = "bigave";
 
         Student student = Student.builder()
-                .studentId(studentId)
                 .studentName(studentName)
                 .build();
 
