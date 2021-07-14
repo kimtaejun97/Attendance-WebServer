@@ -15,7 +15,6 @@ class StudentRepositoryTest {
 
     @Test
     void save(){
-        String studentId = "164160";
         String studentName = "bigave";
 
         Student student = Student.builder()
@@ -24,7 +23,6 @@ class StudentRepositoryTest {
 
         Student result = studentRepository.save(student);
 
-        assertThat(result.getStudentId()).isEqualTo(studentId);
         assertThat(result.getStudentName()).isEqualTo(studentName);
 
 

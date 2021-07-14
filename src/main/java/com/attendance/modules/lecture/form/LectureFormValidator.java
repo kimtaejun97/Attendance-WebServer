@@ -14,7 +14,7 @@ public class LectureFormValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(clazz);
+        return clazz.isAssignableFrom(LectureForm.class);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class StudentService {
 
         studentLectureRepository.save(
                 StudentLecture.builder()
-                        .studentId(newStudent.getStudentId())
+                        .studentName(newStudent.getStudentName())
                         .lectureCode(lectureCode)
                         .build()
         );

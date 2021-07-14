@@ -1,5 +1,7 @@
 package com.attendance.modules.account;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +42,25 @@ class AccountControllerTest {
 
     @MockBean
     JavaMailSender javaMailSender;
+
+
+    @BeforeEach
+    void initDate(){
+        Account account = Account.builder()
+                .nickname("bigave")
+                .email("test@email.com")
+                .password("12345678")
+                .build();
+        Account newAccount = accountRepository.save(account);
+        newAccount.generateEmailCheckToken();
+        newAccount.setRole(Role.USER);
+
+    }
+
+    @AfterEach
+    void cleaup(){
+        accountRepository.deleteAll();
+    }
 
 
     @DisplayName("회원 가입 View")
@@ -80,8 +103,8 @@ class AccountControllerTest {
     void signUp_with_correct_input() throws Exception {
 
         mockMvc.perform(post("/sign-up")
-            .param("nickname","bigave")
-            .param("email","test@email.com")
+            .param("nickname","test")
+            .param("email","test@your.com")
             .param("password","123123123")
             .param("adminCode","")
             .with(csrf()))
@@ -90,8 +113,8 @@ class AccountControllerTest {
                 .andExpect(authenticated());
 
 
-        Account account = accountRepository.findByEmail("test@email.com");
-        assertThat(account.getNickname()).isEqualTo("bigave");
+        Account account = accountRepository.findByEmail("test@your.com");
+        assertThat(account.getNickname()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
@@ -107,8 +130,8 @@ class AccountControllerTest {
     void signUp_with_correct_AdminCode() throws Exception {
 
         mockMvc.perform(post("/sign-up")
-            .param("nickname","bigave")
-            .param("email","test@email.com")
+            .param("nickname","test")
+            .param("email","test@your.com")
             .param("password","123123123")
             .param("adminCode","Admin1234")
             .with(csrf()))
@@ -117,8 +140,8 @@ class AccountControllerTest {
                 .andExpect(authenticated());
 
 
-        Account account = accountRepository.findByEmail("test@email.com");
-        assertThat(account.getNickname()).isEqualTo("bigave");
+        Account account = accountRepository.findByEmail("test@your.com");
+        assertThat(account.getNickname()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
@@ -130,16 +153,6 @@ class AccountControllerTest {
     @DisplayName("회원 가입 - 중복가입")
     @Test
     void signUp_with_duplicate() throws Exception {
-
-        mockMvc.perform(post("/sign-up")
-                .param("nickname","bigave")
-                .param("email","test@email.com")
-                .param("password","123123123")
-                .param("adminCode","Admin1234")
-                .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
-
 
         //중복 닉네임.
         mockMvc.perform(post("/sign-up")
@@ -165,18 +178,11 @@ class AccountControllerTest {
     @DisplayName("인증 메일 - 잘못된 입력")
     @Test
     void checkEmailToken_with_wrong_input() throws Exception {
-        Account account = Account.builder()
-                .nickname("bigave")
-                .email("test@email.com")
-                .password("12345678")
-                .build();
-        Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
-        newAccount.setRole(Role.USER);
+
 
         mockMvc.perform(get("/check-email-token")
                 .param("token","asdasd")
-                .param("email",newAccount.getEmail()))
+                .param("email","test@email.com"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/checked-email"))
                 .andExpect(model().attributeExists("error"));
@@ -187,8 +193,8 @@ class AccountControllerTest {
     @Test
     void checkEmailToken_with_correct_input() throws Exception {
         Account account = Account.builder()
-                .nickname("bigave")
-                .email("test@email.com")
+                .nickname("test")
+                .email("test@your.com")
                 .password("12345678")
                 .build();
         Account newAccount = accountRepository.save(account);
@@ -202,6 +208,8 @@ class AccountControllerTest {
                 .andExpect(view().name("account/checked-email"))
                 .andExpect(model().attributeDoesNotExist("error"));
     }
+
+
 
 
 }

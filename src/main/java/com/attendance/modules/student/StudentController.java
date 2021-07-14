@@ -25,23 +25,24 @@ public class StudentController {
 
 
 
-    @InitBinder("/studentForm")
+    @InitBinder("studentForm")
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(studentFormValidator);
     }
 
     @GetMapping("/add-student/{lectureCode}")
     public String addStudent(@PathVariable String lectureCode,Model model){
-        model.addAttribute("lectureCode",lectureCode);
-        model.addAttribute(new StudentForm());
+        StudentForm studentForm = new StudentForm();
+        studentForm.setLectureCode(lectureCode);
+
+        model.addAttribute(studentForm);
         return "admin/add-student";
     }
 
     @PostMapping("/add-student/{lectureCode}")
-    public String addStudentForm(@Valid StudentForm studentForm,@PathVariable String lectureCode, Errors errors){
-        //TODO Validator 왜 안먹지...
+    public String addStudentForm(@Valid StudentForm studentForm, Errors errors, @PathVariable String lectureCode){
         if(errors.hasErrors()){
-            return "redirect:admin/add-student"+lectureCode;
+            return "admin/add-student";
         }
         studentService.addStudent(studentForm,lectureCode);
 

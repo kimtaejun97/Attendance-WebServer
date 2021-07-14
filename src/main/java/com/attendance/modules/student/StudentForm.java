@@ -10,5 +10,8 @@ public class StudentForm {
     @NotBlank
     private String username;
 
+    @NotBlank
+    private String lectureCode;
+
 
 }

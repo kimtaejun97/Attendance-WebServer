@@ -23,9 +23,9 @@ public class LectureService {
 
     private final StudentLectureRepository studentLectureRepository;
 
-    public String addLecture(LectureForm lectureSaveRequestDto) {
+    public String addLecture(LectureForm lectureForm) {
 
-        return lectureRepository.save(lectureSaveRequestDto.toEntity()).getLectureName();
+        return lectureRepository.save(lectureForm.toEntity()).getLectureName();
     }
 
     public List<LectureListResponseDto> showLectureList() {
@@ -38,7 +38,7 @@ public class LectureService {
         List<StudentLecture> studentLectures = studentLectureRepository.findAllByLectureCode(lectureCode);
         var students = studentLectures.stream()
                 .map(studentLecture ->
-                        studentRepository.findByStudentId(studentLecture.getStudentId()))
+                        studentRepository.findByStudentName(studentLecture.getStudentName()))
                 .collect(Collectors.toList());
 
         return students;

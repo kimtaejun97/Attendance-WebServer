@@ -1,5 +1,7 @@
 package com.attendance.modules.lecture;
 
+import com.attendance.modules.lecture.form.LectureForm;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,17 @@ class LectureControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    LectureService lectureService;
+
+    @Autowired
+    LectureRepository lectureRepository;
+
+    @AfterEach
+    void cleanup(){
+        lectureRepository.deleteAll();
+    }
 
     @WithMockUser
     @DisplayName("mylectue 페이지")
@@ -78,6 +91,48 @@ class LectureControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/create-lecture"));
+    }
+
+    @WithMockUser
+    @DisplayName("강의 추가 - 이미 존재하는 강의")
+    @Test
+    void addLecture_with_exists_input() throws Exception {
+
+        mockMvc.perform(post("/create-lecture")
+                .param("lectureCode", "ASDF134")
+                .param("lectureName", "프로그래밍")
+                .param("lectureRoom", "211호")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/admin-page"));
+
+        mockMvc.perform(post("/create-lecture")
+                .param("lectureCode", "ASDF134")
+                .param("lectureName", "프로그래밍")
+                .param("lectureRoom", "211호")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/create-lecture"));
+    }
+
+    @WithMockUser
+    @DisplayName("강의 정보 View")
+    @Test
+    void lectureInfoView() throws Exception {
+        LectureForm lectureForm = new LectureForm();
+        lectureForm.setLectureCode("ABC123");
+        lectureForm.setLectureName("프로그래밍");
+        lectureForm.setLectureRoom("211");
+
+       lectureService.addLecture(lectureForm);
+
+        mockMvc.perform(get("/lecture/ABC123"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/lecture"))
+                .andExpect(model().attributeExists("lecture"))
+                .andExpect(model().attributeExists("students"));
+
+
     }
 
 
