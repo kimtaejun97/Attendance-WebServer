@@ -6,7 +6,7 @@
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
 
-<h3 class="py-3 card-title text-center">내가 수강한 강의</h3>
+<h3 class="py-3 card-title text-center">출결 현황</h3>
 <hr>
 
 <div class="container">
@@ -23,12 +23,8 @@
         </tbody>
     </table>
 
-<!--    <div class="d-grid gap-2">-->
-<!--        <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{/create-lecture}">강의 추가</a>-->
-<!--    </div>-->
 </div>
 
-<!--TODO 강의 클릭 하면 출석현황으로 연결.-->
 <th:block th:replace="fragments :: footerFragment"/>
 </body>
 </html>

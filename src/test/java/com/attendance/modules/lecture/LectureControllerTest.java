@@ -1,5 +1,8 @@
 package com.attendance.modules.lecture;
 
+import com.attendance.modules.account.Account;
+import com.attendance.modules.account.AccountService;
+import com.attendance.modules.account.SignUpForm;
 import com.attendance.modules.lecture.form.LectureForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,20 +32,14 @@ class LectureControllerTest {
     @Autowired
     LectureRepository lectureRepository;
 
+    @Autowired
+    AccountService accountService;
+
     @AfterEach
     void cleanup(){
         lectureRepository.deleteAll();
     }
 
-    @WithMockUser
-    @DisplayName("mylectue 페이지")
-    @Test
-    void myLecture() throws Exception {
-
-        mockMvc.perform(get("/my-lecture"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("student/my-lecture"));
-    }
 
     @WithMockUser
     @DisplayName("admin 페이지")
@@ -131,8 +128,25 @@ class LectureControllerTest {
                 .andExpect(view().name("admin/lecture"))
                 .andExpect(model().attributeExists("lecture"))
                 .andExpect(model().attributeExists("students"));
+    }
 
 
+    @DisplayName("나의 강의 페이지")
+    @Test
+    void myLecture() throws Exception {
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setNickname("bigave");
+        signUpForm.setAdminCode("");
+        signUpForm.setPassword("123123123");
+        signUpForm.setEmail("test@email.com");
+
+        Account newAccount = accountService.createNewAccount(signUpForm);
+        accountService.login(newAccount);
+
+        mockMvc.perform(get("/my-lecture"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("student/my-lecture"))
+                .andExpect(model().attributeExists("lectures"));
     }
 
 

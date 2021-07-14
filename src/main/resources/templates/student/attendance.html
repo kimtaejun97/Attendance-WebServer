@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+<head th:replace="fragments :: headerFragment"></head>
+
+<body>
+<nav th:replace="fragments :: navFragment"> </nav>
+
+<h3 class = "py-3 card-title text-center">출석 하기 </h3>
+<div class="card text-center">
+    <div class="card-group">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">강의 명</h5>
+                <p class="card-text" th:text="${lecture.lectureName}"></p>
+                <h5 class="card-title">강의 코드</h5>
+                <p class="card-text" th:text="${lecture.lectureCode}"></p>
+                <h5 class="card-title">강의실</h5>
+                <p class="card-text" th:text="${lecture.lectureRoom}"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">내 정보</h5>
+                <p class="card-text" th:text="${account.nickname}"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class ="container"></div>
+
+<hr>
+<!--TODO 출석은 실시간이기 때문에 Sesstion에 저장하지 않고 그떄 그때 쿼리.-->
+<th:block th:replace="fragmentsr :: footerFragment"/>
+</body>
+</html>

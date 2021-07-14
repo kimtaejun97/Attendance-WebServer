@@ -23,4 +23,5 @@ public class Lecture {
     private String lectureRoom;
 
 
+
 }

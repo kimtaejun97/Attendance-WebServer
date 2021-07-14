@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -15,14 +17,14 @@ class AttendanceRepositoryTest {
     @Test
     void save(){
         String attendaceCode = "S";
-        String attendanceDate = "2021-07-05";
-        String studentId = "164160";
+        LocalDateTime attendanceDate = LocalDateTime.now();
+        String username = "bigave";
         String lectureCode= "CD123D";
 
         Attendance attendance = Attendance.builder()
                 .attendanceCode(attendaceCode)
                 .attendanceDate(attendanceDate)
-                .studentId(studentId)
+                .username(username)
                 .lectureCode(lectureCode)
                 .build();
 
@@ -30,7 +32,7 @@ class AttendanceRepositoryTest {
 
         assertThat(result.getAttendanceCode()).isEqualTo(attendaceCode);
         assertThat(result.getAttendanceDate()).isEqualTo(attendanceDate);
-        assertThat(result.getStudentId()).isEqualTo(studentId);
+        assertThat(result.getUsername()).isEqualTo(username);
         assertThat(result.getLectureCode()).isEqualTo(lectureCode);
     }
 

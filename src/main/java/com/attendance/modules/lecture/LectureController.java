@@ -1,5 +1,7 @@
 package com.attendance.modules.lecture;
 
+import com.attendance.modules.account.Account;
+import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.lecture.form.LectureFormValidator;
 import com.attendance.modules.lecture.form.LectureListResponseDto;
 import com.attendance.modules.lecture.form.LectureForm;
@@ -28,14 +30,9 @@ public class LectureController {
         webDataBinder.addValidators(lectureFormValidator);
     }
 
-    @GetMapping("/my-lecture")
-    public String my_lecture(){
-        return "student/my-lecture";
-    }
-
     @GetMapping("/admin-page")
     public String adminPage(Model model){
-        List<LectureListResponseDto> lectures = lectureService.showLectureList();
+        List<LectureListResponseDto> lectures = lectureService.getLectureList();
         model.addAttribute("lectures", lectures);
 
         return "admin/admin-page";
@@ -66,7 +63,12 @@ public class LectureController {
         model.addAttribute("students",students);
 
         return "admin/lecture";
+    }
 
-
+    @GetMapping("/my-lecture")
+    public String my_lecture(@CurrentUser Account account, Model model){
+        List<Lecture> lectures = lectureService.getStudentLectures(account.getNickname());
+        model.addAttribute("lectures", lectures);
+        return "student/my-lecture";
     }
 }

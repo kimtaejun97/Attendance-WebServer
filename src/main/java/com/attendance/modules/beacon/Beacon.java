@@ -17,12 +17,12 @@ public class Beacon {
     private String beaconCode;
 
     @Column(nullable = false)
-    private String lectureCode;
+    private String location;
 
     @Builder
-    public Beacon(String beaconCode, String lectureCode){
+    public Beacon(String beaconCode, String location){
         this.beaconCode = beaconCode;
-        this.lectureCode = lectureCode;
+        this.location = location;
     }
 
 }

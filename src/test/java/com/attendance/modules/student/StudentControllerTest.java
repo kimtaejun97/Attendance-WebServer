@@ -3,11 +3,9 @@ package com.attendance.modules.student;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.lecture.LectureRepository;
-import com.attendance.modules.lecture.LectureService;
 import com.attendance.modules.lecture.form.LectureForm;
 import com.attendance.modules.studentlecture.StudentLecture;
 import com.attendance.modules.studentlecture.StudentLectureRepository;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.validation.Errors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -91,7 +88,7 @@ class StudentControllerTest {
                 .andExpect(view().name("redirect:/lecture/ABC123"))
                 .andExpect(model().attributeDoesNotExist("errors"));
 
-        boolean isRegistered = studentLectureRepository.existsStudent("ABC123", "bigave");
+        boolean isRegistered = studentLectureRepository.existsByLectureCodeAndStudentName("ABC123", "bigave");
 
         assertTrue(isRegistered);
 
@@ -108,7 +105,7 @@ class StudentControllerTest {
                 .andExpect(view().name("admin/add-student"))
                 .andExpect(model().hasErrors());
 
-        boolean isRegistered = studentLectureRepository.existsStudent("ABC123", "bigave");
+        boolean isRegistered = studentLectureRepository.existsByLectureCodeAndStudentName("ABC123", "bigave");
         assertFalse(isRegistered);
     }
 

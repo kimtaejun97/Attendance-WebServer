@@ -28,7 +28,7 @@ public class LectureService {
         return lectureRepository.save(lectureForm.toEntity()).getLectureName();
     }
 
-    public List<LectureListResponseDto> showLectureList() {
+    public List<LectureListResponseDto> getLectureList() {
         return lectureRepository.findAll().stream()
                 .map(LectureListResponseDto::new)
                 .collect(Collectors.toList());
@@ -36,11 +36,19 @@ public class LectureService {
 
     public List<Student> getStudentFromLectureCode(String lectureCode) {
         List<StudentLecture> studentLectures = studentLectureRepository.findAllByLectureCode(lectureCode);
-        var students = studentLectures.stream()
+       return  studentLectures.stream()
                 .map(studentLecture ->
                         studentRepository.findByStudentName(studentLecture.getStudentName()))
                 .collect(Collectors.toList());
+    }
 
-        return students;
+    public List<Lecture> getStudentLectures(String studentName) {
+        List<StudentLecture> studentLectures =  studentLectureRepository.findByStudentName(studentName);
+
+        return studentLectures.stream()
+                .map(studentLecture ->
+                    lectureRepository.findByLectureCode(studentLecture.getLectureCode()))
+                .collect(Collectors.toList());
+
     }
 }

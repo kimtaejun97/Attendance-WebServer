@@ -1,8 +1,6 @@
 package com.attendance.modules.student;
 
 import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.lecture.LectureRepository;
-import com.attendance.modules.lecture.form.LectureForm;
 import com.attendance.modules.studentlecture.StudentLectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,7 +27,7 @@ public class StudentFormValidator implements Validator {
         if(! accountRepository.existsByNickname(studentForm.getUsername())){
             errors.rejectValue("username","invalid.username",new Object[]{studentForm.getUsername()}, "존재하지 않는 사용자 입니다.");
         }
-        if(studentLectureRepository.existsStudent(studentForm.getLectureCode(),studentForm.getUsername())){
+        if(studentLectureRepository.existsByLectureCodeAndStudentName(studentForm.getLectureCode(),studentForm.getUsername())){
             errors.rejectValue("username","invalid.username",new Object[]{studentForm.getUsername()}, "이미 등록된 사용자 입니다.");
         }
 

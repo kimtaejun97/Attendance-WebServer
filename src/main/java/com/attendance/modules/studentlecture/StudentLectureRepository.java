@@ -8,6 +8,9 @@ import java.util.List;
 public interface StudentLectureRepository extends JpaRepository<StudentLecture, Long> {
     List<StudentLecture> findAllByLectureCode(String lectureCode);
 
-    @Query("SELECT new java.lang.Boolean(count(*) >0) FROM StudentLecture S WHERE S.studentName like ?2 and S.lectureCode like ?1")
-    boolean existsStudent(String lectureCode, String studentName);
+    boolean existsByLectureCodeAndStudentName(String lectureCode, String studentName);
+
+    List<StudentLecture> findByStudentName(String studentName);
+
+
 }
