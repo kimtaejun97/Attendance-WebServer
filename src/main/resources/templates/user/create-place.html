@@ -12,9 +12,8 @@
     </div>
     <div class="row justify-content-center">
         <form class="needs-validation col-sm-6" th:action="@{/create-place}" th:object="${placeForm}" method="post" novalidate>
-
             <div class="form-group">
-                <label for="alias">별칭</label>
+                <label for="alias">장소 별칭</label>
                 <input id="alias" type="text" th:field="*{alias}" class="form-control"
                        aria-describedby="aliasHelp" placeholder="별칭">
                 <small id="aliasHelp" class="form-text text-muted">
@@ -35,7 +34,16 @@
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Duplicated location Error</small>
             </div>
 
-            <!--            TODO 공개, 비공개 여부.-->
+            <!--            TODO 공개, 비공개 여부 값 전달-->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="isPublic" >
+                <label class="form-check-label" for="isPublic" aria-describedby="isPublicHelp">Public</label>
+                <div id="isPublicHelp" class="form-text text-muted">
+                    공개 여부를 결정해주세요, 스위치가 켜져있으면 장소가 모두에게 공개됩니다.
+                </div>
+            </div>
+
+
 
             <div class="form-group">
                 <div class="d-grid gap-2 ">
@@ -43,11 +51,11 @@
                             aria-describedby="submitHelp">생성하기</button>
                 </div>
             </div>
-
-
         </form>
     </div>
 </div>
+
+
 <script th:replace="fragments :: form-validation"></script>
 <th:block th:replace="fragments :: footerFragment"/>
 

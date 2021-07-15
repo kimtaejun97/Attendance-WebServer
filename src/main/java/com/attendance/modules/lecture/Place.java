@@ -22,5 +22,8 @@ public class Place {
     @Column(nullable = false)
     private String constructor;
 
+    @Column(nullable = false)
+    private boolean isPublic;
+
 
 }

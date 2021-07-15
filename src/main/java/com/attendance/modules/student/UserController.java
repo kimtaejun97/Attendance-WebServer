@@ -1,5 +1,7 @@
 package com.attendance.modules.student;
 
+import com.attendance.modules.account.Account;
+import com.attendance.modules.account.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,9 +43,16 @@ public class UserController {
         if(errors.hasErrors()){
             return "user/add-user";
         }
-        userService.addUser(userForm,location);
+        userService.addUser(userForm.getUsername(),location);
 
         return "redirect:/user/place/"+location;
+    }
+
+    @GetMapping("/enrollment/public-place/{location}")
+    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account){
+        userService.addUser(account.getNickname(), location);
+
+        return "redirect:/my-place";
     }
 
 }

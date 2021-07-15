@@ -89,5 +89,14 @@ public class PlaceController {
         return "user/place";
     }
 
+    @GetMapping("/public-place-list")
+    public String publicPlaceList(Model model){
+        List<Place> places = placeService.getPublicPlaceList();
+
+        model.addAttribute("places",places);
+
+        return "user/public-place-list";
+    }
+
 
 }

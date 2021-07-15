@@ -13,9 +13,9 @@ public class UserService {
 
     private final UserLocationRepository userLocationRepository;
 
-    public void addUser(UserForm userForm, String location) {
+    public void addUser(String username, String location) {
         User user = User.builder()
-                .username(userForm.getUsername())
+                .username(username)
                 .build();
 
         User newUser = userRepository.save(user);

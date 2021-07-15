@@ -23,10 +23,10 @@
                     <a class="nav-link" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">관리 페이지</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/my-place}" sec:authorize="hasRole('ROLE_STUDENT')">나의 강의</a>
+                    <a class="nav-link" href="#" th:href="@{/my-place}" sec:authorize="hasRole('ROLE_STUDENT')">My Place</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/attendance}" sec:authorize="hasRole('ROLE_STUDENT')">출석 하기</a>
+                    <a class="nav-link" href="#" th:href="@{/attendance}" sec:authorize="hasRole('ROLE_STUDENT')">Check</a>
                 </li>
             </ul>
 
@@ -39,7 +39,7 @@
                 <a class="nav-link text-white-50" href="#" th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
             </li>
             <form action="#" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                <button class="dropdown-item bg-dark text-white-50" type="submit">로그아웃</button>
+                <button class="dropdown-item bg-dark text-white-50" type="submit">Logout</button>
             </form>
         </ul>
     </div>

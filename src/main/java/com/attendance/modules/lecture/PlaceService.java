@@ -58,4 +58,9 @@ public class PlaceService {
     public Place getPlace(String location){
         return placeRepository.findByLocation(location);
     }
+
+    public List<Place> getPublicPlaceList() {
+        return placeRepository.findByIsPublic(true);
+
+    }
 }

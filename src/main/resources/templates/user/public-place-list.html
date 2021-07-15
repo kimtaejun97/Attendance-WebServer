@@ -5,8 +5,28 @@
 
 <body>
 <div th:replace="fragments :: navFragment"></div>
-
 <!-- TODO 공개 장소 리스트-->
+<div class="container">
+    <table class="table">
+        <thead>
+        <th scope="col">위치</th><th scope="col">별칭</th><th scope="col">생성자</th><th></th>
+        </thead>
+        <tbody>
+        <tr th:each="place : ${places}">
+            <td th:text="${place.location}"</td>
+            <td th:text="${place.alias}"></td>
+            <td th:text="${place.constructor}"></td>
+            <td>
+<!--              TODO 등록하기-->
+                <div class="d-grid gap-2">
+                    <a class ="btn btn-outline-danger " id="btn-enroll-public-place" th:href="@{/enrollment/public-place}">등록하기</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <div th:replace="fragments :: footerFragment"></div>
 </body>
 </html>

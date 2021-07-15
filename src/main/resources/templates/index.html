@@ -4,44 +4,49 @@
 
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
-<h2 class="text-center"> 자동 출석부 시스템</h2>
-<div class="row row-cols-1 row-cols-md-2 g-4">
-    <div class="col">
+<h2 class="text-center"> 자동 출석 시스템</h2>
+<div class=" row row-cols-1 row-cols-md-2 g-4  ">
+    <div class="col-6 mx-auto">
         <div class="card">
 <!--            <img src="..." class="card-img-top" alt="...">-->
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">Create Place</h5>
+                <p class="card-text">출석할 장소를 만들고 관리하세요. 공개 / 비공개로 생성할 수 있습니다. 장소를 생성하고 모임을 가지거나 출입을 관리하세요.</p>
             </div>
         </div>
     </div>
-    <div class="col">
+    <div class="col-6 mx-auto">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">My Place</h5>
+                <p class="card-text">내가 등록된 장소들을 관리하세요, 위치와 출입 날짜, 시간을 확인할 수 있습니다.</p>
             </div>
         </div>
     </div>
-    <div class="col">
+    <div class="col-6 mx-auto">
+
         <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                <div class="card-body">
+                    <h5 class="card-title">Public Place</h5>
+                    <p class="card-text">누구든지 장소에 자신을 등록하고 출입을 관리할 수 있어요. 생성된 장소가 모두에게 노출됩니다.</p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col">
+    <div class="col-6 mx-auto">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">Private Place</h5>
+                <p class="card-text">장소를 생성한 사용자만이 새로운 사용자들을 추가할 수 있습니다. 생성된 장소가 공개되지 않아요.</p>
             </div>
         </div>
     </div>
 </div>
-<!--TODO 공개장소 보기 버튼 (장소 찾기)-->
-<!--장소 추가.-->
+<div class="d-grid col-4 mx-auto">
+        <a href="#" th:href="@{/public-place-list}" class="btn btn-outline-info m-3 py-3">Public Place</a>
+        <a href="#" th:href="@{/create-place}" class="btn btn-outline-success m-3 py-3">Create Place</a>
+</div>
+
+
 
 <th:block th:replace="fragments :: footerFragment"/>
 </body>
