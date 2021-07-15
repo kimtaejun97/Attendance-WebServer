@@ -23,7 +23,7 @@ public class Place {
     private String constructor;
 
     @Column(nullable = false)
-    private boolean isPublic;
+    private String isPublic;
 
 
 }

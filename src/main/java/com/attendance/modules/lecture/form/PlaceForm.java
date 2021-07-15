@@ -18,7 +18,7 @@ public class PlaceForm {
     private String constructor;
 
     @NotBlank
-    private boolean isPublic;
+    private String isPublic;
 
 
     public Place toEntity(){

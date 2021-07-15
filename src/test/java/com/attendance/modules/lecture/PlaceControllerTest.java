@@ -102,6 +102,7 @@ class PlaceControllerTest {
         .param("location", "광주")
         .param("alias", "내 지역")
         .param("constructor", "bigave")
+        .param("isPublic", "true")
         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
@@ -118,6 +119,8 @@ class PlaceControllerTest {
                 .param("location", "nonono")
                 .param("alias", "내 지역")
                 .param("constructor", "bigave")
+                .param("isPublic", "true")
+
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/create-place"));
@@ -134,6 +137,8 @@ class PlaceControllerTest {
                 .param("location", "광주")
                 .param("alias", "내 지역")
                 .param("constructor", "bigave")
+                .param("isPublic", "true")
+
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/create-place"));

@@ -1,9 +1,9 @@
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('광주 동구 10-2','수학학원','prog');
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('광주 북구 201-201','집','Lee');
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('순천 조례동 1102-2','직장','park');
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('광주 동구 202-1','스터디 모임','kimtaejun');
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('광주 북구','전남대 강의실','kimtaejun');
-insert into place(LOCATION,ALIAS,CONSTRUCTOR ) values('광주 북구 2-01','프로젝트','kimtaejun');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('광주 동구 10-2','수학학원','prog','true');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('광주 북구 201-201','집','Lee','true');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('순천 조례동 1102-2','직장','park','true');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('광주 동구 202-1','스터디 모임','kimtaejun','true');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('광주 북구','전남대 강의실','kimtaejun','true');
+insert into place(LOCATION,ALIAS,CONSTRUCTOR,IS_PUBLIC ) values('광주 북구 2-01','프로젝트','kimtaejun','true');
 
 insert into beacon(BEACON_CODE, LOCATION) values('asdf1-31a34-4a24-2a13', '광주 동구 10-2');
 insert into beacon(BEACON_CODE, LOCATION) values('abb1-3k24-4dd4-2a13', '광주 북구 201-1');

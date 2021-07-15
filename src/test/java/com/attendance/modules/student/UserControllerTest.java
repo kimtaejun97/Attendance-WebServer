@@ -47,6 +47,7 @@ class UserControllerTest {
         placeForm.setLocation("광주");
         placeForm.setAlias("내 지역");
         placeForm.setConstructor("bigave");
+        placeForm.setIsPublic("true");
 
         placeRepository.save(placeForm.toEntity());
 
