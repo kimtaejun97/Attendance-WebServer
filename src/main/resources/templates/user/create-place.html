@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: headerFragment"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments :: navFragment"> </nav>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>장소 생성</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="needs-validation col-sm-6" th:action="@{/create-place}" th:object="${placeForm}" method="post" novalidate>
+
+            <div class="form-group">
+                <label for="alias">별칭</label>
+                <input id="alias" type="text" th:field="*{alias}" class="form-control"
+                       aria-describedby="aliasHelp" placeholder="별칭">
+                <small id="aliasHelp" class="form-text text-muted">
+                    장소의 별칭을 적어주세요.
+                </small>
+                <small class="invalid-feedback">별칭을 확인하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('alias')}" th:errors="*{alias}">alias Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="location">위치</label>
+                <input id="location" type="text" th:field="*{location}" class="form-control"
+                       placeholder="위치" aria-describedby="locationHelp" required>
+                <small id="locationHelp" class="form-text text-muted">
+                    비콘을 등록할 때 사용한 위치를 정확하게 적어주세요.
+                </small>
+                <small class="invalid-feedback">위치를 확인하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Duplicated location Error</small>
+            </div>
+
+            <!--            TODO 공개, 비공개 여부.-->
+
+            <div class="form-group">
+                <div class="d-grid gap-2 ">
+                    <button class="btn btn-primary" type="submit"
+                            aria-describedby="submitHelp">생성하기</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+<script th:replace="fragments :: form-validation"></script>
+<th:block th:replace="fragments :: footerFragment"/>
+
+</body>
+</html>

@@ -13,7 +13,7 @@ public class BeaconRepositoryTest {
 
     @Test
     public void save(){
-        String beaconCode = "ASD123";
+        String beaconCode = "ASD123-1233aasdf-fadsf113";
         String location= "광주 동구";
 
         Beacon beacon = Beacon.builder()

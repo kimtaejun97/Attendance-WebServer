@@ -19,7 +19,7 @@ public class Attendance {
     private String username;
 
     @Column(nullable = false)
-    private String lectureCode;
+    private String location;
 
     @Column(nullable = false)
     private LocalDateTime attendanceDate;
@@ -29,9 +29,9 @@ public class Attendance {
 
 
     @Builder
-    public Attendance(String username, String lectureCode, LocalDateTime attendanceDate, String attendanceCode){
+    public Attendance(String username, String location, LocalDateTime attendanceDate, String attendanceCode){
         this.username = username;
-        this.lectureCode =lectureCode;
+        this.location = location;
         this.attendanceDate = attendanceDate;
         this.attendanceCode = attendanceCode;
     }

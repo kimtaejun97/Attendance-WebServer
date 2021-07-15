@@ -23,7 +23,7 @@
                     <a class="nav-link" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">관리 페이지</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/my-lecture}" sec:authorize="hasRole('ROLE_STUDENT')">나의 강의</a>
+                    <a class="nav-link" href="#" th:href="@{/my-place}" sec:authorize="hasRole('ROLE_STUDENT')">나의 강의</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/attendance}" sec:authorize="hasRole('ROLE_STUDENT')">출석 하기</a>

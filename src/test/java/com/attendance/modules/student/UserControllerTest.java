@@ -2,10 +2,10 @@ package com.attendance.modules.student;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.lecture.LectureRepository;
-import com.attendance.modules.lecture.form.LectureForm;
-import com.attendance.modules.studentlecture.StudentLecture;
-import com.attendance.modules.studentlecture.StudentLectureRepository;
+import com.attendance.modules.lecture.PlaceRepository;
+import com.attendance.modules.lecture.form.PlaceForm;
+import com.attendance.modules.studentlecture.UserLocation;
+import com.attendance.modules.studentlecture.UserLocationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,28 +27,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StudentControllerTest {
+class UserControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
-    LectureRepository lectureRepository;
+    PlaceRepository placeRepository;
 
     @Autowired
-    StudentLectureRepository studentLectureRepository;
+    UserLocationRepository userLocationRepository;
 
     @Autowired
     AccountRepository accountRepository;
 
     @BeforeEach
     void initData(){
-        LectureForm lectureForm = new LectureForm();
-        lectureForm.setLectureCode("ABC123");
-        lectureForm.setLectureName("프로그래밍");
-        lectureForm.setLectureRoom("211");
+        PlaceForm placeForm = new PlaceForm();
+        placeForm.setLocation("광주");
+        placeForm.setAlias("내 지역");
+        placeForm.setConstructor("bigave");
 
-        lectureRepository.save(lectureForm.toEntity());
+        placeRepository.save(placeForm.toEntity());
 
         accountRepository.save(Account.builder()
                 .nickname("bigave")
@@ -58,8 +58,8 @@ class StudentControllerTest {
     }
     @AfterEach
     void cleanup(){
-        lectureRepository.deleteAll();
-        studentLectureRepository.deleteAll();
+        placeRepository.deleteAll();
+        userLocationRepository.deleteAll();
         accountRepository.deleteAll();
     }
 
@@ -68,10 +68,10 @@ class StudentControllerTest {
     @Test
     void addStudentView() throws Exception {
 
-        mockMvc.perform(get("/add-student/ABC123"))
+        mockMvc.perform(get("/add-user/광주"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/add-student"))
-                .andExpect(model().attributeExists("studentForm"));
+                .andExpect(view().name("user/add-user"))
+                .andExpect(model().attributeExists("userForm"));
     }
 
 
@@ -81,14 +81,14 @@ class StudentControllerTest {
     void addStudent_with_correct_input() throws Exception {
 
 
-        mockMvc.perform(post("/add-student/ABC123")
+        mockMvc.perform(post("/add-user/광주")
         .param("username","bigave")
         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/lecture/ABC123"))
+                .andExpect(view().name("redirect:/user/place/광주"))
                 .andExpect(model().attributeDoesNotExist("errors"));
 
-        boolean isRegistered = studentLectureRepository.existsByLectureCodeAndStudentName("ABC123", "bigave");
+        boolean isRegistered = userLocationRepository.existsByLocationAndUsername("광주", "bigave");
 
         assertTrue(isRegistered);
 
@@ -98,14 +98,14 @@ class StudentControllerTest {
     @Test
     void addStudent_with_nonexist_user() throws Exception {
 
-        mockMvc.perform(post("/add-student/ABC123")
+        mockMvc.perform(post("/add-user/광주")
                 .param("username","nonono")
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/add-student"))
+                .andExpect(view().name("user/add-user"))
                 .andExpect(model().hasErrors());
 
-        boolean isRegistered = studentLectureRepository.existsByLectureCodeAndStudentName("ABC123", "bigave");
+        boolean isRegistered = userLocationRepository.existsByLocationAndUsername("광주", "bigave");
         assertFalse(isRegistered);
     }
 
@@ -114,18 +114,17 @@ class StudentControllerTest {
     @Test
     void addStudent_duplicated_user() throws Exception {
 
-        studentLectureRepository.save(StudentLecture.builder()
-                .studentName("bigave")
-                .lectureCode("ABC123")
+        userLocationRepository.save(UserLocation.builder()
+                .username("bigave")
+                .location("광주")
                 .build());
 
-        mockMvc.perform(post("/add-student/ABC123")
+        mockMvc.perform(post("/add-user/광주")
                 .param("username","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/add-student"))
+                .andExpect(view().name("user/add-user"))
                 .andExpect(model().hasErrors());
-
 
     }
 

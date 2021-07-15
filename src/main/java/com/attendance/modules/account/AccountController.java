@@ -1,5 +1,7 @@
 package com.attendance.modules.account;
 
+import com.attendance.modules.account.form.SignUpForm;
+import com.attendance.modules.account.form.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

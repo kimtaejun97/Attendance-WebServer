@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: headerFragment"></head>
+
+<body>
+<div th:replace="fragments :: navFragment"></div>
+
+<div class="d-grid gap-2">
+    <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{'/add-user/' +${place.lectureCode}}">학생 등록</a>
+</div>
+
+<div th:replace="fragments :: footerFragment"></div>
+</body>
+</html>

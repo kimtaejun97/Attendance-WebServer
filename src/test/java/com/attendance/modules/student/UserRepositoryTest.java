@@ -8,22 +8,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
-class StudentRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
-    StudentRepository studentRepository;
+    UserRepository userRepository;
 
     @Test
     void save(){
-        String studentName = "bigave";
+        String username = "bigave";
 
-        Student student = Student.builder()
-                .studentName(studentName)
+        User user = User.builder()
+                .username(username)
                 .build();
 
-        Student result = studentRepository.save(student);
+        User result = userRepository.save(user);
 
-        assertThat(result.getStudentName()).isEqualTo(studentName);
+        assertThat(result.getUsername()).isEqualTo(username);
 
 
     }

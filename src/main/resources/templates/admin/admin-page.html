@@ -7,25 +7,28 @@
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
 
-<h3 class="py-3 card-title text-center">출석부 시스템</h3>
+<h3 class="py-3 card-title text-center">출석 시스템</h3>
     <hr>
 
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
+        <th scope="col">위치</th><th scope="col">별칭</th><th scope="col">생성자</th><th></th>
         </thead>
         <tbody>
-        <tr th:each="lecture : ${lectures}">
-            <td><a th:text="${lecture.lectureName}" href="#" th:href="@{'/lecture/' + ${lecture.lectureCode}}"></a></td>
-            <td th:text="${lecture.lectureCode}"></td>
-            <td th:text="${lecture.lectureRoom}"></td>
+        <tr th:each="place : ${places}">
+            <td><a th:text="${place.location}" href="#" th:href="@{'admin/place/' + ${place.location}}"></a></td>
+            <td th:text="${place.alias}"></td>
+            <td th:text="${place.constructor}"></td>
+            <td>
+                <div class="d-grid gap-2">
+                    <a class ="btn btn-outline-danger " id="btn-del-place" th:href="@{/delete-place}">제거</a>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
-    <div class="d-grid gap-2">
-        <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{/create-lecture}">강의 추가</a>
-    </div>
+
 </div>
 
     <th:block th:replace="fragments :: footerFragment"/>

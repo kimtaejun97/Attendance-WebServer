@@ -19,13 +19,13 @@ class AttendanceRepositoryTest {
         String attendaceCode = "S";
         LocalDateTime attendanceDate = LocalDateTime.now();
         String username = "bigave";
-        String lectureCode= "CD123D";
+        String location= "광주";
 
         Attendance attendance = Attendance.builder()
                 .attendanceCode(attendaceCode)
                 .attendanceDate(attendanceDate)
                 .username(username)
-                .lectureCode(lectureCode)
+                .location(location)
                 .build();
 
         Attendance result =  attendanceRepository.save(attendance);
@@ -33,7 +33,7 @@ class AttendanceRepositoryTest {
         assertThat(result.getAttendanceCode()).isEqualTo(attendaceCode);
         assertThat(result.getAttendanceDate()).isEqualTo(attendanceDate);
         assertThat(result.getUsername()).isEqualTo(username);
-        assertThat(result.getLectureCode()).isEqualTo(lectureCode);
+        assertThat(result.getLocation()).isEqualTo(location);
     }
 
 }

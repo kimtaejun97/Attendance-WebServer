@@ -12,17 +12,17 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Student {
+public class User {
 
     @Id @GeneratedValue
-    private Long studentId;
+    private Long Id;
 
     @Column(nullable = false)
-    private String studentName;
+    private String username;
 
     @Builder
-    public Student(String studentName){
-        this.studentName = studentName;
+    public User(String username){
+        this.username = username;
     }
 
 }

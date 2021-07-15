@@ -16,7 +16,7 @@ public class Beacon {
     @Id
     private String beaconCode;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String location;
 
     @Builder

@@ -11,17 +11,16 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Lecture {
+public class Place {
 
     @Id
-    private String lectureCode;
+    private String location;
 
     @Column(nullable = false)
-    private String lectureName;
+    private String alias;
 
     @Column(nullable = false)
-    private String lectureRoom;
-
+    private String constructor;
 
 
 }

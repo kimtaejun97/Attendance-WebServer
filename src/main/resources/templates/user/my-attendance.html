@@ -12,13 +12,12 @@
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">강의 명</th><th scope="col">강의 코드</th><th scope="col">강의실</th>
+        <th scope="col">날짜</th><th scope="col">출석 코드</th>
         </thead>
         <tbody>
-        <tr th:each="lecture : ${lectures}">
-            <td><a th:text="${lecture.lectureName}" href="#" th:href="@{'/my-attendance/' + ${lecture.lectureCode}}"></a></td>
-            <td th:text="${lecture.lectureCode}"></td>
-            <td th:text="${lecture.lectureRoom}"></td>
+        <tr th:each="attendance : ${attendances}">
+            <td th:text="${attendance.attendanceDate}"</td>
+            <td th:text="${attendance.attendanceCode}"></td>
         </tr>
         </tbody>
     </table>

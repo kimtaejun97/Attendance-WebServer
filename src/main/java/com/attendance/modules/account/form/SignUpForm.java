@@ -1,4 +1,4 @@
-package com.attendance.modules.account;
+package com.attendance.modules.account.form;
 
 import lombok.Data;
 import lombok.Getter;
