@@ -7,7 +7,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <form class="needs-validation col-sm-6" th:action="@{'/add-user/' + ${userForm.location}}" th:object="${userForm}" method="post" novalidate>
+        <form class="needs-validation col-sm-6" th:action="@{'/add-users/' + ${usersForm.location}}" th:object="${usersForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="username">사용자 닉네임</label>
                 <input id="username" type="text" th:field="*{username}" class="form-control" name="username"

@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-devtools:2.5.2'
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.5.2'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     // lombok
     implementation 'org.projectlombok:lombok'
@@ -29,7 +30,7 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
 
-    implementation 'org.postgresql:postgresql:42.2.23'
+    runtimeOnly 'org.postgresql:postgresql'
     implementation 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

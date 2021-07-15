@@ -1,4 +1,4 @@
-package com.attendance.modules.lecture;
+package com.attendance.modules.place;
 
 import lombok.*;
 

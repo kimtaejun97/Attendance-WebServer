@@ -1,4 +1,4 @@
-package com.attendance.modules.studentlecture;
+package com.attendance.modules.userplace;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

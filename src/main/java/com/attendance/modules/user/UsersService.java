@@ -1,28 +1,28 @@
-package com.attendance.modules.student;
+package com.attendance.modules.user;
 
-import com.attendance.modules.studentlecture.UserLocation;
-import com.attendance.modules.studentlecture.UserLocationRepository;
+import com.attendance.modules.userplace.UserLocation;
+import com.attendance.modules.userplace.UserLocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UsersService {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     private final UserLocationRepository userLocationRepository;
 
     public void addUser(String username, String location) {
-        User user = User.builder()
+        Users users = Users.builder()
                 .username(username)
                 .build();
 
-        User newUser = userRepository.save(user);
+        Users newUsers = usersRepository.save(users);
 
         userLocationRepository.save(
                 UserLocation.builder()
-                        .username(newUser.getUsername())
+                        .username(newUsers.getUsername())
                         .location(location)
                         .build()
         );

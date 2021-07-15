@@ -1,6 +1,6 @@
-package com.attendance.modules.lecture.form;
+package com.attendance.modules.place.form;
 
-import com.attendance.modules.lecture.Place;
+import com.attendance.modules.place.Place;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

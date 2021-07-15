@@ -1,4 +1,4 @@
-package com.attendance.modules.lecture;
+package com.attendance.modules.place;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

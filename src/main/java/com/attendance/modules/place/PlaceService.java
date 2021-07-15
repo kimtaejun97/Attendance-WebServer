@@ -1,9 +1,9 @@
-package com.attendance.modules.lecture;
+package com.attendance.modules.place;
 
-import com.attendance.modules.lecture.form.PlaceForm;
-import com.attendance.modules.student.UserRepository;
-import com.attendance.modules.studentlecture.UserLocation;
-import com.attendance.modules.studentlecture.UserLocationRepository;
+import com.attendance.modules.place.form.PlaceForm;
+import com.attendance.modules.user.UsersRepository;
+import com.attendance.modules.userplace.UserLocation;
+import com.attendance.modules.userplace.UserLocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     private final UserLocationRepository userLocationRepository;
 
@@ -36,7 +36,7 @@ public class PlaceService {
         List<UserLocation> userLocations = userLocationRepository.findAllByLocation(location);
        return  userLocations.stream()
                 .map(studentLecture ->
-                        userRepository.findByUsername(studentLecture.getUsername()))
+                        usersRepository.findByUsername(studentLecture.getUsername()))
                 .collect(Collectors.toList());
     }
 

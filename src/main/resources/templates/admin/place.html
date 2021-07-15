@@ -35,8 +35,8 @@
         <th scope="col">이름 </th><th scope="col"></th>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
-            <td ><a th:href="@{/user-info}" th:text="${user}"></a></td>
+        <tr th:each="users : ${users}">
+            <td ><a th:href="@{/users-info}" th:text="${users}"></a></td>
             <td><button class="btn btn-outline-danger">제거</button></td>
         </tr>
         </tbody>

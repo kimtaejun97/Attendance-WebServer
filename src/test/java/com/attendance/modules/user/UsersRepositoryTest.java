@@ -1,4 +1,4 @@
-package com.attendance.modules.student;
+package com.attendance.modules.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +8,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
-class UserRepositoryTest {
+class UsersRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    UsersRepository usersRepository;
 
     @Test
     void save(){
         String username = "bigave";
 
-        User user = User.builder()
+        Users users = Users.builder()
                 .username(username)
                 .build();
 
-        User result = userRepository.save(user);
+        Users result = usersRepository.save(users);
 
         assertThat(result.getUsername()).isEqualTo(username);
 

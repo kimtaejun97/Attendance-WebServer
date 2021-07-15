@@ -1,7 +1,7 @@
-package com.attendance.modules.lecture.form;
+package com.attendance.modules.place.form;
 
 import com.attendance.modules.beacon.BeaconRepository;
-import com.attendance.modules.lecture.PlaceRepository;
+import com.attendance.modules.place.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

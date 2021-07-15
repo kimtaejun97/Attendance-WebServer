@@ -1,9 +1,9 @@
-package com.attendance.modules.lecture;
+package com.attendance.modules.place;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
-import com.attendance.modules.lecture.form.PlaceForm;
-import com.attendance.modules.lecture.form.PlaceFormValidator;
+import com.attendance.modules.place.form.PlaceForm;
+import com.attendance.modules.place.form.PlaceFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 

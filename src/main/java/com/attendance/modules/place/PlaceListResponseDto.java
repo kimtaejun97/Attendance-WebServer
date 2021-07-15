@@ -1,6 +1,5 @@
-package com.attendance.modules.lecture;
+package com.attendance.modules.place;
 
-import com.attendance.modules.lecture.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

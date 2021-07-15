@@ -1,11 +1,11 @@
-package com.attendance.modules.student;
+package com.attendance.modules.user;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.lecture.PlaceRepository;
-import com.attendance.modules.lecture.form.PlaceForm;
-import com.attendance.modules.studentlecture.UserLocation;
-import com.attendance.modules.studentlecture.UserLocationRepository;
+import com.attendance.modules.place.PlaceRepository;
+import com.attendance.modules.place.form.PlaceForm;
+import com.attendance.modules.userplace.UserLocation;
+import com.attendance.modules.userplace.UserLocationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,10 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerTest {
+class UsersControllerTest {
 
     @Autowired
     MockMvc mockMvc;
