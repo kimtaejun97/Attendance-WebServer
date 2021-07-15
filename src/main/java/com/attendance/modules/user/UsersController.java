@@ -24,7 +24,7 @@ public class UsersController {
 
 
 
-    @InitBinder("userForm")
+    @InitBinder("usersForm")
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(usersFormValidator);
     }

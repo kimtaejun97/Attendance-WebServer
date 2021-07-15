@@ -71,7 +71,7 @@ class UsersControllerTest {
         mockMvc.perform(get("/add-user/광주"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-user"))
-                .andExpect(model().attributeExists("userForm"));
+                .andExpect(model().attributeExists("usersForm"));
     }
 
 
