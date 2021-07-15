@@ -29,8 +29,8 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
 
-    runtimeOnly 'com.h2database:h2'
-//    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'org.postgresql:postgresql:42.2.23'
+    implementation 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
