@@ -57,10 +57,11 @@ public class LectureController {
     public String lectureInfo (@PathVariable String lectureCode, Model model){
         Lecture lecture = lectureRepository.findByLectureCode(lectureCode);
 
-        List<Student> students = lectureService.getStudentFromLectureCode(lectureCode);
+        List<String> students = lectureService.getStudentFromLectureCode(lectureCode);
 
         model.addAttribute(lecture);
         model.addAttribute("students",students);
+
 
         return "admin/lecture";
     }
@@ -70,5 +71,6 @@ public class LectureController {
         List<Lecture> lectures = lectureService.getStudentLectures(account.getNickname());
         model.addAttribute("lectures", lectures);
         return "student/my-lecture";
+
     }
 }

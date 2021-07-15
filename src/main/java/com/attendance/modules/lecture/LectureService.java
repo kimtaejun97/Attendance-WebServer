@@ -34,7 +34,7 @@ public class LectureService {
                 .collect(Collectors.toList());
     }
 
-    public List<Student> getStudentFromLectureCode(String lectureCode) {
+    public List<String> getStudentFromLectureCode(String lectureCode) {
         List<StudentLecture> studentLectures = studentLectureRepository.findAllByLectureCode(lectureCode);
        return  studentLectures.stream()
                 .map(studentLecture ->
@@ -47,8 +47,7 @@ public class LectureService {
 
         return studentLectures.stream()
                 .map(studentLecture ->
-                    lectureRepository.findByLectureCode(studentLecture.getLectureCode()))
+                        lectureRepository.findByLectureCode(studentLecture.getLectureCode()))
                 .collect(Collectors.toList());
-
     }
 }

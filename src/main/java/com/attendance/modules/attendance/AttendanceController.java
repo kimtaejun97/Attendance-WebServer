@@ -17,17 +17,16 @@ import java.util.Map;
 public class AttendanceController {
     private final HttpSession httpSession;
 
-    private final AttendanceService attendanceService;
 
-    @GetMapping("/attendance")
-    public String attendance(@CurrentUser Account account,@PathVariable String lectureCode, Model model){
-        //TODO Beacon Code 받아 넘기기.
-        Lecture lecture =  attendanceService.findLectureFromBeaconCode("bbbbbbbbb");
-
-        model.addAttribute(account);
-
-        return "student/attendance";
-    }
+//    @GetMapping("/attendance")
+//    public String attendance(@CurrentUser Account account,@PathVariable String beaconCode Model model){
+//        //TODO Beacon Code 받아 넘기기.
+////        Lecture lecture =  attendanceService.findLectureFromBeaconCode("bbbbbbbbb");
+//
+//        model.addAttribute(account);
+//
+//        return "student/attendance";
+//    }
 
 
 

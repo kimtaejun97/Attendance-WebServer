@@ -69,7 +69,7 @@ class MainControllerTest {
     void login_with_worng_input() throws Exception {
 
         mockMvc.perform(post("/login")
-                .param("username","bigave")
+                .param("username","bigave22")
                 .param("password","12345678")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
@@ -88,7 +88,5 @@ class MainControllerTest {
                 .andExpect(redirectedUrl("/"))
                 .andExpect(unauthenticated());
     }
-
-
 
 }

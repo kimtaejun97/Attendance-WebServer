@@ -14,16 +14,18 @@ public class BeaconRepositoryTest {
     @Test
     public void save(){
         String beaconCode = "ASD123";
-        String lectureCode= "ACD1222";
+        String location= "광주 동구";
 
         Beacon beacon = Beacon.builder()
                 .beaconCode(beaconCode)
-                .lectureCode(lectureCode)
+                .location(location)
                 .build();
 
         Beacon result =  beaconRepository.save(beacon);
 
-        assertThat(result.getLectureCode()).isEqualTo(lectureCode);
+
+
+        assertThat(result.getLocation()).isEqualTo(location);
         assertThat(result.getBeaconCode()).isEqualTo(beaconCode);
     }
 }
