@@ -11,8 +11,8 @@
 <!--            <img src="..." class="card-img-top" alt="...">-->
             <div class="card-body">
                 <h5 class="card-title">Create Place</h5>
-                <p class="card-text">출석할 장소를 만들고 관리하세요. 공개 / 비공개로 생성할 수 있습니다. 장소를 생성하고 모임을 가지거나 출입을 관리하세요.기
-                장소를 생성하기 위해서는 먼저 비콘 위치를 등록해야 합니다.</p>
+                <small class="card-text text-muted">출석할 장소를 만들고 관리하세요. 공개 / 비공개로 생성할 수 있습니다. 장소를 생성하고 모임을 가지거나 출입을 관리하세요.기
+                장소를 생성하기 위해서는 먼저 비콘 위치를 등록해야 합니다.</small>
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">My Place</h5>
-                <p class="card-text">내가 등록된 장소들을 관리하세요, 위치와 출입 날짜, 시간을 확인할 수 있습니다.</p>
+                <small class="card-text text-muted">내가 등록된 장소들을 관리하세요, 위치와 출입 날짜, 시간을 확인할 수 있습니다.</small>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Public Place</h5>
-                    <p class="card-text">누구든지 장소에 자신을 등록하고 출입을 관리할 수 있어요. 생성된 장소가 모두에게 노출됩니다.</p>
+                    <small class="card-text text-muted">누구든지 장소에 자신을 등록하고 출입을 관리할 수 있어요. 생성된 장소가 모두에게 노출됩니다.</small>
                 </div>
             </div>
         </div>
@@ -37,12 +37,12 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Private Place</h5>
-                <p class="card-text">장소를 생성한 사용자만이 새로운 사용자들을 추가할 수 있습니다. 생성된 장소가 공개되지 않아요.</p>
+                <small class="card-text text-muted">장소를 생성한 사용자만이 새로운 사용자들을 추가할 수 있습니다. 생성된 장소가 공개되지 않아요.</small>
             </div>
         </div>
     </div>
 </div>
-<div class="d-grid col-4 mx-auto">
+<div class="d-grid col-6 mx-auto">
         <a href="#" th:href="@{/public-place-list}" class="btn btn-outline-info m-3 py-3">공개된 장소 </a>
         <a href="#" th:href="@{/create-place}" class="btn btn-outline-success m-3 py-3">장소 생성하기</a>
         <a href="#" th:href="@{/add-beacon}" class="btn btn-outline-success m-3 py-3">비콘 등록하기</a>
