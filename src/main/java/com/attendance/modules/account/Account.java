@@ -15,7 +15,7 @@ public class Account {
     private Long id;
 
     @Column(unique = true)
-    private String nickname;
+    private String username;
 
     private String password;
 

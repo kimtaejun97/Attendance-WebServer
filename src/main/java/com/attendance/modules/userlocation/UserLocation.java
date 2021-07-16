@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.userlocation;
 
 import lombok.Builder;
 import lombok.Getter;

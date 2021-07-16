@@ -3,21 +3,17 @@ package com.attendance.modules.beacon;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.form.SignUpForm;
-import lombok.With;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,7 +42,7 @@ class BeaconControllerTest {
     void beaconView() throws Exception {
 
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setNickname("bigave");
+        signUpForm.setUsername("bigave");
         signUpForm.setAdminCode("");
         signUpForm.setPassword("123123123");
         signUpForm.setEmail("test@email.com");

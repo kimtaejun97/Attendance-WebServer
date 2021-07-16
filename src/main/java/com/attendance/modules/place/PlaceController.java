@@ -52,7 +52,7 @@ public class PlaceController {
     @GetMapping("/create-place")
     public String CreatePlaceForm(@CurrentUser Account account,Model model){
         PlaceForm placeForm = new PlaceForm();
-        placeForm.setCreator(account.getNickname());
+        placeForm.setCreator(account.getUsername());
         model.addAttribute(placeForm);
 
         return "user/create-place";
@@ -71,7 +71,7 @@ public class PlaceController {
 
     @GetMapping("/my-place")
     public String myPlace(@CurrentUser Account account, Model model){
-        List<Place> places = placeRepository.findByCreator(account.getNickname());
+        List<Place> places = placeRepository.findByCreator(account.getUsername());
 
         model.addAttribute("places", places);
         return "user/my-place";
@@ -80,7 +80,7 @@ public class PlaceController {
 
     @GetMapping("/user/place/{locataion}")
     public String userPlaceInfo(@PathVariable String location, @CurrentUser Account account, Model model){
-        boolean isConstructor = placeService.isCreator(location, account.getNickname());
+        boolean isConstructor = placeService.isCreator(location, account.getUsername());
 
         model.addAttribute("place", placeService.getPlace(location));
         if(isConstructor){

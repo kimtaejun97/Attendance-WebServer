@@ -1,7 +1,9 @@
-package com.attendance.modules.user;
+package com.attendance.modules.userlocation;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
+import com.attendance.modules.userlocation.form.UserForm;
+import com.attendance.modules.userlocation.form.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,42 +18,39 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
-public class UsersController {
+public class UserLocationController {
 
-    private final UsersService usersService;
+    private final UserLocationService userLocationService;
+    private final UserFormValidator userFormValidator;
 
-    private final UsersFormValidator usersFormValidator;
-
-
-    @InitBinder("usersForm")
+    @InitBinder("userForm")
     public void initBinder(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(usersFormValidator);
+        webDataBinder.addValidators(userFormValidator);
     }
 
     @GetMapping("/add-user/{location}")
     public String addUser(@PathVariable String location, Model model){
-        UsersForm usersForm = new UsersForm();
-        usersForm.setLocation(location);
+        UserForm userForm = new UserForm();
+        userForm.setLocation(location);
 
-        model.addAttribute(usersForm);
+        model.addAttribute(userForm);
         return "user/add-user";
     }
 
-    @PostMapping("/add-user/{location}")
-    public String addStudentForm(@Valid UsersForm usersForm, Errors errors, @PathVariable String location){
+    @PostMapping("place/add-user/{location}")
+    public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location){
         if(errors.hasErrors()){
             return "user/add-user";
         }
-        usersService.addUser(usersForm.getUsername(),location);
+        userLocationService.addUser(userForm.getUsername(),location);
 
         return "redirect:/user/place/"+location;
     }
 
-    @GetMapping("/enrollment/public-place/{location}")
+    @GetMapping("/public-place/enrollement/{location}")
     public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account){
-        usersService.addUser(account.getNickname(), location);
+        userLocationService.connectPlace(account.getUsername(), location);
 
         return "redirect:/my-place";
     }
-
 }

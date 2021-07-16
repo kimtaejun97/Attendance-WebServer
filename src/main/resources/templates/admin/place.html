@@ -32,15 +32,16 @@
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">이름 </th><th scope="col"></th>
+        <th scope="col">이 </th><th scope="col"></th>
         </thead>
         <tbody>
-        <tr th:each="users : ${users}">
-            <td ><a th:href="@{/users-info}" th:text="${users}"></a></td>
+        <tr th:each="user : ${users}">
+            <td ><a th:href="@{/user-info}" th:text="${user}"></a></td>
             <td><button class="btn btn-outline-danger">제거</button></td>
         </tr>
         </tbody>
-    </table>
+    </table>름
+<!--    TODO 이메일 등 정보를 추가할지?-->
 </div>
 
 

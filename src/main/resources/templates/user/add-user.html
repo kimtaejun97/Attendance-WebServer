@@ -10,11 +10,11 @@
         <h2>사용자 등록</h2>
     </div>
     <div class="row justify-content-center">
-        <form class="needs-validation col-sm-6" th:action="@{'/add-users/' + ${usersForm.location}}" th:object="${usersForm}" method="post" novalidate>
+        <form class="needs-validation col-sm-6" th:action="@{'/add-users/' + ${userForm.location}}" th:object="${userForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="username">사용자 닉네임</label>
                 <input id="username" type="text" th:field="*{username}" class="form-control" name="username"
-                       placeholder="NickName" aria-describedby="usernameHelp" required>
+                       placeholder="Username" aria-describedby="usernameHelp" required>
                 <small id="usernameHelp" class="form-text text-muted">
                     장소에 등록할 회원 아이디를 적어주세요.
                 </small>

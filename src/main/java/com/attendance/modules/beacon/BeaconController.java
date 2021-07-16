@@ -35,7 +35,7 @@ public class BeaconController {
         BeaconForm beaconForm = new BeaconForm();
         //TODO 나중에 비콘 수신하는걸로 변경.
         beaconForm.setBeaconCode(UUID.randomUUID().toString());
-        beaconForm.setCreator(account.getNickname());
+        beaconForm.setCreator(account.getUsername());
 
         model.addAttribute(beaconForm);
         return "user/add-beacon";

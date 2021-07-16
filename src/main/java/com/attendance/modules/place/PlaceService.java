@@ -1,9 +1,9 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.user.UsersRepository;
-import com.attendance.modules.userplace.UserLocation;
-import com.attendance.modules.userplace.UserLocationRepository;
+import com.attendance.modules.userlocation.UserLocation;
+import com.attendance.modules.userlocation.UserLocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    private final UsersRepository usersRepository;
+    private AccountRepository accountRepository;
 
     private final UserLocationRepository userLocationRepository;
 
@@ -45,15 +45,15 @@ public class PlaceService {
     public List<String> getUsersFromPlace(String location) {
         List<UserLocation> userLocations = userLocationRepository.findAllByLocation(location);
        return  userLocations.stream()
-                .map(studentLecture ->
-                        usersRepository.findByUsername(studentLecture.getUsername()))
+                .map(userLocation ->
+                        accountRepository.findByUsernameReturnUsername(userLocation.getUsername()))
                 .collect(Collectors.toList());
     }
 
-    public boolean isCreator(String loacation, String nickname) {
+    public boolean isCreator(String loacation, String username) {
         Place byLocation = placeRepository.findByLocation(loacation);
 
-        return byLocation.getCreator().equals(nickname);
+        return byLocation.getCreator().equals(username);
     }
 
     public Place getPlace(String location){

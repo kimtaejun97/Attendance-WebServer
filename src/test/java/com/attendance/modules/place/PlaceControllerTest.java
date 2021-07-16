@@ -76,7 +76,7 @@ class PlaceControllerTest {
     @Test
     void createPlaceView() throws Exception {
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setNickname("bigave");
+        signUpForm.setUsername("bigave");
         signUpForm.setAdminCode("");
         signUpForm.setPassword("123123123");
         signUpForm.setEmail("test@email.com");
@@ -164,7 +164,7 @@ class PlaceControllerTest {
     @Test
     void myPlace() throws Exception {
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setNickname("bigave");
+        signUpForm.setUsername("bigave");
         signUpForm.setAdminCode("");
         signUpForm.setPassword("123123123");
         signUpForm.setEmail("test@email.com");

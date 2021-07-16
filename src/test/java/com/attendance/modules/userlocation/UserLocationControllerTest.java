@@ -1,11 +1,9 @@
-package com.attendance.modules.user;
+package com.attendance.modules.userlocation;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.PlaceRepository;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.userplace.UserLocation;
-import com.attendance.modules.userplace.UserLocationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,18 +14,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UsersControllerTest {
-
+class UserLocationControllerTest {
     @Autowired
     MockMvc mockMvc;
 
@@ -51,7 +47,7 @@ class UsersControllerTest {
         placeRepository.save(placeForm.toEntity());
 
         accountRepository.save(Account.builder()
-                .nickname("bigave")
+                .username("bigave")
                 .email("test@email.com")
                 .password("123123123")
                 .build());
@@ -71,7 +67,7 @@ class UsersControllerTest {
         mockMvc.perform(get("/add-user/광주"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-user"))
-                .andExpect(model().attributeExists("usersForm"));
+                .andExpect(model().attributeExists("userForm"));
     }
 
 
@@ -81,9 +77,9 @@ class UsersControllerTest {
     void addStudent_with_correct_input() throws Exception {
 
 
-        mockMvc.perform(post("/add-user/광주")
-        .param("username","bigave")
-        .with(csrf()))
+        mockMvc.perform(post("/place/add-user/광주")
+                .param("username","bigave")
+                .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/place/광주"))
                 .andExpect(model().attributeDoesNotExist("errors"));
@@ -98,7 +94,7 @@ class UsersControllerTest {
     @Test
     void addStudent_with_nonexist_user() throws Exception {
 
-        mockMvc.perform(post("/add-user/광주")
+        mockMvc.perform(post("/place/add-user/광주")
                 .param("username","nonono")
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -119,7 +115,7 @@ class UsersControllerTest {
                 .location("광주")
                 .build());
 
-        mockMvc.perform(post("/add-user/광주")
+        mockMvc.perform(post("/place/add-user/광주")
                 .param("username","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())

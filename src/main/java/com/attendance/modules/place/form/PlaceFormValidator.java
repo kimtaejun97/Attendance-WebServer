@@ -28,7 +28,7 @@ public class PlaceFormValidator implements Validator {
         }
 
         if(!beaconRepository.existsByLocation(placeForm.getLocation())){
-            errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "존재하지 않는 비콘위치 입니다.");
+            errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "존재하지 않는 비콘 위치 입니다.");
         }
     }
 }

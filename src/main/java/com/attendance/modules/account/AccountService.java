@@ -33,7 +33,7 @@ public class AccountService implements UserDetailsService{
         }
 
         Account account = Account.builder()
-                .nickname(signUpForm.getNickname())
+                .username(signUpForm.getUsername())
                 .email(signUpForm.getEmail())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .role(role)
@@ -82,7 +82,7 @@ public class AccountService implements UserDetailsService{
         Account account = accountRepository.findByEmail(nameOrEmail);
 
         if(account == null){
-            account = accountRepository.findByNickname(nameOrEmail);
+            account = accountRepository.findByUsername(nameOrEmail);
         }
 
         if(account == null){

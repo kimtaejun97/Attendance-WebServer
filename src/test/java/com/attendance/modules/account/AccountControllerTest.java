@@ -46,7 +46,7 @@ class AccountControllerTest {
     @BeforeEach
     void initDate(){
         Account account = Account.builder()
-                .nickname("bigave")
+                .username("bigave")
                 .email("test@email.com")
                 .password("12345678")
                 .build();
@@ -77,7 +77,7 @@ class AccountControllerTest {
     void signUp_with_wrong_input() throws Exception {
 
         mockMvc.perform(post("/sign-up")
-        .param("nickname","bigave")
+        .param("username","bigave")
         .param("email","aasdf")
         .param("password","asd")
         .param("adminCode","")
@@ -88,7 +88,7 @@ class AccountControllerTest {
 
         // 관리자 코드
         mockMvc.perform(post("/sign-up")
-                .param("nickname","bigave")
+                .param("username","bigave")
                 .param("email","test@email.com")
                 .param("password","123123123")
                 .param("adminCode","wrong")
@@ -102,7 +102,7 @@ class AccountControllerTest {
     void signUp_with_correct_input() throws Exception {
 
         mockMvc.perform(post("/sign-up")
-            .param("nickname","test")
+            .param("username","test")
             .param("email","test@your.com")
             .param("password","123123123")
             .param("adminCode","")
@@ -113,7 +113,7 @@ class AccountControllerTest {
 
 
         Account account = accountRepository.findByEmail("test@your.com");
-        assertThat(account.getNickname()).isEqualTo("test");
+        assertThat(account.getUsername()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
@@ -129,7 +129,7 @@ class AccountControllerTest {
     void signUp_with_correct_AdminCode() throws Exception {
 
         mockMvc.perform(post("/sign-up")
-            .param("nickname","test")
+            .param("username","test")
             .param("email","test@your.com")
             .param("password","123123123")
             .param("adminCode","Admin1234")
@@ -140,7 +140,7 @@ class AccountControllerTest {
 
 
         Account account = accountRepository.findByEmail("test@your.com");
-        assertThat(account.getNickname()).isEqualTo("test");
+        assertThat(account.getUsername()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
         assertNotNull(account.getEmailCheckToken());
@@ -155,7 +155,7 @@ class AccountControllerTest {
 
         //중복 닉네임.
         mockMvc.perform(post("/sign-up")
-                .param("nickname","bigave")
+                .param("username","bigave")
                 .param("email","test2@email.com")
                 .param("password","123123123")
                 .param("adminCode","Admin1234")
@@ -165,7 +165,7 @@ class AccountControllerTest {
 
         //중복 이메일
         mockMvc.perform(post("/sign-up")
-                .param("nickname","bigave2")
+                .param("username","bigave2")
                 .param("email","test@email.com")
                 .param("password","123123123")
                 .param("adminCode","Admin1234")
@@ -192,7 +192,7 @@ class AccountControllerTest {
     @Test
     void checkEmailToken_with_correct_input() throws Exception {
         Account account = Account.builder()
-                .nickname("test")
+                .username("test")
                 .email("test@your.com")
                 .password("12345678")
                 .build();

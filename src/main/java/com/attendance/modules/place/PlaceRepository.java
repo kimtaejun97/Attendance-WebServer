@@ -1,6 +1,5 @@
 package com.attendance.modules.place;
 
-import com.attendance.modules.userplace.UserLocation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

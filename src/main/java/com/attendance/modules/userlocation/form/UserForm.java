@@ -1,11 +1,11 @@
-package com.attendance.modules.user;
+package com.attendance.modules.userlocation.form;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class UsersForm {
+public class UserForm {
 
     @NotBlank
     private String username;

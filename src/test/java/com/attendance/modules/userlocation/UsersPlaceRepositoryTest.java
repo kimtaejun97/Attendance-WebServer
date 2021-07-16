@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.userlocation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

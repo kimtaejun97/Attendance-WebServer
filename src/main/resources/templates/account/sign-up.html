@@ -14,14 +14,14 @@
         <form class="needs-validation col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
             <div class="form-group">
 
-                <label for="nickname">닉네임</label>
-                <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
-                       placeholder="NickName" aria-describedby="nicknameHelp" required>
-                <small id="nicknameHelp" class="form-text text-muted">
+                <label for="username">아이디</label>
+                <input id="username" type="text" th:field="*{username}" class="form-control"
+                       placeholder="Username" aria-describedby="usernameHelp" required>
+                <small id="usernameHelp" class="form-text text-muted">
                     닉네임을 적어주세요. 5-20자 사이 특수문자는 -,_만 포함 합니다.
                 </small>
-                <small class="invalid-feedback">닉네임을 확인하세요</small>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">NickName Error</small>
+                <small class="invalid-feedback">아이디를 확인하세요</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</small>
             </div>
 
             <div class="form-group">
