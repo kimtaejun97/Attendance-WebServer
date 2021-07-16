@@ -71,7 +71,7 @@ public class PlaceController {
 
     @GetMapping("/my-place")
     public String myPlace(@CurrentUser Account account, Model model){
-        List<Place> places = placeService.getPlacesFromUser(account.getNickname());
+        List<Place> places = placeRepository.findByCreator(account.getNickname());
 
         model.addAttribute("places", places);
         return "user/my-place";

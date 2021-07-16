@@ -12,14 +12,14 @@
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col">생성자</th>
+        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col"></th><th scope="col"></th>
         </thead>
         <tbody>
         <tr th:each="place : ${places}">
-            <td th:text="${place.alias}"</td>
+            <td th:text="${place.alias}"></td>
             <td th:text="${place.location}"></td>
-            <td th:text="${place.constructor}"></td>
-            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/my-place/' + ${place.location}}">출석 현황</a></td>
+            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/my-attendance/' + ${place.location}}">출결 현황</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:href="@{'/my-place/remove/' + ${place.location}}">제거</a></td>
         </tr>
         </tbody>
     </table>

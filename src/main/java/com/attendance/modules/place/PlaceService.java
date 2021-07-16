@@ -32,6 +32,8 @@ public class PlaceService {
         Place place = placeForm.toEntity();
 
         placeRepository.save(placeForm.toEntity());
+
+
     }
 
     public List<PlaceListResponseDto> getPlaceList() {
@@ -45,15 +47,6 @@ public class PlaceService {
        return  userLocations.stream()
                 .map(studentLecture ->
                         usersRepository.findByUsername(studentLecture.getUsername()))
-                .collect(Collectors.toList());
-    }
-
-    public List<Place> getPlacesFromUser(String username) {
-        List<UserLocation> userLocations =  userLocationRepository.findByUsername(username);
-
-        return userLocations.stream()
-                .map(studentLecture ->
-                        placeRepository.findByLocation(studentLecture.getLocation()))
                 .collect(Collectors.toList());
     }
 
