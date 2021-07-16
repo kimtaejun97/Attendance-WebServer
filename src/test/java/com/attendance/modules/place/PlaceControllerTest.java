@@ -74,7 +74,7 @@ class PlaceControllerTest {
 
     @DisplayName("장소 추가 View")
     @Test
-    void addLectureView() throws Exception {
+    void createPlaceView() throws Exception {
         SignUpForm signUpForm = new SignUpForm();
         signUpForm.setNickname("bigave");
         signUpForm.setAdminCode("");
@@ -93,15 +93,15 @@ class PlaceControllerTest {
     @WithMockUser
     @DisplayName("장소 추가 - 입력값 정상")
     @Test
-    void addLecture_with_correct_input() throws Exception {
+    void createPlace_with_correct_input() throws Exception {
 
         when(mockBeaconRepository.existsByLocation("광주")).thenReturn(true);
 
         mockMvc.perform(post("/create-place")
         .param("location", "광주")
         .param("alias", "내 지역")
-        .param("constructor", "bigave")
-        .param("isPublic", "true")
+        .param("creator", "bigave")
+        .param("isPublic", "on")
         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
@@ -110,33 +110,32 @@ class PlaceControllerTest {
     @WithMockUser
     @DisplayName("장소 추가 - 입력값 오류 : 존재하지 않는 비콘위치")
     @Test
-    void addLecture_with_wrong_input() throws Exception {
+    void createPlace_with_wrong_input() throws Exception {
 
         when(mockBeaconRepository.existsByLocation("nonono")).thenReturn(false);
 
         mockMvc.perform(post("/create-place")
                 .param("location", "nonono")
                 .param("alias", "내 지역")
-                .param("constructor", "bigave")
-                .param("isPublic", "true")
-
+                .param("creator", "bigave")
+                .param("isPublic", "on")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/create-place"));
     }
 
     @WithMockUser
-    @DisplayName("강의 추가 - 이미 생성되어 있는 위치")
+    @DisplayName("장소 생성 - 이미 생성되어 있는 위치")
     @Test
-    void addLecture_with_exists_input() throws Exception {
+    void createPlace_with_exists_input() throws Exception {
 
         when(mockPlaceRepository.existsByLocation("광주")).thenReturn(true);
 
         mockMvc.perform(post("/create-place")
                 .param("location", "광주")
                 .param("alias", "내 지역")
-                .param("constructor", "bigave")
-                .param("isPublic", "true")
+                .param("creator", "bigave")
+                .param("isPublic", "on")
 
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -150,7 +149,7 @@ class PlaceControllerTest {
         PlaceForm placeForm = new PlaceForm();
         placeForm.setLocation("광주");
         placeForm.setAlias("내 지역");
-        placeForm.setConstructor("bigave");
+        placeForm.setCreator("bigave");
 
         when(mockPlaceRepository.findByLocation("광주")).thenReturn(placeForm.toEntity());
 
@@ -161,9 +160,9 @@ class PlaceControllerTest {
                 .andExpect(model().attributeExists("users"));
     }
 
-    @DisplayName("나의 강의 페이지")
+    @DisplayName("내가 등록된 장소 페이지")
     @Test
-    void myLecture() throws Exception {
+    void myPlace() throws Exception {
         SignUpForm signUpForm = new SignUpForm();
         signUpForm.setNickname("bigave");
         signUpForm.setAdminCode("");

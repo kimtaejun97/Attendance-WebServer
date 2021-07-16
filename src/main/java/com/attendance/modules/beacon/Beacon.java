@@ -1,15 +1,14 @@
 package com.attendance.modules.beacon;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Getter
+@Getter @Setter @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Beacon {
 
@@ -19,10 +18,11 @@ public class Beacon {
     @Column(nullable = false, unique = true)
     private String location;
 
-    @Builder
-    public Beacon(String beaconCode, String location){
-        this.beaconCode = beaconCode;
-        this.location = location;
-    }
+    @Column(nullable = false)
+    private String creator;
+
+
+
+
 
 }

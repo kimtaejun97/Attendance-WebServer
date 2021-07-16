@@ -21,7 +21,15 @@ public class PlaceService {
 
     private final UserLocationRepository userLocationRepository;
 
-    public void createPlace(PlaceForm placeForm) {
+    public void createPlace(PlaceForm placeForm, String isPublic) {
+        if(isPublic == null){
+            placeForm.setIsPublic("off");
+        }
+        else{
+            placeForm.setIsPublic(isPublic);
+        }
+
+        Place place = placeForm.toEntity();
 
         placeRepository.save(placeForm.toEntity());
     }
@@ -49,10 +57,10 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isConstructor(String loacation, String nickname) {
+    public boolean isCreator(String loacation, String nickname) {
         Place byLocation = placeRepository.findByLocation(loacation);
 
-        return byLocation.getConstructor().equals(nickname);
+        return byLocation.getCreator().equals(nickname);
     }
 
     public Place getPlace(String location){
@@ -60,7 +68,7 @@ public class PlaceService {
     }
 
     public List<Place> getPublicPlaceList() {
-        return placeRepository.findByIsPublic(true);
+        return placeRepository.findByIsPublic("on");
 
     }
 }

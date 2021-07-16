@@ -20,7 +20,7 @@ public class Place {
     private String alias;
 
     @Column(nullable = false)
-    private String constructor;
+    private String creator;
 
     @Column(nullable = false)
     private String isPublic;

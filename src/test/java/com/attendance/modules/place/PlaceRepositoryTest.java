@@ -17,19 +17,19 @@ public class PlaceRepositoryTest {
 
         String location = "광주 동구 10-2";
         String alias = "메가커피";
-        String constructor = "bigave";
+        String creator = "bigave";
 
         Place place = Place.builder()
                 .location(location)
                 .alias(alias)
-                .constructor(constructor)
+                .creator(creator)
                 .build();
 
         Place result = placeRepository.save(place);
 
         assertThat(result.getLocation()).isEqualTo(location);
         assertThat(result.getAlias()).isEqualTo(alias);
-        assertThat(result.getConstructor()).isEqualTo(constructor);
+        assertThat(result.getCreator()).isEqualTo(creator);
 
     }
 }

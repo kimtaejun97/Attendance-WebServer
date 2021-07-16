@@ -40,7 +40,7 @@ public class AccountService implements UserDetailsService{
                 .build();
 
         Account newAccount = accountRepository.save(account);
-        account.generateEmailCheckToken();
+        newAccount.generateEmailCheckToken();
 
         sendEmail(newAccount);
 

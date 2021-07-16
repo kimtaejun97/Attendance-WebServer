@@ -45,8 +45,8 @@ class UsersControllerTest {
         PlaceForm placeForm = new PlaceForm();
         placeForm.setLocation("광주");
         placeForm.setAlias("내 지역");
-        placeForm.setConstructor("bigave");
-        placeForm.setIsPublic("true");
+        placeForm.setCreator("bigave");
+        placeForm.setIsPublic("on");
 
         placeRepository.save(placeForm.toEntity());
 

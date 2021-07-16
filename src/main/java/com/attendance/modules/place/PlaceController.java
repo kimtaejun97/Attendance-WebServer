@@ -51,20 +51,21 @@ public class PlaceController {
 
     @GetMapping("/create-place")
     public String CreatePlaceForm(@CurrentUser Account account,Model model){
-        var placeForm = new PlaceForm();
-        placeForm.setConstructor(account.getNickname());
-        model.addAttribute(new PlaceForm());
+        PlaceForm placeForm = new PlaceForm();
+        placeForm.setCreator(account.getNickname());
+        model.addAttribute(placeForm);
 
         return "user/create-place";
     }
 
     @PostMapping("/create-place")
-    public String createPlace(@Valid PlaceForm placeForm, Errors errors){
+    public String createPlace(@Valid PlaceForm placeForm, Errors errors, String isPublic){
+
         if(errors.hasErrors()){
             return "user/create-place";
         }
 
-        placeService.createPlace(placeForm);
+        placeService.createPlace(placeForm, isPublic);
         return "redirect:/";
     }
 
@@ -79,7 +80,7 @@ public class PlaceController {
 
     @GetMapping("/user/place/{locataion}")
     public String userPlaceInfo(@PathVariable String location, @CurrentUser Account account, Model model){
-        boolean isConstructor = placeService.isConstructor(location, account.getNickname());
+        boolean isConstructor = placeService.isCreator(location, account.getNickname());
 
         model.addAttribute("place", placeService.getPlace(location));
         if(isConstructor){
@@ -91,7 +92,6 @@ public class PlaceController {
     @GetMapping("/public-place-list")
     public String publicPlaceList(Model model){
         List<Place> places = placeService.getPublicPlaceList();
-
         model.addAttribute("places",places);
 
         return "user/public-place-list";

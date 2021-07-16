@@ -15,17 +15,17 @@ public class PlaceForm {
     private String alias;
 
     @NotBlank
-    private String constructor;
+    private String creator;
 
-    @NotBlank
-    private String isPublic;
+    String isPublic;
+
 
 
     public Place toEntity(){
         return Place.builder()
                 .location(location)
                 .alias(alias)
-                .constructor(constructor)
+                .creator(creator)
                 .isPublic(isPublic)
                 .build();
     }

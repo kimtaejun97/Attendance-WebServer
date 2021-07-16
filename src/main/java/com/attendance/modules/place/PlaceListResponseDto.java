@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 public class PlaceListResponseDto {
     private String location;
     private String alias;
-    private String constructor;
+    private String creator;
 
 
     public PlaceListResponseDto(Place place){
         this.location = place.getLocation();
         this.alias = place.getAlias();
-        this.constructor = place.getConstructor();
+        this.creator = place.getCreator();
     }
 
 

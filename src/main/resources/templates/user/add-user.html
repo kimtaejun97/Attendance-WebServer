@@ -6,6 +6,9 @@
 <nav th:replace="fragments :: navFragment"> </nav>
 
 <div class="container">
+    <div class="py-5 text-center">
+        <h2>사용자 등록</h2>
+    </div>
     <div class="row justify-content-center">
         <form class="needs-validation col-sm-6" th:action="@{'/add-users/' + ${usersForm.location}}" th:object="${usersForm}" method="post" novalidate>
             <div class="form-group">
@@ -17,7 +20,7 @@
                 </small>
                 <small class="invalid-feedback">아이디를 확인하세요</small>
                 <div>
-                    <small class="form-text text-danger"  th:errors="*{username}">UserName Error</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">UserName Error</small>
                 </div>
             </div>
 

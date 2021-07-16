@@ -15,10 +15,12 @@ public class BeaconRepositoryTest {
     public void save(){
         String beaconCode = "ASD123-1233aasdf-fadsf113";
         String location= "광주 동구";
+        String constructor = "bigave";
 
         Beacon beacon = Beacon.builder()
                 .beaconCode(beaconCode)
                 .location(location)
+                .creator(constructor)
                 .build();
 
         Beacon result =  beaconRepository.save(beacon);
@@ -27,5 +29,6 @@ public class BeaconRepositoryTest {
 
         assertThat(result.getLocation()).isEqualTo(location);
         assertThat(result.getBeaconCode()).isEqualTo(beaconCode);
+        assertThat(result.getCreator()).isEqualTo(constructor);
     }
 }

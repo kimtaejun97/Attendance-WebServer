@@ -9,6 +9,6 @@ public interface PlaceRepository extends JpaRepository<Place, String> {
 
     Place findByLocation(String location);
 
-    List<Place> findByIsPublic(Boolean isPublic);
+    List<Place> findByIsPublic(String isPublic);
 
 }

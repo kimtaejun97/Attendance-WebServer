@@ -1,5 +1,7 @@
 package com.attendance.modules.account.form;
 
+import com.attendance.modules.account.Account;
+import com.attendance.modules.account.Role;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

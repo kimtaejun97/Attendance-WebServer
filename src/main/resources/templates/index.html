@@ -11,7 +11,8 @@
 <!--            <img src="..." class="card-img-top" alt="...">-->
             <div class="card-body">
                 <h5 class="card-title">Create Place</h5>
-                <p class="card-text">출석할 장소를 만들고 관리하세요. 공개 / 비공개로 생성할 수 있습니다. 장소를 생성하고 모임을 가지거나 출입을 관리하세요.</p>
+                <p class="card-text">출석할 장소를 만들고 관리하세요. 공개 / 비공개로 생성할 수 있습니다. 장소를 생성하고 모임을 가지거나 출입을 관리하세요.기
+                장소를 생성하기 위해서는 먼저 비콘 위치를 등록해야 합니다.</p>
             </div>
         </div>
     </div>
@@ -42,8 +43,9 @@
     </div>
 </div>
 <div class="d-grid col-4 mx-auto">
-        <a href="#" th:href="@{/public-place-list}" class="btn btn-outline-info m-3 py-3">Public Place</a>
-        <a href="#" th:href="@{/create-place}" class="btn btn-outline-success m-3 py-3">Create Place</a>
+        <a href="#" th:href="@{/public-place-list}" class="btn btn-outline-info m-3 py-3">공개된 장소 </a>
+        <a href="#" th:href="@{/create-place}" class="btn btn-outline-success m-3 py-3">장소 생성하기</a>
+        <a href="#" th:href="@{/add-beacon}" class="btn btn-outline-success m-3 py-3">비콘 등록하기</a>
 </div>
 
 
