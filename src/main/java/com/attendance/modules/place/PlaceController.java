@@ -4,6 +4,7 @@ import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.form.PlaceFormValidator;
+import com.attendance.modules.userplace.UserPlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ public class PlaceController {
     private final PlaceService placeService;
     private final PlaceRepository placeRepository;
     private final PlaceFormValidator placeFormValidator;
+
+    private final UserPlaceRepository userPlaceRepository;
 
 
     @InitBinder("placeForm")
@@ -71,7 +74,7 @@ public class PlaceController {
 
     @GetMapping("/my-place")
     public String myPlace(@CurrentUser Account account, Model model){
-        List<Place> places = placeRepository.findByCreator(account.getUsername());
+        List<PlaceListResponseDto> places = placeService.getPlacesFromUser(account.getUsername());
 
         model.addAttribute("places", places);
         return "user/my-place";
@@ -86,16 +89,17 @@ public class PlaceController {
         if(isConstructor){
             model.addAttribute("isConstructor",isConstructor);
         }
-        return "user/place";
+        return "attendance";
     }
 
     @GetMapping("/public-place-list")
     public String publicPlaceList(Model model){
-        List<Place> places = placeService.getPublicPlaceList();
+        List<PlaceListResponseDto> places = placeService.getPublicPlaceList();
         model.addAttribute("places",places);
 
         return "user/public-place-list";
     }
 
+    //TODO my-place 삭제 기능. /my-place/delete/{location}
 
 }

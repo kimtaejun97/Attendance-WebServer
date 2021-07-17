@@ -1,9 +1,9 @@
-package com.attendance.modules.userlocation;
+package com.attendance.modules.userplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
-import com.attendance.modules.userlocation.form.UserForm;
-import com.attendance.modules.userlocation.form.UserFormValidator;
+import com.attendance.modules.userplace.form.UserForm;
+import com.attendance.modules.userplace.form.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +18,9 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
-public class UserLocationController {
+public class UserPlaceController {
 
-    private final UserLocationService userLocationService;
+    private final UserPlaceService userPlaceService;
     private final UserFormValidator userFormValidator;
 
     @InitBinder("userForm")
@@ -42,15 +42,20 @@ public class UserLocationController {
         if(errors.hasErrors()){
             return "user/add-user";
         }
-        userLocationService.addUser(userForm.getUsername(),location);
+        userPlaceService.connectUserPlace(userForm.getUsername(),location);
 
         return "redirect:/user/place/"+location;
     }
 
-    @GetMapping("/public-place/enrollement/{location}")
-    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account){
-        userLocationService.connectPlace(account.getUsername(), location);
-
+    @GetMapping("/public-place/enrollment/{location}")
+    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model){
+        String result = userPlaceService.connectUserPlace(account.getUsername(), location);
+        if (result != "S"){
+            model.addAttribute("error."+location,true);
+//            return "user/public-place-list";
+            return  "redirect:/public-place-list";
+        }
         return "redirect:/my-place";
+
     }
 }

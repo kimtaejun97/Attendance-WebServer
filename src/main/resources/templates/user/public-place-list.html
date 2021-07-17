@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th ="http://www.thymeleaf.org">
+<html xmlns:th ="http://www.thymeleaf.org" >
 
 <head th:replace="fragments :: headerFragment"></head>
 
 <body>
 <div th:replace="fragments :: navFragment"></div>
 <div class="py-4 text-center">
-    <h2>공개된 장</h2>
+    <h2>공개된 장소</h2>
 </div>
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col">생성자</th><th></th>
+        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col">생성자</th><th></th><th></th>
         </thead>
         <tbody>
         <tr th:each="place : ${places}">
@@ -19,11 +19,12 @@
             <td th:text="${place.location}"> </td>
             <td th:text="${place.creator}"></td>
             <td>
-<!--              TODO 등록하기-->
                 <div class="d-grid gap-2">
-                    <a class ="btn btn-outline-danger " id="btn-enroll-public-place" th:href="@{'/public-place/enrollement/' + ${place.location}">등록하기</a>
+                    <a class ="btn btn-outline-primary" id="btn-enroll-public-place" th:href="@{'/public-place/enrollment/' + ${place.location}}">등록하기</a>
                 </div>
             </td>
+            <td><small class ="invalid-feedback" th:if="#{'error.' + ${place.location}}">이미 등록된 장소입니다.</small></td>
+
         </tr>
         </tbody>
     </table>

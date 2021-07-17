@@ -10,11 +10,14 @@ public class PlaceListResponseDto {
     private String alias;
     private String creator;
 
+    private String isPublic;
+
 
     public PlaceListResponseDto(Place place){
         this.location = place.getLocation();
         this.alias = place.getAlias();
         this.creator = place.getCreator();
+        this.isPublic = place.getIsPublic();
     }
 
 

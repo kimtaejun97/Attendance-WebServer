@@ -1,4 +1,4 @@
-package com.attendance.modules.userlocation.form;
+package com.attendance.modules.userplace.form;
 
 import lombok.Data;
 

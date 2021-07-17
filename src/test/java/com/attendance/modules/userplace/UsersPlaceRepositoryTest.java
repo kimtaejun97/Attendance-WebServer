@@ -1,4 +1,4 @@
-package com.attendance.modules.userlocation;
+package com.attendance.modules.userplace;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +10,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UsersPlaceRepositoryTest {
 
     @Autowired
-    UserLocationRepository userLocationRepository;
+    UserPlaceRepository userPlaceRepository;
 
     @Test
     public void save() {
         String location = "광주 동구...";
         String username = "bigave";
 
-        UserLocation userLocation = UserLocation.builder()
+        UserPlace userPlace = UserPlace.builder()
                 .location(location)
                 .username(username)
                 .build();
 
-        UserLocation result = userLocationRepository.save(userLocation);
+        UserPlace result = userPlaceRepository.save(userPlace);
 
         assertThat(result.getLocation()).isEqualTo(location);
         assertThat(result.getUsername()).isEqualTo(username);

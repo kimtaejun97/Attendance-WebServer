@@ -2,8 +2,9 @@ package com.attendance.modules.place;
 
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.userlocation.UserLocation;
-import com.attendance.modules.userlocation.UserLocationRepository;
+import com.attendance.modules.userplace.UserPlace;
+import com.attendance.modules.userplace.UserPlaceRepository;
+import com.attendance.modules.userplace.UserPlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ public class PlaceService {
 
     private AccountRepository accountRepository;
 
-    private final UserLocationRepository userLocationRepository;
+    private final UserPlaceRepository userPlaceRepository;
 
     public void createPlace(PlaceForm placeForm, String isPublic) {
         if(isPublic == null){
@@ -32,8 +33,10 @@ public class PlaceService {
         Place place = placeForm.toEntity();
 
         placeRepository.save(placeForm.toEntity());
-
-
+        userPlaceRepository.save(UserPlace.builder()
+                .username(placeForm.getCreator())
+                .location(placeForm.getLocation())
+                .build());
     }
 
     public List<PlaceListResponseDto> getPlaceList() {
@@ -42,9 +45,22 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlaceListResponseDto> getPlacesFromUser(String username) {
+        List<UserPlace> userPlaces = userPlaceRepository.findByUsername(username);
+
+        return userPlaces.stream()
+                .map(userPlace ->
+                        placeRepository.findByLocation(userPlace.getLocation()))
+                .map(PlaceListResponseDto::new)
+                .collect(Collectors.toList());
+
+
+    }
+
     public List<String> getUsersFromPlace(String location) {
-        List<UserLocation> userLocations = userLocationRepository.findAllByLocation(location);
-       return  userLocations.stream()
+        List<UserPlace> userPlaces = userPlaceRepository.findAllByLocation(location);
+
+       return  userPlaces.stream()
                 .map(userLocation ->
                         accountRepository.findByUsernameReturnUsername(userLocation.getUsername()))
                 .collect(Collectors.toList());
@@ -60,8 +76,13 @@ public class PlaceService {
         return placeRepository.findByLocation(location);
     }
 
-    public List<Place> getPublicPlaceList() {
-        return placeRepository.findByIsPublic("on");
+    public List<PlaceListResponseDto> getPublicPlaceList() {
+
+        return placeRepository.findByIsPublic("on").stream()
+                .map(PlaceListResponseDto :: new)
+                .collect(Collectors.toList());
 
     }
+
+
 }

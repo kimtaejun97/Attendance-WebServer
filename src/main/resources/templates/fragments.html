@@ -18,15 +18,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/my-profile}" sec:authorize="isAuthenticated()">나의 프로필</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">관리 페이지</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/my-place}" sec:authorize="hasRole('ROLE_STUDENT')">My Place</a>
+                    <a class="nav-link" href="#" th:href="@{/my-place}" sec:authorize="isAuthenticated()">My Place</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/attendance}" sec:authorize="hasRole('ROLE_STUDENT')">Check</a>
+                    <a class="nav-link" href="#" th:href="@{/attendance}" sec:authorize="isAuthenticated()">Check</a>
                 </li>
             </ul>
 

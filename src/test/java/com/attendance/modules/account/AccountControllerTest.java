@@ -1,5 +1,6 @@
 package com.attendance.modules.account;
 
+import com.attendance.modules.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +54,7 @@ class AccountControllerTest {
         Account newAccount = accountRepository.save(account);
         newAccount.generateEmailCheckToken();
         newAccount.setRole(Role.USER);
+
 
     }
 
@@ -208,6 +210,25 @@ class AccountControllerTest {
                 .andExpect(model().attributeDoesNotExist("error"));
     }
 
+
+    @DisplayName("나의 프로필 화면")
+    @Test
+    void myProfile() throws Exception {
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setUsername("bigave2");
+        signUpForm.setAdminCode("");
+        signUpForm.setPassword("123123123");
+        signUpForm.setEmail("test2@email.com");
+
+        Account newAccount = accountService.createNewAccount(signUpForm);
+        accountService.login(newAccount);
+
+        mockMvc.perform(get("/my-profile"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/my-profile"))
+                .andExpect(model().attributeExists("account"));
+
+    }
 
 
 

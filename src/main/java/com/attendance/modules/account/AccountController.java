@@ -64,4 +64,17 @@ public class AccountController {
         accountService.completeSignUp(account);
         return view;
     }
+
+    // 나의 프로필 : /my-profile
+    @GetMapping("/my-profile")
+    public String myProfile(@CurrentUser Account account, Model model){
+
+        model.addAttribute(account);
+        return "account/my-profile";
+
+
+    }
+
+
+    //TODO 계정 제거(나의 프로필 에서) -> 계정 제거 계정이름 다시 입력해서 확인묻기.
 }

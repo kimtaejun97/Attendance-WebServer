@@ -1,38 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th ="http://www.thymeleaf.org">
+
 <head th:replace="fragments :: headerFragment"></head>
 
 <body>
-<nav th:replace="fragments :: navFragment"> </nav>
+<div th:replace="fragments :: navFragment"></div>
 
-<h3 class = "py-3 card-title text-center">출석 하기 </h3>
-<div class="card text-center">
-    <div class="card-group">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">별칭</h5>
-                <p class="card-text" th:text="${place.alias}"></p>
-                <h5 class="card-title">위치</h5>
-                <p class="card-text" th:text="${place.location}"></p>
-                <h5 class="card-title">생성자</h5>
-                <p class="card-text" th:text="${place.constructor}"></p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">내 정보</h5>
-                <p class="card-text" th:text="${account.username}"></p>
-            </div>
-        </div>
-
-    </div>
+<div class="d-grid gap-2">
+    <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{'place/add-users/' + ${place.location}}">출입 현황</a>
 </div>
 
-<div class ="container">
-<!-- TODO  출석 버튼-->
-</div>
-
-<hr>
-<th:block th:replace="fragmentsr :: footerFragment"/>
+<div th:replace="fragments :: footerFragment"></div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.attendance.modules.userlocation;
+package com.attendance.modules.userplace;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class UserLocation {
+public class UserPlace {
 
     @Id @GeneratedValue
     private Long Id;
@@ -21,7 +21,7 @@ public class UserLocation {
     private String location;
 
     @Builder
-    public UserLocation(String username, String location){
+    public UserPlace(String username, String location){
         this.username = username;
         this.location = location;
 
