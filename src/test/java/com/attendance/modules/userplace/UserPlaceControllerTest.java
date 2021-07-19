@@ -1,5 +1,6 @@
 package com.attendance.modules.userplace;
 
+import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
@@ -41,24 +42,7 @@ class UserPlaceControllerTest {
     @Autowired
     AccountService accountService;
 
-    @BeforeEach
-    void initData(){
-        PlaceForm placeForm = new PlaceForm();
-        placeForm.setLocation("광주");
-        placeForm.setAlias("내 지역");
-        placeForm.setCreator("bigave");
-        placeForm.setIsPublic("on");
 
-
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("bigave");
-        signUpForm.setEmail("test@email.com");
-        signUpForm.setPassword("123123123");
-
-        Account newAccount = accountService.createNewAccount(signUpForm);
-        accountService.login(newAccount);
-
-    }
     @AfterEach
     void cleanup(){
         placeRepository.deleteAll();
@@ -66,6 +50,7 @@ class UserPlaceControllerTest {
         accountRepository.deleteAll();
     }
 
+    @WithAccount(Value = "bigave")
     @DisplayName("생성자 :: 사용자 추가 화면")
     @Test
     void addUserView() throws Exception {
@@ -76,7 +61,7 @@ class UserPlaceControllerTest {
                 .andExpect(model().attributeExists("userForm"));
     }
 
-
+    @WithAccount(Value = "bigave")
     @DisplayName("생성자 :: 사용자 추가 - 정상 입력")
     @Test
     void addUser_with_correct_input() throws Exception {
@@ -94,6 +79,7 @@ class UserPlaceControllerTest {
         assertTrue(isRegistered);
 
     }
+    @WithAccount(Value = "bigave")
     @DisplayName("생성자 :: 사용자 추가 - 존재하지 않는 사용자")
     @Test
     void addUser_with_nonexist_user() throws Exception {
@@ -109,6 +95,7 @@ class UserPlaceControllerTest {
         assertFalse(isRegistered);
     }
 
+    @WithAccount(Value = "bigave")
     @DisplayName("생성자 :: 사용자 추가 - 이미 등록된 사용자")
     @Test
     void addUser_duplicated_user() throws Exception {
@@ -127,6 +114,7 @@ class UserPlaceControllerTest {
 
     }
 
+    @WithAccount(Value = "bigave")
     @DisplayName("공개된 장소 :: 나를 추가")
     @Test
     void publicPlace_addMe() throws Exception {

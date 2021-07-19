@@ -1,5 +1,6 @@
 package com.attendance.modules.account;
 
+import com.attendance.WithAccount;
 import com.attendance.modules.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,7 @@ class AccountControllerTest {
     void initDate(){
         Account account = Account.builder()
                 .username("bigave")
-                .email("test@email.com")
+                .email("init@email.com")
                 .password("12345678")
                 .build();
         Account newAccount = accountRepository.save(account);
@@ -157,8 +158,8 @@ class AccountControllerTest {
 
         //중복 닉네임.
         mockMvc.perform(post("/sign-up")
-                .param("username","bigave")
-                .param("email","test2@email.com")
+                .param("username","duplicated")
+                .param("email","init@email.com")
                 .param("password","123123123")
                 .param("adminCode","Admin1234")
                 .with(csrf()))
@@ -167,8 +168,8 @@ class AccountControllerTest {
 
         //중복 이메일
         mockMvc.perform(post("/sign-up")
-                .param("username","bigave2")
-                .param("email","test@email.com")
+                .param("username","duplicated")
+                .param("email","init@email.com")
                 .param("password","123123123")
                 .param("adminCode","Admin1234")
                 .with(csrf()))
@@ -211,17 +212,10 @@ class AccountControllerTest {
     }
 
 
+    @WithAccount(Value = "bigave2")
     @DisplayName("나의 프로필 화면")
     @Test
     void myProfile() throws Exception {
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("bigave2");
-        signUpForm.setAdminCode("");
-        signUpForm.setPassword("123123123");
-        signUpForm.setEmail("test2@email.com");
-
-        Account newAccount = accountService.createNewAccount(signUpForm);
-        accountService.login(newAccount);
 
         mockMvc.perform(get("/my-profile"))
                 .andExpect(status().isOk())

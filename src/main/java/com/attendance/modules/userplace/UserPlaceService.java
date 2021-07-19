@@ -2,25 +2,22 @@ package com.attendance.modules.userplace;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class UserPlaceService {
 
     private final UserPlaceRepository userPlaceRepository;
 
-    public String connectUserPlace(String username, String location) {
-        if(!userPlaceRepository.existsByLocationAndUsername(location,username)){
+    public void connectUserPlace(String username, String location) {
+
             userPlaceRepository.save(
                     UserPlace.builder()
                             .username(username)
                             .location(location)
-                            .build()
-            );
-            return "S";
-        }
-        return "F";
-
+                            .build());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.attendance.modules.place;
 
+import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
@@ -72,17 +73,10 @@ class PlaceControllerTest {
                 .andExpect(model().attributeExists("places"));
     }
 
+    @WithAccount(Value = "bigave")
     @DisplayName("장소 추가 View")
     @Test
     void createPlaceView() throws Exception {
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("bigave");
-        signUpForm.setAdminCode("");
-        signUpForm.setPassword("123123123");
-        signUpForm.setEmail("test@email.com");
-
-        Account newAccount = accountService.createNewAccount(signUpForm);
-        accountService.login(newAccount);
 
         mockMvc.perform(get("/create-place"))
                 .andExpect(status().isOk())
@@ -159,18 +153,11 @@ class PlaceControllerTest {
                 .andExpect(model().attributeExists("place"))
                 .andExpect(model().attributeExists("users"));
     }
-
+    @WithAccount(Value = "bigave")
     @DisplayName("내가 등록된 장소 페이지")
     @Test
     void myPlace() throws Exception {
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("bigave");
-        signUpForm.setAdminCode("");
-        signUpForm.setPassword("123123123");
-        signUpForm.setEmail("test@email.com");
 
-        Account newAccount = accountService.createNewAccount(signUpForm);
-        accountService.login(newAccount);
 
         mockMvc.perform(get("/my-place"))
                 .andExpect(status().isOk())

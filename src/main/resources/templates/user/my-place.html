@@ -20,7 +20,7 @@
             <td th:text="${place.location}"></td>
             <td th:text="${place.creator}"></td>
             <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendance/' + ${place.location}}">출입 현황</a></td>
-            <td><a class="btn btn-outline-secondary" href="#" th:href="@{'/attendance/' + ${place.location}}" th:if="${place.creator} == ${#authentication.name}">관리</a></td>
+            <td th:if="${place.creator} == ${#authentication.name}" ><a class="btn btn-outline-secondary" href="#" th:href="@{'/attendance/' + ${place.location}}">관리</a></td>
             <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator} != ${#authentication.name}" th:href="@{'/my-place/delete/' + ${place.location}}">탈퇴</a></td>
             <td></td>
         </tr>

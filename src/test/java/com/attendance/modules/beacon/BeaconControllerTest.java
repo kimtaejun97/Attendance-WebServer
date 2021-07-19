@@ -1,8 +1,10 @@
 package com.attendance.modules.beacon;
 
+import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.form.SignUpForm;
+import lombok.With;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +38,10 @@ class BeaconControllerTest {
     @Autowired
     AccountService accountService;
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("비콘 등록하기 화면")
     @Test
     void beaconView() throws Exception {
-
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("bigave");
-        signUpForm.setAdminCode("");
-        signUpForm.setPassword("123123123");
-        signUpForm.setEmail("test@email.com");
-
-        Account newAccount = accountService.createNewAccount(signUpForm);
-        accountService.login(newAccount);
 
         mockMvc.perform(get("/add-beacon"))
                 .andExpect(status().isOk())

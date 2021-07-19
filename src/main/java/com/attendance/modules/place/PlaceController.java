@@ -100,6 +100,9 @@ public class PlaceController {
         return "user/public-place-list";
     }
 
-    //TODO my-place 삭제 기능. /my-place/delete/{location}
+    //TODO 내가 생성한 장소 관리 페이지 /my-place/management/
+
+
+
 
 }

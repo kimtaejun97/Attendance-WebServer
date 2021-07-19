@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.SessionFlashMapManager;
 
 import javax.validation.Valid;
 
@@ -22,6 +24,8 @@ public class UserPlaceController {
 
     private final UserPlaceService userPlaceService;
     private final UserFormValidator userFormValidator;
+
+    private final UserPlaceRepository userPlaceRepository;
 
     @InitBinder("userForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -48,14 +52,24 @@ public class UserPlaceController {
     }
 
     @GetMapping("/public-place/enrollment/{location}")
-    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model){
-        String result = userPlaceService.connectUserPlace(account.getUsername(), location);
-        if (result != "S"){
-            model.addAttribute("error."+location,true);
-//            return "user/public-place-list";
-            return  "redirect:/public-place-list";
+    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model, RedirectAttributes attributes){
+        if(userPlaceRepository.existsByLocationAndUsername(location,account.getUsername())) {
+            attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
+
+            return "redirect:/public-place-list";
         }
+
+        userPlaceService.connectUserPlace(account.getUsername(), location);
         return "redirect:/my-place";
 
     }
+
+    //TODO my-place 탈퇴 기능. /my-place/delete-place/{location}
+
+    //TODO place management : 사용자 제거, /place-management/delete-user/{username}
+
+
+    //TODO 관리자 기능 : place 제거 /admin/delete-place/{location}
+
+
 }
