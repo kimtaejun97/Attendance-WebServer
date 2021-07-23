@@ -12,6 +12,7 @@ public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
 
     boolean existsByAccountAndPlace(Account account, Place place);
 
+    UserPlace findByAccountIdAndPlaceLocation(Long id, String location);
 
-
+    boolean existsByAccountIdAndPlaceLocation(Long id, String location);
 }

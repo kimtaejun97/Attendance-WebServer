@@ -5,9 +5,6 @@
 
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
-
-<h3 class="py-3 card-title text-center">출입 현황</h3>
-<hr>
 <div class="card text-center">
     <div class="card-group">
         <div class="card">
@@ -30,20 +27,24 @@
         </div>
     </div>
 </div>
+<h3 class="py-3 card-title text-center">출입 현황</h3>
+<hr>
+
+<h2 class="py-3 text-center">사용자 목록</h2>
 
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">날짜</th><th scope="col">출입 코드</th>
+        <th scope="col">이름</th><th scope="col"></th>
         </thead>
         <tbody>
-        <tr th:each="attendance : ${attendances}">
-            <td th:text="${attendance.attendanceDate}"</td>
-            <td th:text="${attendance.attendanceCode}"></td>
+        <tr th:each="user : ${users}">
+            <td ><a th:href="@{'/attendance/'+ ${user + '/' + place.location}}" th:text="${user}"></a></td>
+            <td><a class="btn btn-outline-danger" th:href="@{'/account-place/remove-user/' + ${user + '/' + place.location}}">제거</a></td>
         </tr>
         </tbody>
     </table>
-
+    <!--    TODO 이메일 등 정보를 추가할지?-->
 </div>
 
 <th:block th:replace="fragments :: footerFragment"/>

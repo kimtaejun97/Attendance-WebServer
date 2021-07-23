@@ -26,7 +26,7 @@ public class Place {
     @Column(nullable = false)
     private String isPublic;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private Set<UserPlace> userPlaces = new HashSet<>();
 
 

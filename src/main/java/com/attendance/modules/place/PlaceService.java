@@ -22,9 +22,9 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    private final AccountRepository accountRepository;
+    private final UserPlaceService userPlaceService;
 
-    private final UserPlaceRepository userPlaceRepository;
+    private final AccountRepository accountRepository;
 
     public void createPlace(PlaceForm placeForm, String isPublic) {
         if(isPublic == null){
@@ -34,16 +34,13 @@ public class PlaceService {
             placeForm.setIsPublic(isPublic);
         }
 
-        Account account = accountRepository.findByUsername(placeForm.getCreator());
-        Place place = placeRepository.save(placeForm.toEntity());
+        placeRepository.save(placeForm.toEntity());
+        userPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
 
-        userPlaceRepository.save(UserPlace.builder()
-                .account(account)
-                .place(place)
-                .build());
     }
 
     public List<PlaceListResponseDto> getPlaceList() {
+
         return placeRepository.findAll().stream()
                 .map(PlaceListResponseDto::new)
                 .collect(Collectors.toList());
@@ -52,27 +49,23 @@ public class PlaceService {
     public List<PlaceListResponseDto> getPlacesFromUser(Account account) {
         Optional<Account> byId = accountRepository.findById(account.getId());
 
-
         return byId.get().getUserPlaces().stream()
                 .map(UserPlace::getPlace)
                 .map(PlaceListResponseDto::new)
                 .collect(Collectors.toList());
-
-
     }
 
     public List<String> getUsersFromPlace(Place place) {
-        place = placeRepository.findByLocation(place.getLocation());
+
         Set<UserPlace> placeAccounts = place.getUserPlaces();
 
         return  placeAccounts.stream()
-                .map(UserPlace::getAccount)
-                .map(account -> account.getUsername())
+                .map(placeAccount -> placeAccount.getAccount().getUsername())
                 .collect(Collectors.toList());
     }
 
-    public boolean isCreator(String loacation, String username) {
-        Place byLocation = placeRepository.findByLocation(loacation);
+    public boolean isCreator(String location, String username) {
+        Place byLocation = placeRepository.findByLocation(location);
 
         return byLocation.getCreator().equals(username);
     }

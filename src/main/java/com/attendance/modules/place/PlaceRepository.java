@@ -14,4 +14,5 @@ public interface PlaceRepository extends JpaRepository<Place, String> {
     List<Place> findByIsPublic(String isPublic);
 
     List<Place> findByCreator(String creator);
+
 }

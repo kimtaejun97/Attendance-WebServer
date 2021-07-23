@@ -65,12 +65,8 @@ public class UserPlaceController {
         Place place = placeRepository.findByLocation(location);
         account = accountRepository.findById(account.getId()).get();
 
-        UserPlace userPlace = UserPlace.builder()
-                .account(account)
-                .place(place)
-                .build();
 
-        if(account.getUserPlaces().contains(userPlace)) {
+        if(userPlaceRepository.existsByAccountIdAndPlaceLocation(account.getId(), location)) {
             attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
 
             return "redirect:/public-place-list";
@@ -81,12 +77,30 @@ public class UserPlaceController {
 
     }
 
-    //TODO my-place 탈퇴 기능. /my-place/delete-place/{location}
+    @GetMapping("/account-place/disconnect-place/{location}")
+    public String disConnectPlace(@CurrentUser Account account,@PathVariable String location){
+
+        UserPlace userPlace = userPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
+        userPlaceRepository.delete(userPlace);
+
+        return "redirect:/my-place";
+    }
+
+    @GetMapping("/account-place/remove-user/{username}/{location}")
+    public String removeUser(@PathVariable String username, @PathVariable String location){
+        Account account = accountRepository.findByUsername(username);
+
+        UserPlace userPlace = userPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
+        userPlaceRepository.delete(userPlace);
+
+        return "redirect:/place/management/"+location;
+    }
+
+
 
     //TODO place management : 사용자 제거, /place-management/delete-user/{username}
 
 
-    //TODO 관리자 기능 : place 제거 /admin/delete-place/{location}
 
 
 }

@@ -8,6 +8,7 @@ import com.attendance.modules.account.form.SignUpForm;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
+import com.attendance.modules.userplace.UserPlace;
 import com.attendance.modules.userplace.UserPlaceRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -32,7 +35,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class PlaceControllerTest {
@@ -68,10 +70,10 @@ class PlaceControllerTest {
 
     @AfterEach
     void cleanup(){
+        userPlaceRepository.deleteAll();
         placeRepository.deleteAll();
         accountRepository.deleteAll();
         beaconRepository.deleteAll();
-        userPlaceRepository.deleteAll();
     }
 
 
@@ -175,6 +177,8 @@ class PlaceControllerTest {
                 .andExpect(model().attributeExists("place"))
                 .andExpect(model().attributeExists("users"));
     }
+
+
     @WithAccount(Value = "bigave")
     @DisplayName("내가 등록된 장소 페이지")
     @Test
