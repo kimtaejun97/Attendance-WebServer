@@ -1,5 +1,6 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.userplace.UserPlace;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -18,7 +22,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     private final UserPlaceRepository userPlaceRepository;
 
@@ -30,12 +34,12 @@ public class PlaceService {
             placeForm.setIsPublic(isPublic);
         }
 
-        Place place = placeForm.toEntity();
+        Account account = accountRepository.findByUsername(placeForm.getCreator());
+        Place place = placeRepository.save(placeForm.toEntity());
 
-        placeRepository.save(placeForm.toEntity());
         userPlaceRepository.save(UserPlace.builder()
-                .username(placeForm.getCreator())
-                .location(placeForm.getLocation())
+                .account(account)
+                .place(place)
                 .build());
     }
 
@@ -45,24 +49,25 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    public List<PlaceListResponseDto> getPlacesFromUser(String username) {
-        List<UserPlace> userPlaces = userPlaceRepository.findByUsername(username);
+    public List<PlaceListResponseDto> getPlacesFromUser(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
 
-        return userPlaces.stream()
-                .map(userPlace ->
-                        placeRepository.findByLocation(userPlace.getLocation()))
+
+        return byId.get().getUserPlaces().stream()
+                .map(UserPlace::getPlace)
                 .map(PlaceListResponseDto::new)
                 .collect(Collectors.toList());
 
 
     }
 
-    public List<String> getUsersFromPlace(String location) {
-        List<UserPlace> userPlaces = userPlaceRepository.findAllByLocation(location);
+    public List<String> getUsersFromPlace(Place place) {
+        place = placeRepository.findByLocation(place.getLocation());
+        Set<UserPlace> placeAccounts = place.getUserPlaces();
 
-       return  userPlaces.stream()
-                .map(userLocation ->
-                        accountRepository.findByUsernameReturnUsername(userLocation.getUsername()))
+        return  placeAccounts.stream()
+                .map(UserPlace::getAccount)
+                .map(account -> account.getUsername())
                 .collect(Collectors.toList());
     }
 

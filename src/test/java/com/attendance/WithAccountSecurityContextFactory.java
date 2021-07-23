@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import java.lang.annotation.Annotation;
 
 
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
         signUpForm.setEmail("test@email.com");
         signUpForm.setPassword("123123123");
 
-        Account newAccount = accountService.createNewAccount(signUpForm);
+        accountService.createNewAccount(signUpForm);
 
         UserDetails principal = accountService.loadUserByUsername(withAccount.Value());
 

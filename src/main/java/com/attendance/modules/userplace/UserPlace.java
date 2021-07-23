@@ -1,29 +1,27 @@
 package com.attendance.modules.userplace;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.attendance.modules.account.Account;
+import com.attendance.modules.place.Place;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@NoArgsConstructor
-@Entity
+@Getter @Setter
+@Builder
+@NoArgsConstructor @AllArgsConstructor
+@Entity @EqualsAndHashCode(of = "Id")
 public class UserPlace {
 
     @Id @GeneratedValue
     private Long Id;
 
-    @Column(nullable = false)
-    private String username;
+    @ManyToOne
+    @JoinColumn
+    private Account account;
 
-    @Column(nullable = false)
-    private String location;
+    @ManyToOne
+    @JoinColumn
+    private Place place;
 
-    @Builder
-    public UserPlace(String username, String location){
-        this.username = username;
-        this.location = location;
 
-    }
 }

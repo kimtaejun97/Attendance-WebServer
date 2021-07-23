@@ -1,11 +1,15 @@
 package com.attendance.modules.userplace;
 
 import com.attendance.modules.account.Account;
+import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.CurrentUser;
+import com.attendance.modules.place.Place;
+import com.attendance.modules.place.PlaceRepository;
 import com.attendance.modules.userplace.form.UserForm;
 import com.attendance.modules.userplace.form.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,7 +30,11 @@ public class UserPlaceController {
     private final UserPlaceService userPlaceService;
     private final UserFormValidator userFormValidator;
 
+    private final PlaceRepository placeRepository;
+
     private final UserPlaceRepository userPlaceRepository;
+
+    private final AccountRepository accountRepository;
 
     @InitBinder("userForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -53,7 +62,15 @@ public class UserPlaceController {
 
     @GetMapping("/public-place/enrollment/{location}")
     public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model, RedirectAttributes attributes){
-        if(userPlaceRepository.existsByLocationAndUsername(location,account.getUsername())) {
+        Place place = placeRepository.findByLocation(location);
+        account = accountRepository.findById(account.getId()).get();
+
+        UserPlace userPlace = UserPlace.builder()
+                .account(account)
+                .place(place)
+                .build();
+
+        if(account.getUserPlaces().contains(userPlace)) {
             attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
 
             return "redirect:/public-place-list";

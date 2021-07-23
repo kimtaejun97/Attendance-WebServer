@@ -1,10 +1,11 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.userplace.UserPlace;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter @Setter
 @Builder
@@ -24,6 +25,9 @@ public class Place {
 
     @Column(nullable = false)
     private String isPublic;
+
+    @OneToMany(mappedBy = "place")
+    private Set<UserPlace> userPlaces = new HashSet<>();
 
 
 }

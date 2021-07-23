@@ -5,6 +5,7 @@ import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.form.SignUpForm;
+import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
 import com.attendance.modules.place.form.PlaceForm;
 import org.junit.jupiter.api.AfterEach;
@@ -42,11 +43,22 @@ class UserPlaceControllerTest {
     @Autowired
     AccountService accountService;
 
+    @BeforeEach
+    void initData(){
+        placeRepository.save(
+                Place.builder()
+                        .location("광주")
+                        .alias("광주")
+                        .creator("bigave")
+                        .isPublic("on")
+                        .build()
+        );
+    }
 
     @AfterEach
     void cleanup(){
-        placeRepository.deleteAll();
         userPlaceRepository.deleteAll();
+        placeRepository.deleteAll();
         accountRepository.deleteAll();
     }
 
@@ -74,9 +86,13 @@ class UserPlaceControllerTest {
                 .andExpect(view().name("redirect:/user/place/광주"))
                 .andExpect(model().attributeDoesNotExist("errors"));
 
-        boolean isRegistered = userPlaceRepository.existsByLocationAndUsername("광주", "bigave");
+        Account account = accountRepository.findByUsername("bigave");
+        Place place = placeRepository.findByLocation("광주");
+
+        boolean isRegistered = userPlaceRepository.existsByAccountAndPlace(account,place);
 
         assertTrue(isRegistered);
+
 
     }
     @WithAccount(Value = "bigave")
@@ -91,18 +107,19 @@ class UserPlaceControllerTest {
                 .andExpect(view().name("user/add-user"))
                 .andExpect(model().hasErrors());
 
-        boolean isRegistered = userPlaceRepository.existsByLocationAndUsername("광주", "bigave");
-        assertFalse(isRegistered);
+
     }
 
     @WithAccount(Value = "bigave")
     @DisplayName("생성자 :: 사용자 추가 - 이미 등록된 사용자")
     @Test
     void addUser_duplicated_user() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        Place place = placeRepository.findByLocation("광주");
 
         userPlaceRepository.save(UserPlace.builder()
-                .username("bigave")
-                .location("광주")
+                .account(account)
+                .place(place)
                 .build());
 
         mockMvc.perform(post("/place/add-user/광주")
