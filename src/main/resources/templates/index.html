@@ -4,6 +4,9 @@
 
 <body>
 <nav th:replace="fragments :: navFragment"> </nav>
+<div class="alert alert-warning" th:if="${account != null && !account.emailVerified}">
+    인증 되지 않은 계정입니다. 가입을 완료하려면 <a th:href ="@{/check-email}">인증 이메일을 확인하세요</a>
+</div>
 <div class="py-4 text-center">
     <h2>자동 출입 관리 시스템</h2>
 </div>

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -209,6 +210,47 @@ class AccountControllerTest {
                 .andExpect(view().name("account/checked-email"))
                 .andExpect(model().attributeDoesNotExist("error"));
     }
+
+
+    @WithAccount(Value ="bigave2")
+    @DisplayName("회원 인증")
+    @Test
+    void checkEmail() throws Exception {
+
+        mockMvc.perform(get("/check-email"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/check-email"))
+                .andExpect(model().attributeExists("email"));
+    }
+
+    @WithAccount(Value ="bigave2")
+    @DisplayName("회원 인증메일 재전송 - 재전송 불가(시간)")
+    @Test
+    void resendCheckEmail_invalid() throws Exception {
+
+        mockMvc.perform(get("/resend-check-email"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/check-email"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(model().attributeExists("error"));
+    }
+
+    @Transactional
+    @WithAccount(Value ="bigave2")
+    @DisplayName("회원 인증메일 재전송 - 재전송 성공")
+    @Test
+    void resendCheckEmail() throws Exception {
+        Account account = accountRepository.findByUsername("bigave2");
+        account.setEmailTokenLastGeneration(LocalDateTime.now().minusMinutes(20));
+
+        mockMvc.perform(get("/resend-check-email"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/check-email"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(model().attributeExists("success"));
+    }
+
+
 
 
     @WithAccount(Value = "bigave2")

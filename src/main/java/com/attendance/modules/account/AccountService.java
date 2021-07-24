@@ -107,4 +107,11 @@ public class AccountService implements UserDetailsService{
         return new UserAccount(account);
 
     }
+
+    public void resendCheckEmail(String username) {
+        Account account = accountRepository.findByUsername(username);
+        account.generateEmailCheckToken();
+
+        sendEmail(account);
+    }
 }

@@ -4,6 +4,7 @@ import com.attendance.modules.userplace.AccountPlace;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -34,12 +35,15 @@ public class Account {
 
     private Role role;
 
+    private LocalDateTime emailTokenLastGeneration;
+
     @OneToMany(mappedBy = "account")
     private Set<AccountPlace> accountPlaces = new HashSet<>();
 
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
+        this.emailTokenLastGeneration = LocalDateTime.now();
     }
 
     public void completeSignUp() {
@@ -48,5 +52,12 @@ public class Account {
 
     public boolean isValidToken(String token) {
         return this.emailCheckToken.equals(token);
+    }
+
+    public boolean canSendEmail(){
+        if(this.emailTokenLastGeneration == null){
+            return true;
+        }
+        return this.emailTokenLastGeneration.isBefore(LocalDateTime.now().minusMinutes(10));
     }
 }

@@ -65,6 +65,26 @@ public class AccountController {
         return view;
     }
 
+    @GetMapping("/check-email")
+    public String checkEmail(@CurrentUser Account account, Model model){
+        model.addAttribute("email", account.getEmail());
+
+        return "account/check-email";
+    }
+
+    @GetMapping("/resend-check-email")
+    public String resendCheckEmail(@CurrentUser Account account, Model model){
+        model.addAttribute("email", account.getEmail());
+        if(!account.canSendEmail()){
+            model.addAttribute("error","아직 인증 메일을 재전송 할 수 없습니다. 잠시후에 다시 시도하세요.");
+            return "account/check-email";
+        }
+
+        accountService.resendCheckEmail(account.getUsername());
+        model.addAttribute("success","인증 메일을 재전송 했습니다. 메일함을 확인해주세요.");
+        return "account/check-email";
+    }
+
     // TODO 나의 프로필 :
     @GetMapping("/my-profile")
     public String myProfile(@CurrentUser Account account, Model model){
