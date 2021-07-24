@@ -6,7 +6,7 @@
 </head>
 <body>
     <p ><small th:text="${username}"></small>님 안녕하세요.</p>
-    <p class = "alert alert-info ">회원 가입을 완료하려면, <a href="#" th:text="${linkName}" th:href="${link + host}"></a>를 클릭해주세요 </p>
+    <p class = "alert alert-info ">회원 가입을 완료하려면, <a href="#" th:text="${linkName}" th:href="${host + link}"></a>를 클릭해주세요 </p>
 
     <small class = "text-muted">링크가 클릭되지 않는다면 <span th:text="${host + link}"></span>를 직접 주소창에 입력해주세요.</small>
 </body>

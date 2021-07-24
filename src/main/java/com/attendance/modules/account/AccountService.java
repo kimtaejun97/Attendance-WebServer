@@ -64,7 +64,7 @@ public class AccountService implements UserDetailsService{
         context.setVariable("link","/check-email-token?token="+account.getEmailCheckToken()
                 +"&email="+account.getEmail());
 
-        String message = templateEngine.process("mail/sign-up-link",context);
+        String message = templateEngine.process("mail/check-link",context);
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
