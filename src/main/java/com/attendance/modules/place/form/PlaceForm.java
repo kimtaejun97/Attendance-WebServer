@@ -20,14 +20,4 @@ public class PlaceForm {
     String isPublic;
 
 
-
-    public Place toEntity(){
-        return Place.builder()
-                .location(location)
-                .alias(alias)
-                .creator(creator)
-                .isPublic(isPublic)
-                .build();
-    }
-
 }

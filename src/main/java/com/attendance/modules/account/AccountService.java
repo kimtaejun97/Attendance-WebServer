@@ -2,6 +2,7 @@ package com.attendance.modules.account;
 
 import com.attendance.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,21 +27,20 @@ public class AccountService implements UserDetailsService{
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
+    private final ModelMapper modelMapper;
+
     public Account createNewAccount(SignUpForm signUpForm) {
         Role role = Role.USER;
-        if(signUpForm.getAdminCode() != ""){
+        if(signUpForm.getAdminCode() == "Admin1234"){
             role = Role.ADMIN;
         }
 
-        Account account = Account.builder()
-                .username(signUpForm.getUsername())
-                .email(signUpForm.getEmail())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
-                .role(role)
-                .build();
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        Account account = modelMapper.map(signUpForm, Account.class);
+        account.setRole(role);
+        account.generateEmailCheckToken();
 
         Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
 
         sendEmail(newAccount);
 

@@ -23,7 +23,7 @@
             <td th:text="${place.isPublic}"></td>
             <td>
                 <div class="d-grid gap-2">
-                    <a class ="btn btn-outline-danger " id="btn-del-place" th:href="@{/delete-place}">제거</a>
+                    <a class ="btn btn-outline-danger " id="btn-del-place" th:href="@{'/place/admin/remove-place/' + ${place.location}}">제거</a>
                 </div>
             </td>
         </tr>

@@ -18,13 +18,4 @@ public class BeaconForm {
     @NotBlank
     private String creator;
 
-    public Beacon toEntity(){
-        return Beacon.builder()
-                .beaconCode(beaconCode)
-                .location(location)
-                .creator(creator)
-                .build();
-    }
-
-
 }

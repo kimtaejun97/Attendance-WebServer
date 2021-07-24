@@ -24,6 +24,7 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
         signUpForm.setUsername(withAccount.Value());
         signUpForm.setEmail("test@email.com");
         signUpForm.setPassword("123123123");
+        signUpForm.setAdminCode("Admin1234");
 
         accountService.createNewAccount(signUpForm);
 

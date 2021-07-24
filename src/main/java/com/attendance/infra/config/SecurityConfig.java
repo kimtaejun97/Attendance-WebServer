@@ -1,5 +1,6 @@
 package com.attendance.infra.config;
 
+import com.attendance.modules.account.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()
         .authorizeRequests()
                 .antMatchers("/","/sign-up","/login", "/check-email-token","/h2-console/**").permitAll()
+                .antMatchers("/admin-page", "/admin/place/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated();
 
 

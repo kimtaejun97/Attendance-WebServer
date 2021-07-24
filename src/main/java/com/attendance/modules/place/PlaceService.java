@@ -6,6 +6,7 @@ import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.userplace.AccountPlace;
 import com.attendance.modules.userplace.AccountPlaceService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class PlaceService {
     private final AccountPlaceService accountPlaceService;
 
     private final AccountRepository accountRepository;
+    private final ModelMapper modelMapper;
 
     public void createPlace(PlaceForm placeForm, String isPublic) {
         if(isPublic == null){
@@ -32,10 +34,8 @@ public class PlaceService {
         else{
             placeForm.setIsPublic(isPublic);
         }
-
-        placeRepository.save(placeForm.toEntity());
+        placeRepository.save(modelMapper.map(placeForm, Place.class));
         accountPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
-
     }
 
     public List<PlaceListResponseDto> getPlaceList() {

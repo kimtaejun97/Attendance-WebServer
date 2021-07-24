@@ -5,6 +5,7 @@ import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.beacon.form.BeaconForm;
 import com.attendance.modules.beacon.form.BeaconFormValidator;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -23,6 +24,7 @@ public class BeaconController {
     private final BeaconFormValidator beaconFormValidator;
 
     private final BeaconRepository beaconRepository;
+    private final ModelMapper modelMapper;
 
     @InitBinder("beaconForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -47,7 +49,7 @@ public class BeaconController {
             return "user/add-beacon";
         }
 
-        beaconRepository.save(beaconForm.toEntity());
+        beaconRepository.save(modelMapper.map(beaconForm, Beacon.class));
 
         return "redirect:/";
     }

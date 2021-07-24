@@ -1,8 +1,10 @@
 package com.attendance.modules.place;
 
 import com.attendance.WithAccount;
+import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
+import com.attendance.modules.account.Role;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -76,10 +79,11 @@ class PlaceControllerTest {
 
 
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("admin 페이지")
     @Test
     void adminPage() throws Exception {
+
 
         mockMvc.perform(get("/admin-page"))
                 .andExpect(status().isOk())
@@ -238,6 +242,35 @@ class PlaceControllerTest {
 
     }
 
+    @WithAccount(Value = "bigave")
+    @DisplayName("관리자 페이지 : 사용자 제거")
+    @Test
+    void admin_remove_place() throws Exception {
+
+
+        mockMvc.perform(get("/place/admin/remove-place/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin-page"));
+
+        assertFalse(placeRepository.existsByLocation("광주"));
+
+    }
+
+    @Transactional
+    @WithAccount(Value = "bigave")
+    @DisplayName("관리자 페이지 : 사용자 제거 - 권한 없는 사용자")
+    @Test
+    void remove_place_commonUser() throws Exception {
+        Account byUsername = accountRepository.findByUsername("bigave");
+        byUsername.setRole(Role.USER);
+
+        mockMvc.perform(get("/place/admin/remove-place/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/error"));
+
+        assertTrue(placeRepository.existsByLocation("광주"));
+
+    }
 
 
 

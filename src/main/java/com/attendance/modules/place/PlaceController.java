@@ -2,6 +2,7 @@ package com.attendance.modules.place;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
+import com.attendance.modules.account.Role;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.form.PlaceFormValidator;
 import lombok.RequiredArgsConstructor;
@@ -72,8 +73,8 @@ public class PlaceController {
     public String myPlace(@CurrentUser Account account, Model model){
 
         List<PlaceListResponseDto> places = placeService.getPlacesFromUser(account);
-
         model.addAttribute("places", places);
+
         return "user/my-place";
 
     }
@@ -104,14 +105,28 @@ public class PlaceController {
             return "redirect:/error";
         }
 
-
-            List<String> users = placeService.getUsersFromPlace(place);
-
+        List<String> users = placeService.getUsersFromPlace(place);
         model.addAttribute(place);
         model.addAttribute("users",users);
 
         return "user/place-management";
     }
+
+    @GetMapping("/place/admin/remove-place/{location}")
+    public String removePlaceWithAdmin(@CurrentUser Account account, @PathVariable String location){
+
+        if(!account.getRole().equals(Role.ADMIN)){
+            return "redirect:/error";
+        }
+        Place byLocation = placeRepository.findByLocation(location);
+        if(byLocation == null){
+            return "redirect:/error";
+        }
+        placeRepository.delete(byLocation);
+
+        return "redirect:/admin-page";
+    }
+
 
 
 
