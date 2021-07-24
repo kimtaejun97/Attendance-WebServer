@@ -8,4 +8,6 @@ public interface BeaconRepository extends JpaRepository<Beacon, String> {
     boolean existsByLocation(String location);
 
     boolean existsByBeaconCode(String beaconCode);
+
+    Beacon findByLocation(String location);
 }

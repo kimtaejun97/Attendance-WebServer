@@ -142,11 +142,31 @@ class PlaceControllerTest {
     @Test
     void createPlace_with_exists_input() throws Exception {
 
-
         mockMvc.perform(post("/create-place")
                 .param("location", "광주")
                 .param("alias", "내 지역")
                 .param("creator", "bigave")
+                .param("isPublic", "on")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(view().name("user/create-place"));
+    }
+
+    @WithMockUser
+    @DisplayName("장소 생성 - 접근 할 수 없는 비콘")
+    @Test
+    void createPlace_with_invalid_creator() throws Exception {
+        beaconRepository.save(Beacon.builder()
+                .location("광주2")
+                .beaconCode("df-3fsdf3-dsaf-3")
+                .creator("bigave")
+                .build());
+
+        mockMvc.perform(post("/create-place")
+                .param("location", "광주2")
+                .param("alias", "내 지역")
+                .param("creator", "kim")
                 .param("isPublic", "on")
                 .with(csrf()))
                 .andExpect(status().isOk())
