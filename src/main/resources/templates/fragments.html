@@ -72,12 +72,22 @@
                     if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
+                        document.querySelector(".btn-submit").disabled =false;
                     }
                     form.classList.add('was-validated')
                 }, false)
             })
         }, false)
     }())
+</script>
+<script th:fragment="prevent-duplicate-submit" type="application/javascript" >
+    $(".prevent-duplicate-submit").on("submit", function (e){
+        var btn = document.querySelector(".btn-submit");
+        console.log("=======================");
+        console.log(btn);
+        btn.disabled=true
+    })
+
 </script>
 
 

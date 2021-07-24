@@ -45,13 +45,4 @@ public class AttendanceController {
         return "user/my-attendance";
     }
 
-
-    //TODO 출결 현황에서 생성자일 경우 유저 제거 기능.
-
-
-
-
-
-
-
 }

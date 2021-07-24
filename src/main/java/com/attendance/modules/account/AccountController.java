@@ -65,7 +65,7 @@ public class AccountController {
         return view;
     }
 
-    // 나의 프로필 : /my-profile
+    // TODO 나의 프로필 :
     @GetMapping("/my-profile")
     public String myProfile(@CurrentUser Account account, Model model){
 
