@@ -5,14 +5,12 @@ import com.attendance.modules.place.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Transactional(readOnly = true)
-public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
+public interface AccountPlaceRepository extends JpaRepository<AccountPlace, Long> {
 
     boolean existsByAccountAndPlace(Account account, Place place);
 
-    UserPlace findByAccountIdAndPlaceLocation(Long id, String location);
+    AccountPlace findByAccountIdAndPlaceLocation(Long id, String location);
 
     boolean existsByAccountIdAndPlaceLocation(Long id, String location);
 }

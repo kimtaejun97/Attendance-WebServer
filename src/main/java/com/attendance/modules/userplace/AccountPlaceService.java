@@ -5,26 +5,25 @@ import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UserPlaceService {
+public class AccountPlaceService {
 
     private final AccountRepository accountRepository;
     private final PlaceRepository placeRepository;
 
-    private final UserPlaceRepository userPlaceRepository;
+    private final AccountPlaceRepository accountPlaceRepository;
 
     public void connectUserPlace(String username, String location) {
         Account account= accountRepository.findByUsername(username);
         Place place = placeRepository.findByLocation(location);
 
-            userPlaceRepository.save(
-                    UserPlace.builder()
+            accountPlaceRepository.save(
+                    AccountPlace.builder()
                             .account(account)
                             .place(place)
                             .build());

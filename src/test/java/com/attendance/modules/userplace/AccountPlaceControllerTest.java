@@ -4,10 +4,9 @@ import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
-import com.attendance.modules.account.form.SignUpForm;
+import com.attendance.modules.account.Role;
 import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
-import com.attendance.modules.place.form.PlaceForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserPlaceControllerTest {
+class AccountPlaceControllerTest {
     @Autowired
     MockMvc mockMvc;
 
@@ -35,13 +33,16 @@ class UserPlaceControllerTest {
     PlaceRepository placeRepository;
 
     @Autowired
-    UserPlaceRepository userPlaceRepository;
+    AccountPlaceRepository accountPlaceRepository;
 
     @Autowired
     AccountRepository accountRepository;
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountPlaceService accountPlaceService;
 
     @BeforeEach
     void initData(){
@@ -57,7 +58,7 @@ class UserPlaceControllerTest {
 
     @AfterEach
     void cleanup(){
-        userPlaceRepository.deleteAll();
+        accountPlaceRepository.deleteAll();
         placeRepository.deleteAll();
         accountRepository.deleteAll();
     }
@@ -89,7 +90,7 @@ class UserPlaceControllerTest {
         Account account = accountRepository.findByUsername("bigave");
         Place place = placeRepository.findByLocation("광주");
 
-        boolean isRegistered = userPlaceRepository.existsByAccountAndPlace(account,place);
+        boolean isRegistered = accountPlaceRepository.existsByAccountAndPlace(account,place);
 
         assertTrue(isRegistered);
 
@@ -117,7 +118,7 @@ class UserPlaceControllerTest {
         Account account = accountRepository.findByUsername("bigave");
         Place place = placeRepository.findByLocation("광주");
 
-        userPlaceRepository.save(UserPlace.builder()
+        accountPlaceRepository.save(AccountPlace.builder()
                 .account(account)
                 .place(place)
                 .build());
@@ -140,6 +141,61 @@ class UserPlaceControllerTest {
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/my-place"));
+    }
+    @WithAccount(Value = "kim")
+    @DisplayName("장소에서 탈퇴.")
+    @Test
+    void disconnectPlace() throws Exception {
+        accountPlaceService.connectUserPlace("kim","광주");
+
+        mockMvc.perform(get("/account-place/disconnect-place/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/my-place"));
+        Account account = accountRepository.findByUsername("kim");
+        assertFalse(accountPlaceRepository.existsByAccountIdAndPlaceLocation(account.getId(), "광주"));
+    }
+
+
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("장소에서 사용자 제거")
+    @Test
+    void removeUser() throws Exception {
+        Account kim = accountRepository.save(Account.builder()
+                .username("kim")
+                .password("123123123")
+                .email("test22@eee.eee")
+                .role(Role.USER)
+                .build());
+
+        accountPlaceService.connectUserPlace("kim","광주");
+
+        mockMvc.perform(get("/account-place/remove-user/kim/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/place/management/광주"));
+
+        assertFalse(accountPlaceRepository.existsByAccountIdAndPlaceLocation(kim.getId(), "광주"));
+
+    }
+    @WithAccount(Value = "wrong")
+    @DisplayName("장소에서 사용자 제거 - 생성자가 아닌 사용자의 요청.")
+    @Test
+    void removeUser_invalid_userRequest() throws Exception {
+        Account kim = accountRepository.save(Account.builder()
+                .username("kim")
+                .password("123123123")
+                .email("test22@eee.eee")
+                .role(Role.USER)
+                .build());
+
+        accountPlaceService.connectUserPlace("kim","광주");
+
+        mockMvc.perform(get("/account-place/remove-user/kim/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/error"));
+
+        assertTrue(accountPlaceRepository.existsByAccountIdAndPlaceLocation(kim.getId(), "광주"));
+
     }
 
 }

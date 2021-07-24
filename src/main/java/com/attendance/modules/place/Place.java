@@ -1,6 +1,6 @@
 package com.attendance.modules.place;
 
-import com.attendance.modules.userplace.UserPlace;
+import com.attendance.modules.userplace.AccountPlace;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,7 +27,7 @@ public class Place {
     private String isPublic;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
-    private Set<UserPlace> userPlaces = new HashSet<>();
+    private Set<AccountPlace> accountPlaces = new HashSet<>();
 
 
 }

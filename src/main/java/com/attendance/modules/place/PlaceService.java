@@ -3,9 +3,8 @@ package com.attendance.modules.place;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.userplace.UserPlace;
-import com.attendance.modules.userplace.UserPlaceRepository;
-import com.attendance.modules.userplace.UserPlaceService;
+import com.attendance.modules.userplace.AccountPlace;
+import com.attendance.modules.userplace.AccountPlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    private final UserPlaceService userPlaceService;
+    private final AccountPlaceService accountPlaceService;
 
     private final AccountRepository accountRepository;
 
@@ -35,7 +34,7 @@ public class PlaceService {
         }
 
         placeRepository.save(placeForm.toEntity());
-        userPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
+        accountPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
 
     }
 
@@ -49,15 +48,15 @@ public class PlaceService {
     public List<PlaceListResponseDto> getPlacesFromUser(Account account) {
         Optional<Account> byId = accountRepository.findById(account.getId());
 
-        return byId.get().getUserPlaces().stream()
-                .map(UserPlace::getPlace)
+        return byId.get().getAccountPlaces().stream()
+                .map(AccountPlace::getPlace)
                 .map(PlaceListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     public List<String> getUsersFromPlace(Place place) {
 
-        Set<UserPlace> placeAccounts = place.getUserPlaces();
+        Set<AccountPlace> placeAccounts = place.getAccountPlaces();
 
         return  placeAccounts.stream()
                 .map(placeAccount -> placeAccount.getAccount().getUsername())

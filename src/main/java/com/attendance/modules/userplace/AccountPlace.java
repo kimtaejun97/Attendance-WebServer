@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Entity @EqualsAndHashCode(of = "Id")
-public class UserPlace {
+public class AccountPlace {
 
     @Id @GeneratedValue
     private Long Id;

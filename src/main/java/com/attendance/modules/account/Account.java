@@ -1,6 +1,6 @@
 package com.attendance.modules.account;
 
-import com.attendance.modules.userplace.UserPlace;
+import com.attendance.modules.userplace.AccountPlace;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +35,7 @@ public class Account {
     private Role role;
 
     @OneToMany(mappedBy = "account")
-    private Set<UserPlace> userPlaces = new HashSet<>();
+    private Set<AccountPlace> accountPlaces = new HashSet<>();
 
 
     public void generateEmailCheckToken() {

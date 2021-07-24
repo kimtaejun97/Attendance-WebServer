@@ -9,7 +9,6 @@ import com.attendance.modules.userplace.form.UserForm;
 import com.attendance.modules.userplace.form.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -18,21 +17,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.SessionFlashMapManager;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Controller
-public class UserPlaceController {
+public class AccountPlaceController {
 
-    private final UserPlaceService userPlaceService;
+    private final AccountPlaceService accountPlaceService;
     private final UserFormValidator userFormValidator;
 
     private final PlaceRepository placeRepository;
 
-    private final UserPlaceRepository userPlaceRepository;
+    private final AccountPlaceRepository accountPlaceRepository;
 
     private final AccountRepository accountRepository;
 
@@ -55,7 +52,7 @@ public class UserPlaceController {
         if(errors.hasErrors()){
             return "user/add-user";
         }
-        userPlaceService.connectUserPlace(userForm.getUsername(),location);
+        accountPlaceService.connectUserPlace(userForm.getUsername(),location);
 
         return "redirect:/user/place/"+location;
     }
@@ -66,13 +63,13 @@ public class UserPlaceController {
         account = accountRepository.findById(account.getId()).get();
 
 
-        if(userPlaceRepository.existsByAccountIdAndPlaceLocation(account.getId(), location)) {
+        if(accountPlaceRepository.existsByAccountIdAndPlaceLocation(account.getId(), location)) {
             attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
 
             return "redirect:/public-place-list";
         }
 
-        userPlaceService.connectUserPlace(account.getUsername(), location);
+        accountPlaceService.connectUserPlace(account.getUsername(), location);
         return "redirect:/my-place";
 
     }
@@ -80,25 +77,31 @@ public class UserPlaceController {
     @GetMapping("/account-place/disconnect-place/{location}")
     public String disConnectPlace(@CurrentUser Account account,@PathVariable String location){
 
-        UserPlace userPlace = userPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
-        userPlaceRepository.delete(userPlace);
+        AccountPlace accountPlace = accountPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
+        accountPlaceRepository.delete(accountPlace);
 
         return "redirect:/my-place";
     }
 
     @GetMapping("/account-place/remove-user/{username}/{location}")
-    public String removeUser(@PathVariable String username, @PathVariable String location){
-        Account account = accountRepository.findByUsername(username);
+    public String removeUser(@CurrentUser Account account,@PathVariable String username, @PathVariable String location){
+        Place place = placeRepository.findByLocation(location);
+        if(! place.getCreator().equals(account.getUsername())){
+            return "redirect:/error";
+        }
 
-        UserPlace userPlace = userPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
-        userPlaceRepository.delete(userPlace);
+        Account byUsername = accountRepository.findByUsername(username);
+
+        AccountPlace accountPlace = accountPlaceRepository.findByAccountIdAndPlaceLocation(byUsername.getId(), location);
+        accountPlaceRepository.delete(accountPlace);
 
         return "redirect:/place/management/"+location;
     }
 
 
 
-    //TODO place management : 사용자 제거, /place-management/delete-user/{username}
+
+
 
 
 

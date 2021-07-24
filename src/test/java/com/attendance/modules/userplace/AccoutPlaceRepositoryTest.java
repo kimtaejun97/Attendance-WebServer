@@ -1,6 +1,5 @@
 package com.attendance.modules.userplace;
 
-import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.Place;
@@ -13,10 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-public class UsersPlaceRepositoryTest {
+public class AccoutPlaceRepositoryTest {
 
     @Autowired
-    UserPlaceRepository userPlaceRepository;
+    AccountPlaceRepository accountPlaceRepository;
 
     @Autowired
     AccountRepository accountRepository;
@@ -37,12 +36,12 @@ public class UsersPlaceRepositoryTest {
                 .creator("bigave")
                 .build());
 
-        UserPlace userPlace = UserPlace.builder()
+        AccountPlace accountPlace = AccountPlace.builder()
                 .account(account)
                 .place(place)
                 .build();
 
-        UserPlace result = userPlaceRepository.save(userPlace);
+        AccountPlace result = accountPlaceRepository.save(accountPlace);
 
         assertNotNull(result);
         assertThat(result.getPlace().getLocation()).isEqualTo("광주");

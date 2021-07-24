@@ -1,15 +1,11 @@
 package com.attendance.modules.place;
 
 import com.attendance.modules.account.Account;
-import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.form.PlaceFormValidator;
-import com.attendance.modules.userplace.UserPlace;
-import com.attendance.modules.userplace.UserPlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Controller
@@ -100,13 +95,17 @@ public class PlaceController {
     }
 
 
-    //TODO 내가 생성한 장소 관리 페이지 /place/management/
 
     @GetMapping("/place/management/{location}")
-    public String placeManagement(@PathVariable String location, Model model){
-        Place place = placeRepository.findByLocation(location);
+    public String placeManagement(@CurrentUser Account account,@PathVariable String location, Model model){
 
-        List<String> users = placeService.getUsersFromPlace(place);
+        Place place = placeRepository.findByLocation(location);
+        if(!account.getUsername().equals(place.getCreator())){
+            return "redirect:/error";
+        }
+
+
+            List<String> users = placeService.getUsersFromPlace(place);
 
         model.addAttribute(place);
         model.addAttribute("users",users);
