@@ -4,6 +4,8 @@ import com.attendance.infra.config.AppProperties;
 import com.attendance.infra.mail.EmailMessage;
 import com.attendance.infra.mail.EmailService;
 import com.attendance.modules.account.form.SignUpForm;
+import com.attendance.modules.beacon.BeaconRepository;
+import com.attendance.modules.place.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,6 +38,9 @@ public class AccountService implements UserDetailsService{
     private final EmailService emailService;
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
+
+    private final PlaceRepository placeRepository;
+    private final BeaconRepository beaconRepository;
 
     public Account createNewAccount(SignUpForm signUpForm) {
         Role role = Role.USER;
@@ -113,5 +118,14 @@ public class AccountService implements UserDetailsService{
         account.generateEmailCheckToken();
 
         sendEmail(account);
+    }
+
+    public void removeAccount(String username) {
+        Account account = accountRepository.findByUsername(username);
+        accountRepository.delete(account);
+
+
+
+
     }
 }

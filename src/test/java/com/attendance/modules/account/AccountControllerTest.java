@@ -48,7 +48,7 @@ class AccountControllerTest {
     @BeforeEach
     void initDate(){
         Account account = Account.builder()
-                .username("bigave")
+                .username("bigave2")
                 .email("init@email.com")
                 .password("12345678")
                 .build();
@@ -158,8 +158,8 @@ class AccountControllerTest {
 
         //중복 닉네임.
         mockMvc.perform(post("/sign-up")
-                .param("username","duplicated")
-                .param("email","init@email.com")
+                .param("username","bigave2")
+                .param("email","init2@email.com")
                 .param("password","123123123")
                 .param("adminCode","Admin1234")
                 .with(csrf()))
@@ -212,7 +212,7 @@ class AccountControllerTest {
     }
 
 
-    @WithAccount(Value ="bigave2")
+    @WithAccount(Value ="bigave")
     @DisplayName("회원 인증")
     @Test
     void checkEmail() throws Exception {
@@ -223,7 +223,7 @@ class AccountControllerTest {
                 .andExpect(model().attributeExists("email"));
     }
 
-    @WithAccount(Value ="bigave2")
+    @WithAccount(Value ="bigave")
     @DisplayName("회원 인증메일 재전송 - 재전송 불가(시간)")
     @Test
     void resendCheckEmail_invalid() throws Exception {
@@ -236,11 +236,11 @@ class AccountControllerTest {
     }
 
     @Transactional
-    @WithAccount(Value ="bigave2")
+    @WithAccount(Value ="bigave")
     @DisplayName("회원 인증메일 재전송 - 재전송 성공")
     @Test
     void resendCheckEmail() throws Exception {
-        Account account = accountRepository.findByUsername("bigave2");
+        Account account = accountRepository.findByUsername("bigave");
         account.setEmailTokenLastGeneration(LocalDateTime.now().minusMinutes(20));
 
         mockMvc.perform(get("/resend-check-email"))
@@ -253,18 +253,46 @@ class AccountControllerTest {
 
 
 
-    @WithAccount(Value = "bigave2")
-    @DisplayName("나의 프로필 화면")
+    @WithAccount(Value = "bigave")
+    @DisplayName("나의 프로필 페이지")
     @Test
     void myProfile() throws Exception {
 
-        mockMvc.perform(get("/my-profile"))
+        mockMvc.perform(get("/account/my-profile"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/my-profile"))
                 .andExpect(model().attributeExists("account"));
 
     }
 
+    @WithAccount(Value = "bigave")
+    @DisplayName("계정 제거 - 올바른 입력")
+    @Test
+    void removeAccount_correct() throws Exception {
+        mockMvc.perform(post("/account/remove")
+                .param("confirmString", "bigave")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/logout"));
 
+        assertFalse(accountRepository.existsByUsername("bigave"));
+
+    }
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("계정 제거 - 잘못된 확인값 입력")
+    @Test
+    void removeAccount_wrong() throws Exception {
+        mockMvc.perform(post("/account/remove")
+                .param("confirmString", "wrong")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/my-profile"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("error"));
+
+        assertTrue(accountRepository.existsByUsername("bigave"));
+
+    }
 
 }

@@ -85,8 +85,8 @@ public class AccountController {
         return "account/check-email";
     }
 
-    // TODO 나의 프로필 :
-    @GetMapping("/my-profile")
+    // TODO 나의 프로필 : 더 채울지
+    @GetMapping("/account/my-profile")
     public String myProfile(@CurrentUser Account account, Model model){
 
         model.addAttribute(account);
@@ -95,6 +95,21 @@ public class AccountController {
 
     }
 
+    @PostMapping("/account/remove")
+    public String removeAccount(@CurrentUser Account account, String confirmString, Model model){
+        String username = account.getUsername();
 
-    //TODO 계정 제거(나의 프로필 에서) -> 계정 제거 계정이름 다시 입력해서 확인묻기.
+        if(!confirmString.equals(username)){
+            model.addAttribute(account);
+            model.addAttribute("error","일치하지 않습니다.");
+            return "account/my-profile";
+        }
+        accountService.removeAccount(username);
+
+        return "redirect:/logout";
+    }
+
+    // TODO 프롶필 수정.
+
+
 }

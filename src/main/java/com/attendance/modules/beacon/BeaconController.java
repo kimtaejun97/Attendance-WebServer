@@ -26,6 +26,8 @@ public class BeaconController {
     private final BeaconRepository beaconRepository;
     private final ModelMapper modelMapper;
 
+    private final BeaconService beaconService;
+
     @InitBinder("beaconForm")
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(beaconFormValidator);
@@ -48,8 +50,7 @@ public class BeaconController {
         if(errors.hasErrors()){
             return "user/add-beacon";
         }
-
-        beaconRepository.save(modelMapper.map(beaconForm, Beacon.class));
+        beaconService.addBeacon(beaconForm);
 
         return "redirect:/";
     }

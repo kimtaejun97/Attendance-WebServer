@@ -4,6 +4,44 @@
 <body class =bg-light>
 <nav th:replace="fragments :: navFragment"> </nav>
 
+<div class="container">
+
+    <div class="row mt-5">
+<!--        프로필 이미지-->
+        <div class = "col-2 justify-content-center">
+        <svg data-jdenticon-value="user1" th:data-jdenticon-value="${#authentication.name}" width="200" height="200" class="rounded border bg-light"></svg>
+
+        </div>
+
+<!--        개인정보란-->
+        <div class = "col-8 justify-content-center">
+            <h2 th:text="${account.username}"></h2>
+
+            <h3><i class="fa fa-envelope"> </i> <span th:text="${account.email}"></span></h3>
+        </div>
+
+    </div>
+
+    <div class = "row mt-5">
+        <h2>계정 삭제</h2>
+        <hr class="text-muted">
+        <div class ="col-8 justify-content-center">
+            <form action="#" th:action="@{/account/remove}" method="post">
+                <input class="mb-4 me-2" type="text" name="confirmString" id="confirmString" >
+                <button class = "btn btn-outline-danger" type="submit" >계정 삭제</button><br>
+                <small class="alert alert-danger p-2">계정을 삭제하려면 <span th:text="${account.username}"></span> 을 입력해 주세요.</small>
+
+            </form>
+        </div>
+
+    </div>
+    <div class="alert alert-danger" th:if="${error} !=null" th:text="${error}"></div>
+
+
+</div>
+
+
+
 
 <div th:replace="fragments :: footerFragment"></div>
 </body>

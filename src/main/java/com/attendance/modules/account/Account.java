@@ -1,5 +1,6 @@
 package com.attendance.modules.account;
 
+import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.userplace.AccountPlace;
 import lombok.*;
 
@@ -37,8 +38,11 @@ public class Account {
 
     private LocalDateTime emailTokenLastGeneration;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private Set<AccountPlace> accountPlaces = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private Set<Beacon> beacons = new HashSet<>();
 
 
     public void generateEmailCheckToken() {
