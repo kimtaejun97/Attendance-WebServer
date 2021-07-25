@@ -20,6 +20,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -59,6 +61,7 @@ class PlaceControllerTest {
                 .location("광주")
                 .beaconCode("123df-3fsdf3-dsaf-3")
                 .creator("bigave")
+                .creationDate(LocalDateTime.now())
                 .build());
 
         PlaceForm placeForm = new PlaceForm();
@@ -71,10 +74,10 @@ class PlaceControllerTest {
 
     @AfterEach
     void cleanup(){
-        accountPlaceRepository.deleteAll();
-        placeRepository.deleteAll();
+//        accountPlaceRepository.deleteAll();
+//        placeRepository.deleteAll();
+//        beaconRepository.deleteAll();
         accountRepository.deleteAll();
-        beaconRepository.deleteAll();
     }
 
 
@@ -106,6 +109,7 @@ class PlaceControllerTest {
     @DisplayName("장소 추가 - 입력값 정상")
     @Test
     void createPlace_with_correct_input() throws Exception {
+
         beaconRepository.save(Beacon.builder()
                 .location("광주2")
                 .beaconCode("1df-3fsdf3-dsaf-3")
@@ -121,7 +125,7 @@ class PlaceControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        assertTrue(placeRepository.existsByLocation("광주"));
+        assertTrue(placeRepository.existsByLocation("광"));
     }
 
     @WithMockUser
@@ -138,7 +142,6 @@ class PlaceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/create-place"));
 
-        assertFalse(placeRepository.existsByLocation("nonono"));
     }
 
     @WithMockUser
@@ -243,10 +246,11 @@ class PlaceControllerTest {
     }
 
     @WithAccount(Value = "bigave")
-    @DisplayName("관리자 페이지 : 사용자 제거")
+    @DisplayName("관리자 페이지 : 장소 제거")
     @Test
     void admin_remove_place() throws Exception {
-
+//        Beacon beacon = beaconRepository.findByLocation("광주");
+//        Place place = placeRepository.findbyBeacon(beacon);
 
         mockMvc.perform(get("/place/admin/remove-place/광주"))
                 .andExpect(status().is3xxRedirection())

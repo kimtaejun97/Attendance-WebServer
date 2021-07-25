@@ -60,10 +60,10 @@ public class AccountPlaceController {
     @GetMapping("/public-place/enrollment/{location}")
     public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model, RedirectAttributes attributes){
         Place place = placeRepository.findByLocation(location);
-        account = accountRepository.findById(account.getId()).get();
+        account = accountRepository.findById(account.getUsername()).get();
 
 
-        if(accountPlaceRepository.existsByAccountIdAndPlaceLocation(account.getId(), location)) {
+        if(accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId())) {
             attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
 
             return "redirect:/public-place-list";
@@ -76,8 +76,9 @@ public class AccountPlaceController {
 
     @GetMapping("/account-place/disconnect-place/{location}")
     public String disConnectPlace(@CurrentUser Account account,@PathVariable String location){
+        Place place = placeRepository.findByLocation(location);
 
-        AccountPlace accountPlace = accountPlaceRepository.findByAccountIdAndPlaceLocation(account.getId(), location);
+        AccountPlace accountPlace = accountPlaceRepository.findByAccountUsernameAndPlaceId(account.getUsername(), place.getId());
         accountPlaceRepository.delete(accountPlace);
 
         return "redirect:/my-place";
@@ -92,7 +93,7 @@ public class AccountPlaceController {
 
         Account byUsername = accountRepository.findByUsername(username);
 
-        AccountPlace accountPlace = accountPlaceRepository.findByAccountIdAndPlaceLocation(byUsername.getId(), location);
+        AccountPlace accountPlace = accountPlaceRepository.findByAccountUsernameAndPlaceId(byUsername.getUsername(), place.getId());
         accountPlaceRepository.delete(accountPlace);
 
         return "redirect:/place/management/"+location;

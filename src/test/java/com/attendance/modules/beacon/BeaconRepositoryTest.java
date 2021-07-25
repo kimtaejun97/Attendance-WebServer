@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -21,10 +23,10 @@ public class BeaconRepositoryTest {
                 .beaconCode(beaconCode)
                 .location(location)
                 .creator(constructor)
+                .creationDate(LocalDateTime.now())
                 .build();
 
         Beacon result =  beaconRepository.save(beacon);
-
 
 
         assertThat(result.getLocation()).isEqualTo(location);

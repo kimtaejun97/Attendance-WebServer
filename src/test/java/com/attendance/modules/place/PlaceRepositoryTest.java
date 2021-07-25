@@ -1,8 +1,12 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.beacon.Beacon;
+import com.attendance.modules.beacon.BeaconRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,24 +16,33 @@ public class PlaceRepositoryTest {
     @Autowired
     PlaceRepository placeRepository;
 
+    @Autowired
+    BeaconRepository beaconRepository;
+
     @Test
     public void save(){
+        Beacon beacon = beaconRepository.save(Beacon.builder()
+                .location("광주")
+                .beaconCode("123df-3fsdf3-dsaf-3")
+                .creator("bigave")
+                .creationDate(LocalDateTime.now())
+                .build());
 
-        String location = "광주 동구 10-2";
         String alias = "메가커피";
         String creator = "bigave";
 
         Place place = Place.builder()
-                .location(location)
                 .alias(alias)
                 .creator(creator)
+                .creationDate(LocalDateTime.now())
                 .build();
 
         Place result = placeRepository.save(place);
+        place.setBeacon(beacon);
 
-        assertThat(result.getLocation()).isEqualTo(location);
         assertThat(result.getAlias()).isEqualTo(alias);
         assertThat(result.getCreator()).isEqualTo(creator);
+        assertThat(result.getBeacon()).isEqualTo(beacon);
 
     }
 }

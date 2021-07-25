@@ -11,6 +11,7 @@ import org.springframework.security.access.method.P;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 @Data
 public class SignUpForm {
@@ -27,6 +28,8 @@ public class SignUpForm {
     @NotBlank
     @Length(min = 8, max = 50)
     private String password;
+
+    private LocalDateTime creationDate;
 
     private String adminCode;
 

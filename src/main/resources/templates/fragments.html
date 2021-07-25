@@ -32,13 +32,16 @@
                 </a>
                 <ul class="dropdown-menu bg-dark" aria-labelledby="navDropDown">
                     <li>
-                        <a class="dropdown-item text-muted" href="#" th:href="@{account/my-profile}" sec:authorize="isAuthenticated()">Profile</a>
+                        <a class="dropdown-item text-muted" href="#" th:href="@{/account/my-profile}" sec:authorize="isAuthenticated()">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="dropdown-item text-muted" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">Admin Page</a>
                     </li>
-                    <li >
+                    <li>
                         <a class="dropdown-item text-muted" href="#" th:href="@{/my-place}" sec:authorize="isAuthenticated()">My Place</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-muted" href="#" th:href="@{/beacon/my-beacon}" sec:authorize="isAuthenticated()">My Beacon</a>
                     </li>
                     <li>
                         <a class="dropdown-item text-muted" href="#" th:href="@{/attendance}" sec:authorize="isAuthenticated()">Check</a>

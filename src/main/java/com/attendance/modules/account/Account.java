@@ -16,27 +16,32 @@ import java.util.UUID;
 @Entity
 public class Account {
 
-    @Id @GeneratedValue
-    private Long id;
-
-    @Column(unique = true)
+    @Id
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(unique = true)
     private String email;
 
+    @Lob @Basic(fetch = FetchType.EAGER)
+    private String profileImage;
+
+    private LocalDateTime creationDate;
+
+    private String phoneNumber;
+
+    private String address;
+
+    private Role role;
+
     private boolean emailVerified;
 
     private String emailCheckToken;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
-    private String profileImage;
-
-    private Role role;
-
     private LocalDateTime emailTokenLastGeneration;
+
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private Set<AccountPlace> accountPlaces = new HashSet<>();

@@ -5,6 +5,7 @@ import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.account.Role;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.form.PlaceFormValidator;
+import com.attendance.modules.place.form.PlaceListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,7 @@ public class PlaceController {
 
     @GetMapping("/admin-page")
     public String adminPage(Model model){
-        List<PlaceListResponseDto> places = placeService.getPlaceList();
+        List<PlaceListResponseDto> places = placeService.getAllPlaces();
         model.addAttribute("places", places);
 
         return "admin/admin-page";
@@ -41,7 +42,7 @@ public class PlaceController {
     public String adminPlaceInfo (@PathVariable String location, Model model){
 
         Place place = placeRepository.findByLocation(location);
-        List<String> users = placeService.getUsersFromPlace(place);
+        List<String> users = placeService.getUsersByPlace(place);
 
         model.addAttribute(place);
         model.addAttribute("users",users);
@@ -72,7 +73,7 @@ public class PlaceController {
     @GetMapping("/my-place")
     public String myPlace(@CurrentUser Account account, Model model){
 
-        List<PlaceListResponseDto> places = placeService.getPlacesFromUser(account);
+        List<PlaceListResponseDto> places = placeService.getPlacesByAccount(account);
         model.addAttribute("places", places);
 
         return "user/my-place";
@@ -105,7 +106,7 @@ public class PlaceController {
             return "redirect:/error";
         }
 
-        List<String> users = placeService.getUsersFromPlace(place);
+        List<String> users = placeService.getUsersByPlace(place);
         model.addAttribute(place);
         model.addAttribute("users",users);
 

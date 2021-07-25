@@ -70,12 +70,12 @@ class BeaconControllerTest {
     @Test
     void addBeacon_duplicated_location() throws Exception {
 
-        when(mockBeaconRepository.existsByLocation("asdf-asdf-aej2h3")).thenReturn(true);
+        when(mockBeaconRepository.existsByLocation("test-location")).thenReturn(true);
 
         mockMvc.perform(post("/add-beacon")
                 .param("beaconCode","asdf-asdf-aej2h3")
                 .param("location", "test-location")
-                .param("cteator","bigave")
+                .param("creator","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-beacon"))
@@ -88,12 +88,12 @@ class BeaconControllerTest {
     @Test
     void addBeacon_duplicated_beacon() throws Exception {
 
-        when(mockBeaconRepository.existsByBeaconCode("test-location")).thenReturn(true);
+        when(mockBeaconRepository.existsByBeaconCode("asdf-asdf-aej2h3")).thenReturn(true);
 
         mockMvc.perform(post("/add-beacon")
                 .param("beaconCode","asdf-asdf-aej2h3")
                 .param("location", "test-location")
-                .param("cteator","bigave")
+                .param("creator","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-beacon"))

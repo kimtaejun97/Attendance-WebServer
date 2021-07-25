@@ -12,25 +12,23 @@
 <div class="container">
     <table class="table">
         <thead>
-        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col">생성자</th><th scope="col"></th><th scope="col"></th>
+        <th scope="col">별칭</th><th scope="col">위치</th><th scope="col">생성자</th><th scope="col">생성 날짜</th><th scope="col"></th><th scope="col"></th><th scope="col"></th>
         </thead>
         <tbody>
         <tr th:each="place : ${places}">
             <td th:text="${place.alias}"></td>
-            <td th:text="${place.location}"></td>
+            <td th:text="${place.beacon.location}"></td>
             <td th:text="${place.creator}"></td>
-            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendance/my/' + ${place.location}}">출입 현황</a></td>
-            <td th:if="${place.creator} == ${#authentication.name}" ><a class="btn btn-outline-secondary" href="#" th:href="@{'/place/management/' + ${place.location}}">관리</a></td>
-            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator} == ${#authentication.name}" th:href="@{'/place/remove-place/' + ${place.location}}">삭제</a></td>
-            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator} != ${#authentication.name}" th:href="@{'/account-place/disconnect-place/' + ${place.location}}">탈퇴</a></td>
+            <td th:text="${place.creationDate}"></td>
+            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendance/my/' + ${place.beacon.location}}">출입 현황</a></td>
+            <td th:if="${place.creator} == ${#authentication.name}" ><a class="btn btn-outline-secondary" href="#" th:href="@{'/place/management/' + ${place.beacon.location}}">관리</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator} == ${#authentication.name}" th:href="@{'/place/remove-place/' + ${place.beacon.location}}">삭제</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator} != ${#authentication.name}" th:href="@{'/account-place/disconnect-place/' + ${place.beacon.location}}">탈퇴</a></td>
             <td></td>
         </tr>
         </tbody>
     </table>
 
-<!--    <div class="d-grid gap-2">-->
-<!--        <a class ="btn btn-outline-primary " id="btn-addLecture" th:href="@{/create-place}">강의 추가</a>-->
-<!--    </div>-->
 </div>
 
 <th:block th:replace="fragments :: footerFragment"/>

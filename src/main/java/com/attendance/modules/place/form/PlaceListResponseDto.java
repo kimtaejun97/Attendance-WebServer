@@ -1,26 +1,20 @@
 package com.attendance.modules.place.form;
 
+import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.place.Place;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
+
 @Data
-public class PlaceForm {
-
-    @NotBlank
-    private String location;
-
-    @NotBlank
+public class PlaceListResponseDto {
     private String alias;
-
-    @NotBlank
     private String creator;
-
     private LocalDateTime creationDate;
-
     private String isPublic;
 
-
+    private Beacon beacon;
 }

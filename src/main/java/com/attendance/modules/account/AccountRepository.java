@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface AccountRepository extends JpaRepository<Account,Long> {
+public interface AccountRepository extends JpaRepository<Account,String> {
 
     boolean existsByEmail(String email);
 

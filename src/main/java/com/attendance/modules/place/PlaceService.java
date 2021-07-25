@@ -2,7 +2,10 @@ package com.attendance.modules.place;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
+import com.attendance.modules.beacon.Beacon;
+import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
+import com.attendance.modules.place.form.PlaceListResponseDto;
 import com.attendance.modules.userplace.AccountPlace;
 import com.attendance.modules.userplace.AccountPlaceService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +29,7 @@ public class PlaceService {
     private final AccountPlaceService accountPlaceService;
 
     private final AccountRepository accountRepository;
+    private final BeaconRepository beaconRepository;
     private final ModelMapper modelMapper;
 
     public void createPlace(PlaceForm placeForm, String isPublic) {
@@ -34,27 +39,46 @@ public class PlaceService {
         else{
             placeForm.setIsPublic(isPublic);
         }
-        placeRepository.save(modelMapper.map(placeForm, Place.class));
+        placeForm.setCreationDate(LocalDateTime.now());
+
+        Place place = placeRepository.save(modelMapper.map(placeForm, Place.class));
+        Beacon beacon =  beaconRepository.findByLocation(placeForm.getLocation());
+
+//        beacon.setPlace(place);
+        place.setBeacon(beacon);
+
         accountPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
+
+
+
     }
 
-    public List<PlaceListResponseDto> getPlaceList() {
-
+    public List<PlaceListResponseDto> getAllPlaces() {
         return placeRepository.findAll().stream()
-                .map(PlaceListResponseDto::new)
+                .map(p-> modelMapper.map(p,PlaceListResponseDto.class))
                 .collect(Collectors.toList());
+
+
+//        return placeRepository.findAll().stream()
+//                .map(p->{
+//                    String location = beaconRepository.findByPlace(p).getLocation();
+//                    PlaceListResponseDto map = modelMapper.map(p, PlaceListResponseDto.class);
+//                    map.setLocation(location);
+//                    return map;
+//                }).collect(Collectors.toList());
+
     }
 
-    public List<PlaceListResponseDto> getPlacesFromUser(Account account) {
-        Optional<Account> byId = accountRepository.findById(account.getId());
+    public List<PlaceListResponseDto> getPlacesByAccount(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getUsername());
 
         return byId.get().getAccountPlaces().stream()
                 .map(AccountPlace::getPlace)
-                .map(PlaceListResponseDto::new)
+                .map(p-> modelMapper.map(p,PlaceListResponseDto.class))
                 .collect(Collectors.toList());
     }
 
-    public List<String> getUsersFromPlace(Place place) {
+    public List<String> getUsersByPlace(Place place) {
 
         Set<AccountPlace> placeAccounts = place.getAccountPlaces();
 
@@ -76,7 +100,7 @@ public class PlaceService {
     public List<PlaceListResponseDto> getPublicPlaceList() {
 
         return placeRepository.findByIsPublic("on").stream()
-                .map(PlaceListResponseDto :: new)
+                .map(p-> modelMapper.map(p,PlaceListResponseDto.class))
                 .collect(Collectors.toList());
 
     }

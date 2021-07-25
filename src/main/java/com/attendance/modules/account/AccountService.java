@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -39,16 +40,15 @@ public class AccountService implements UserDetailsService{
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
 
-    private final PlaceRepository placeRepository;
-    private final BeaconRepository beaconRepository;
 
     public Account createNewAccount(SignUpForm signUpForm) {
         Role role = Role.USER;
         if(signUpForm.getAdminCode() == "Admin1234"){
             role = Role.ADMIN;
         }
-
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        signUpForm.setCreationDate(LocalDateTime.now());
+
         Account account = modelMapper.map(signUpForm, Account.class);
         account.setRole(role);
         account.generateEmailCheckToken();

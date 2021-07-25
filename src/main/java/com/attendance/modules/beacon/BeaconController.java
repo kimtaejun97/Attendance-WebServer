@@ -4,6 +4,7 @@ import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.beacon.form.BeaconForm;
 import com.attendance.modules.beacon.form.BeaconFormValidator;
+import com.attendance.modules.place.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.Set;
 import java.util.UUID;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -53,6 +57,27 @@ public class BeaconController {
         beaconService.addBeacon(beaconForm);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/beacon/my-beacon")
+    public String myBeacon(@CurrentUser Account account, Model model){
+        Set<Beacon> beacons =  beaconService.getBeaconByAccount(account.getUsername());
+
+        model.addAttribute("beacons", beacons);
+
+        return "user/my-beacon";
+
+    }
+
+    @GetMapping("/beacon/remove/{location}")
+    public String removeBeacon(@CurrentUser Account account, @PathVariable String location){
+        Beacon beacon = beaconRepository.findByLocation(location);
+        if(!beacon.getCreator().equals(account.getUsername())){
+            return "redirect:/error";
+        }
+
+        beaconRepository.delete(beacon);
+        return "redirect:/beacon/my-beacon";
     }
 
 }
