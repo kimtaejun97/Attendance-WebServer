@@ -19,7 +19,7 @@ public class AccountPlace {
     @JoinColumn
     private Account account;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn
     private Place place;
 

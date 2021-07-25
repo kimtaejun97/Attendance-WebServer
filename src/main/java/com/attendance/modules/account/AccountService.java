@@ -43,7 +43,7 @@ public class AccountService implements UserDetailsService{
 
     public Account createNewAccount(SignUpForm signUpForm) {
         Role role = Role.USER;
-        if(signUpForm.getAdminCode() == "Admin1234"){
+        if(signUpForm.getAdminCode().equals("Admin1234")){
             role = Role.ADMIN;
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));

@@ -26,7 +26,7 @@
             </li>
 
             <!-- Drop Down Menu  -->
-            <li class ="nav-item dropdown" sec:authorize="isAuthenticated()">
+            <li class ="nav-item dropdown me-5" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" id="navDropDown", aria-expanded="false">
                     <span class= "text-muted" sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></span>
                 </a>
@@ -34,7 +34,7 @@
                     <li>
                         <a class="dropdown-item text-muted" href="#" th:href="@{/account/my-profile}" sec:authorize="isAuthenticated()">Profile</a>
                     </li>
-                    <li class="nav-item">
+                    <li>
                         <a class="dropdown-item text-muted" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">Admin Page</a>
                     </li>
                     <li>
