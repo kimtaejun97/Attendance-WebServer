@@ -16,7 +16,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">위치</h5>
-                <p class="card-text" th:text="${place.location}"></p>
+                <p class="card-text" th:text="${place.beacon.location}"></p>
             </div>
         </div>
         <div class="card">
@@ -40,8 +40,8 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td ><a th:href="@{'/attendance/'+ ${user + '/' + place.location}}" th:text="${user}"></a></td>
-            <td><a class="btn btn-outline-danger" th:href="@{'/account-place/remove-user/' + ${user + '/' + place.location}}">제거</a></td>
+            <td ><a th:href="@{'/attendance/'+ ${user + '/' + place.beacon.location}}" th:text="${user}"></a></td>
+            <td><a class="btn btn-outline-danger" th:href="@{'/account-place/remove-user/' + ${user + '/' + place.beacon.location}}">제거</a></td>
         </tr>
         </tbody>
     </table>

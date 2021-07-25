@@ -35,10 +35,11 @@ public class PlaceRepositoryTest {
                 .alias(alias)
                 .creator(creator)
                 .creationDate(LocalDateTime.now())
+                .isPublic("on")
                 .build();
+        place.setBeacon(beacon);
 
         Place result = placeRepository.save(place);
-        place.setBeacon(beacon);
 
         assertThat(result.getAlias()).isEqualTo(alias);
         assertThat(result.getCreator()).isEqualTo(creator);

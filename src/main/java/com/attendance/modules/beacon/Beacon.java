@@ -28,8 +28,6 @@ public class Beacon {
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "beacon")
     private Place place;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    private Account account;
 
 
 

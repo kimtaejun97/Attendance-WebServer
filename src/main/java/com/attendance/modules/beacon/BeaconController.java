@@ -1,6 +1,7 @@
 package com.attendance.modules.beacon;
 
 import com.attendance.modules.account.Account;
+import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.beacon.form.BeaconForm;
 import com.attendance.modules.beacon.form.BeaconFormValidator;
@@ -31,6 +32,7 @@ public class BeaconController {
     private final ModelMapper modelMapper;
 
     private final BeaconService beaconService;
+    private final AccountRepository accountRepository;
 
     @InitBinder("beaconForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -72,12 +74,17 @@ public class BeaconController {
     @GetMapping("/beacon/remove/{location}")
     public String removeBeacon(@CurrentUser Account account, @PathVariable String location){
         Beacon beacon = beaconRepository.findByLocation(location);
+        Account byUsername = accountRepository.findByUsername(account.getUsername());
+
         if(!beacon.getCreator().equals(account.getUsername())){
             return "redirect:/error";
         }
 
+        byUsername.getBeacons().remove(beacon);
         beaconRepository.delete(beacon);
         return "redirect:/beacon/my-beacon";
     }
+
+
 
 }

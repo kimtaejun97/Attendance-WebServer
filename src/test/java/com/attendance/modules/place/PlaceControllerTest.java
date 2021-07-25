@@ -8,7 +8,7 @@ import com.attendance.modules.account.Role;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.userplace.AccountPlaceRepository;
+import com.attendance.modules.accountplace.AccountPlaceRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,10 +74,10 @@ class PlaceControllerTest {
 
     @AfterEach
     void cleanup(){
-//        accountPlaceRepository.deleteAll();
-//        placeRepository.deleteAll();
-//        beaconRepository.deleteAll();
+        accountPlaceRepository.deleteAll();
+        placeRepository.deleteAll();
         accountRepository.deleteAll();
+        beaconRepository.deleteAll();
     }
 
 
@@ -114,6 +114,7 @@ class PlaceControllerTest {
                 .location("광주2")
                 .beaconCode("1df-3fsdf3-dsaf-3")
                 .creator("bigave")
+                .creationDate(LocalDateTime.now())
                 .build());
 
         mockMvc.perform(post("/create-place")
@@ -125,7 +126,7 @@ class PlaceControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        assertTrue(placeRepository.existsByLocation("광"));
+        assertTrue(placeRepository.existsByLocation("광주"));
     }
 
     @WithMockUser
@@ -168,6 +169,7 @@ class PlaceControllerTest {
                 .location("광주2")
                 .beaconCode("df-3fsdf3-dsaf-3")
                 .creator("bigave")
+                .creationDate(LocalDateTime.now())
                 .build());
 
         mockMvc.perform(post("/create-place")

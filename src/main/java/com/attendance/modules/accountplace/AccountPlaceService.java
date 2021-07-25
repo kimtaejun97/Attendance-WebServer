@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.accountplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
@@ -18,9 +18,8 @@ public class AccountPlaceService {
 
     private final AccountPlaceRepository accountPlaceRepository;
 
-    public void connectUserPlace(String username, String location) {
+    public void connectUserPlace(String username, Place place) {
         Account account= accountRepository.findByUsername(username);
-        Place place = placeRepository.findByLocation(location);
 
             accountPlaceRepository.save(
                     AccountPlace.builder()

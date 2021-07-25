@@ -1,7 +1,7 @@
 package com.attendance.modules.place;
 
 import com.attendance.modules.beacon.Beacon;
-import com.attendance.modules.userplace.AccountPlace;
+import com.attendance.modules.accountplace.AccountPlace;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +28,7 @@ public class Place {
     @Column(nullable = false)
     private String isPublic;
 
+    @Column(nullable = false)
     private LocalDateTime creationDate;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)

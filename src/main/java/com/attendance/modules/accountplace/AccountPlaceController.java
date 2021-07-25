@@ -1,12 +1,12 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.accountplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
-import com.attendance.modules.userplace.form.UserForm;
-import com.attendance.modules.userplace.form.UserFormValidator;
+import com.attendance.modules.accountplace.form.UserForm;
+import com.attendance.modules.accountplace.form.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,10 +49,11 @@ public class AccountPlaceController {
 
     @PostMapping("place/add-user/{location}")
     public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location){
+        Place place = placeRepository.findByLocation(location);
         if(errors.hasErrors()){
             return "user/add-user";
         }
-        accountPlaceService.connectUserPlace(userForm.getUsername(),location);
+        accountPlaceService.connectUserPlace(userForm.getUsername(),place);
 
         return "redirect:/user/place/"+location;
     }
@@ -69,7 +70,7 @@ public class AccountPlaceController {
             return "redirect:/public-place-list";
         }
 
-        accountPlaceService.connectUserPlace(account.getUsername(), location);
+        accountPlaceService.connectUserPlace(account.getUsername(), place);
         return "redirect:/my-place";
 
     }

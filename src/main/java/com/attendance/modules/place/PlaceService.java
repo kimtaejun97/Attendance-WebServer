@@ -6,8 +6,8 @@ import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.form.PlaceListResponseDto;
-import com.attendance.modules.userplace.AccountPlace;
-import com.attendance.modules.userplace.AccountPlaceService;
+import com.attendance.modules.accountplace.AccountPlace;
+import com.attendance.modules.accountplace.AccountPlaceService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -44,10 +44,9 @@ public class PlaceService {
         Place place = placeRepository.save(modelMapper.map(placeForm, Place.class));
         Beacon beacon =  beaconRepository.findByLocation(placeForm.getLocation());
 
-//        beacon.setPlace(place);
         place.setBeacon(beacon);
 
-        accountPlaceService.connectUserPlace(placeForm.getCreator(), placeForm.getLocation());
+        accountPlaceService.connectUserPlace(placeForm.getCreator(), place);
 
 
 

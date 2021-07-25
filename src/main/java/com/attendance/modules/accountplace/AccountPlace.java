@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.accountplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.place.Place;

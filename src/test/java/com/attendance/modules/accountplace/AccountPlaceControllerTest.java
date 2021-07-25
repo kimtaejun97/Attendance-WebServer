@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.accountplace;
 
 import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
@@ -161,8 +161,8 @@ class AccountPlaceControllerTest {
     @DisplayName("장소에서 탈퇴.")
     @Test
     void disconnectPlace() throws Exception {
-        accountPlaceService.connectUserPlace("kim","광주");
         Place place = placeRepository.findByLocation("광주");
+        accountPlaceService.connectUserPlace("kim",place);
 
         mockMvc.perform(get("/account-place/disconnect-place/광주"))
                 .andExpect(status().is3xxRedirection())
@@ -183,10 +183,11 @@ class AccountPlaceControllerTest {
                 .username("kim")
                 .password("123123123")
                 .email("test22@eee.eee")
+                .creationDate(LocalDateTime.now())
                 .role(Role.USER)
                 .build());
 
-        accountPlaceService.connectUserPlace("kim","광주");
+        accountPlaceService.connectUserPlace("kim",place);
 
         mockMvc.perform(get("/account-place/remove-user/kim/광주"))
                 .andExpect(status().is3xxRedirection())
@@ -205,10 +206,11 @@ class AccountPlaceControllerTest {
                 .username("kim")
                 .password("123123123")
                 .email("test22@eee.eee")
+                .creationDate(LocalDateTime.now())
                 .role(Role.USER)
                 .build());
 
-        accountPlaceService.connectUserPlace("kim","광주");
+        accountPlaceService.connectUserPlace("kim",place);
 
         mockMvc.perform(get("/account-place/remove-user/kim/광주"))
                 .andExpect(status().is3xxRedirection())

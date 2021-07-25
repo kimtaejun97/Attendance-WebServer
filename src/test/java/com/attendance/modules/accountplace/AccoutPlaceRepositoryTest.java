@@ -1,4 +1,4 @@
-package com.attendance.modules.userplace;
+package com.attendance.modules.accountplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
@@ -39,10 +39,11 @@ public class AccoutPlaceRepositoryTest {
                 .build());
 
         Account account = accountRepository.save(Account.builder()
-        .username("bigave")
-        .email("test@email.com")
-        .password("123123123")
-        .build());
+            .username("bigave")
+            .email("test@email.com")
+            .password("123123123")
+            .creationDate(LocalDateTime.now())
+            .build());
 
         Place place = placeRepository.save(Place.builder()
                 .alias("광주")

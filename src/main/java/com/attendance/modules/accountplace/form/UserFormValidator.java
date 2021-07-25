@@ -1,10 +1,10 @@
-package com.attendance.modules.userplace.form;
+package com.attendance.modules.accountplace.form;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
-import com.attendance.modules.userplace.AccountPlaceRepository;
+import com.attendance.modules.accountplace.AccountPlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

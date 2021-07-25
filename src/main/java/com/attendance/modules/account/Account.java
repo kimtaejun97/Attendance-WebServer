@@ -1,7 +1,7 @@
 package com.attendance.modules.account;
 
 import com.attendance.modules.beacon.Beacon;
-import com.attendance.modules.userplace.AccountPlace;
+import com.attendance.modules.accountplace.AccountPlace;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Builder @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-@EqualsAndHashCode(of= "id")
 @Entity
 public class Account {
 
@@ -28,6 +27,7 @@ public class Account {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
+    @Column(nullable = false)
     private LocalDateTime creationDate;
 
     private String phoneNumber;

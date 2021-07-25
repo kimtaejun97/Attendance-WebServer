@@ -200,6 +200,7 @@ class AccountControllerTest {
                 .username("test")
                 .email("test@your.com")
                 .password("12345678")
+                .creationDate(LocalDateTime.now())
                 .build();
         Account newAccount = accountRepository.save(account);
         newAccount.generateEmailCheckToken();
