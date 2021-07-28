@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: headerFragment" ></head>
+<body class =bg-light>
+<nav th:replace="fragments :: navFragment"> </nav>
+
+<div class="container justify-content-center">
+    <div class = "col-2">
+        <div th:replace="fragments :: settingsFragment"></div>
+    </div>
+
+
+
+    <div class="col-8">
+        <!-- TODO 패스워드 변경 -->
+        <div class="row mt-3">
+            <form action="#" th:action="@{/settings/passwordForm}" th:object="${passwordForm}">
+                <div class="form-group">
+                    <label for="currentPassword">현재 비밀번호</label>
+                    <input id="currentPassword" type="text" th:field="*{currentPassword}" class="form-control"
+                           placeholder="현재 비밀번호" aria-describedby="currentPasswordHelp" required>
+                    <small id="currentPasswordHelp" class="form-text text-muted">
+                        본인 확인을 위해 현재 비밀번호를 입력해주세요.
+                    </small>
+                    <small class="invalid-feedback">비밀번호를 확인하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">Password Error</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">새 비밀번호</label>
+                    <input id="newPassword" type="text" th:field="*{newPassword}" class="form-control"
+                           placeholder="새 비밀번호" aria-describedby="newPasswordHelp" required minlength="8", maxlength="50">
+                    <small id="newPassworddHelp" class="form-text text-muted">
+                        새로운 비밀번호를 입력해주세요.
+                    </small>
+                    <small class="invalid-feedback">비밀번호를 확인하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">Password Error</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">비밀번호 확</label>
+                    <input id="confirmPassword" type="text" th:field="*{confirmPassword}" class="form-control"
+                           placeholder="비밀번호 확인" aria-describedby="confirmPasswordHelp" required>
+                    <small id="confirmPassworddHelp" class="form-text text-muted">
+                        입력한 비밀번호와 동일하게 입력해주세요.
+                    </small>
+                    <small class="invalid-feedback">비밀번호를 확인하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Password Error</small>
+                </div>
+            </form>
+        </div>
+
+
+        <div class = "row mt-5">
+            <h2>계정 삭제</h2>
+            <hr class="text-muted">
+            <div class ="col-8 justify-content-center">
+                <form action="#" th:action="@{/account/remove}" method="post">
+                    <input class="mb-4 me-2" type="text" name="confirmString" id="confirmString" >
+                    <button class = "btn btn-outline-danger" type="submit" >계정 삭제</button><br>
+                    <small class="alert alert-danger p-2">계정을 삭제하려면 <span th:text="${account.username}"></span> 을 입력해 주세요.</small>
+
+                </form>
+            </div>
+
+        </div>
+        <div class="alert alert-danger" th:if="${error} !=null" th:text="${error}"></div>
+    </div>
+
+
+
+</div>
+
+
+<div th:replace="fragments :: footerFragment"></div>
+<script th:replace="fragments :: form-validation"></script>
+</body>
+</html>

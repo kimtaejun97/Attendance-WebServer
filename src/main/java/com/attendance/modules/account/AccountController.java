@@ -109,7 +109,8 @@ public class AccountController {
         return "redirect:/logout";
     }
 
-    // TODO 프롶필 수정.
+    // TODO 프로필 수정. 정보 변경, 계정(패스워드, 닉네임 변경?)
+
 
 
 }

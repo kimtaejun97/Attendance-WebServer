@@ -57,11 +57,18 @@
 
         </ul>
     </div>
-
-
-
-
 </nav>
+
+<div th:fragment="settingsFragment">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="home-tab" data-bs-toggle="tab"  type="button" role="tab" aria-controls="home" aria-selected="true">프로필</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-red" id="profile-tab" data-bs-toggle="tab"  type="button" role="tab" aria-controls="profile" aria-selected="false">계정</a>
+        </li>
+    </ul>
+</div>
 
 
 <div th:fragment="footerFragment">
