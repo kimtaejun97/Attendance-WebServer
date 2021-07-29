@@ -5,6 +5,7 @@ import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.settings.form.PasswordForm;
+import com.attendance.modules.settings.form.PasswordFormValidator;
 import com.attendance.modules.settings.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,12 +29,17 @@ public class SettingsController {
     private final SettingsService settingsService;
 
     private final ModelMapper modelMapper;
-
+    private final PasswordFormValidator passwordFormValidator;
     private final AccountService accountService;
+
+    @InitBinder("passwordForm")
+    public void passwordInitBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(passwordFormValidator);
+    }
 
 
     @GetMapping("/settings/profile")
-    public String profileSettingForm(@CurrentUser Account account, Model model){
+    public String profileUpdateForm(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, ProfileForm.class));
 
@@ -39,23 +47,24 @@ public class SettingsController {
     }
 
     @PostMapping("/settings/profile")
-    public String profileSetting(@CurrentUser Account account,ProfileForm profileForm , Model model){
-        settingsService.profileSetting(account.getUsername(), profileForm);
-        model.addAttribute(account);
+    public String profileUpdate(@CurrentUser Account account,ProfileForm profileForm){
+        Account newAccount = settingsService.profileSetting(account.getUsername(), profileForm);
+
         return "redirect:/account/my-profile";
     }
 
 
     @GetMapping ("/settings/password")
-    public String accountSetting(@CurrentUser Account account, Model model){
-        model.addAttribute(new PasswordForm());
-        model.addAttribute(account);
+    public String passwordUpdateForm(@CurrentUser Account account, Model model){
+        PasswordForm passwordForm = new PasswordForm();
+        passwordForm.setUsername(account.getUsername());
+        model.addAttribute(passwordForm);
         return "settings/account";
     }
 
 
     @PostMapping("/settings/password")
-    public String changePassword(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors, RedirectAttributes attributes){
+    public String passwordUpdate(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors, RedirectAttributes attributes){
 
         if(errors.hasErrors()){
             return "settings/account";
@@ -63,7 +72,7 @@ public class SettingsController {
 
         settingsService.changePassword(account.getUsername(), passwordForm);
         attributes.addFlashAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
-        return "redirect:/settings/account";
+        return "redirect:/settings/password";
 
     }
 
@@ -83,3 +92,5 @@ public class SettingsController {
 
     // TODO 프로필 수정. 정보 변경, 계정(패스워드, 닉네임 변경?)
 }
+
+

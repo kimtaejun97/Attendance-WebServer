@@ -59,13 +59,13 @@
     </div>
 </nav>
 
-<div th:fragment="settingsFragment">
+<div th:fragment="settingsFragment (currentMenu)">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link" id="home-tab" data-bs-toggle="tab"  type="button" role="tab" aria-controls="home" aria-selected="true">프로필</a>
+            <a class="nav-link" th:href="@{/settings/profile}" th:classappend="${currentMenu =='profile'}? active" role="tab"  >프로필</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-red" id="profile-tab" data-bs-toggle="tab"  type="button" role="tab" aria-controls="profile" aria-selected="false">계정</a>
+            <a class="nav-link text-red" th:href="@{/settings/password}" th:classappend="${currentMenu =='password'}? active" role="tab">패스워드</a>
         </li>
     </ul>
 </div>

@@ -26,9 +26,11 @@ public class SettingsService {
 
     }
 
-    public void profileSetting(String username, ProfileForm profileForm) {
+    public Account profileSetting(String username, ProfileForm profileForm) {
         Account account = accountRepository.findByUsername(username);
 
         modelMapper.map(profileForm, account);
+
+        return account;
     }
 }

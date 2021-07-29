@@ -5,17 +5,14 @@
 <nav th:replace="fragments :: navFragment"> </nav>
 
 <div class="container justify-content-center">
-    <div class = "col-2">
-        <div th:replace="fragments :: settingsFragment"></div>
-    </div>
-
-
+    <div th:replace="fragments :: settingsFragment (currentMenu='password')"></div>
 
     <div class="col-8">
         <!-- TODO 패스워드 변경 -->
         <div class="row mt-3">
-            <form action="#" th:action="@{/settings/passwordForm}" th:object="${passwordForm}">
-                <input type = text th:value="${account.username}" hidden>
+            <form class = "needs-validation prevent-duplicate-submit" action="#" th:action="@{/settings/password}" th:object="${passwordForm}" novalidate method="post">
+                <input type ="text" th:field="*{username}" hidden>
+
                 <div class="form-group">
                     <label for="currentPassword">현재 비밀번호</label>
                     <input id="currentPassword" type="password" th:field="*{currentPassword}" class="form-control"
@@ -54,6 +51,9 @@
                             aria-describedby="submitHelp">변경하기</button>
                 </div>
             </form>
+            <div th:if="${success} != null" class="m-5">
+                <p class="alert alert-info" th:text="${success}"></p>
+            </div>
         </div>
 
     </div>
@@ -65,5 +65,6 @@
 
 <div th:replace="fragments :: footerFragment"></div>
 <script th:replace="fragments :: form-validation"></script>
+<script th:replace="fragments :: prevent-duplicate-submit"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 <nav th:replace="fragments :: navFragment"> </nav>
 
 <div class="container">
+    <div th:replace="fragments :: settingsFragment (currentMenu='profile')"></div>
 
     <div class="row mt-5">
         <!--        프로필 이미지-->
@@ -15,10 +16,10 @@
 
         <!--        개인정보란-->
         <div class = "col-8 justify-content-center">
-            <form action="#" th:action="@{/settings/profile}" method="post" th:object="${profileForm}">
+            <form class="prevent-duplicate-submit"action="#" th:action="@{/settings/profile}" method="post" th:object="${profileForm}">
                 <div class="form-group">
                     <label for="phoneNumber">전화 번호</label>
-                    <input id="phoneNumber" type="number" th:field="*{phoneNumber}" class="form-control" th:value="${profileForm.phoneNumber}"
+                    <input id="phoneNumber" type="tel" th:field="*{phoneNumber}" class="form-control" th:value="${profileForm.phoneNumber}"
                            placeholder="전화 번호" aria-describedby="phoneNumberHelp" >
                     <small id="phoneNumberHelp" class="form-text text-muted">
                         전화번호를 입력해 주세요.
@@ -29,7 +30,7 @@
 
                 <div class="form-group">
                     <label for="address">주소</label>
-                    <input id="address" type="address" th:field="*{address}" class="form-control" th:value="${profileForm.address}"
+                    <input id="address" type="text" th:field="*{address}" class="form-control" th:value="${profileForm.address}"
                            placeholder="주소" aria-describedby="addressHelp" >
                     <small id="addressHelp" class="form-text text-muted">
                         주소를 입력해 주세요.
@@ -58,5 +59,7 @@
 
 
 <div th:replace="fragments :: footerFragment"></div>
+<script th:replace="fragments :: prevent-duplicate-submit"></script>
+
 </body>
 </html>

@@ -88,10 +88,11 @@ public class AccountController {
     // TODO 나의 프로필 : 더 채울지
     @GetMapping("/account/my-profile")
     public String myProfile(@CurrentUser Account account, Model model){
+        Account newAccount = accountRepository.findByUsername(account.getUsername());
 
-        model.addAttribute(account);
+
+        model.addAttribute(newAccount);
         return "account/my-profile";
-
 
     }
 

@@ -268,34 +268,6 @@ class AccountControllerTest {
 
     }
 
-    @WithAccount(Value = "bigave")
-    @DisplayName("계정 제거 - 올바른 입력")
-    @Test
-    void removeAccount_correct() throws Exception {
-        mockMvc.perform(post("/account/remove")
-                .param("confirmString", "bigave")
-                .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/logout"));
 
-        assertFalse(accountRepository.existsByUsername("bigave"));
-
-    }
-
-    @WithAccount(Value = "bigave")
-    @DisplayName("계정 제거 - 잘못된 확인값 입력")
-    @Test
-    void removeAccount_wrong() throws Exception {
-        mockMvc.perform(post("/account/remove")
-                .param("confirmString", "wrong")
-                .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("account/my-profile"))
-                .andExpect(model().attributeExists("account"))
-                .andExpect(model().attributeExists("error"));
-
-        assertTrue(accountRepository.existsByUsername("bigave"));
-
-    }
 
 }
