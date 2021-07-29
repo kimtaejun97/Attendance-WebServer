@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class PasswordForm {
 
+    private String username;
+
     @NotBlank
     private String currentPassword;
 

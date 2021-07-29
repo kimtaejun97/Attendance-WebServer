@@ -39,6 +39,7 @@ class MainControllerTest {
         signUpForm.setEmail("test@email.com");
         signUpForm.setUsername("bigave");
         signUpForm.setPassword("12345678");
+        signUpForm.setAdminCode("");
 
         accountService.createNewAccount(signUpForm);
 

@@ -7,17 +7,19 @@
 <div class="container">
 
     <div class="row mt-5">
-<!--        프로필 이미지-->
+    <!--      프로필 이미지-->
         <div class = "col-2 justify-content-center">
         <svg data-jdenticon-value="user1" th:data-jdenticon-value="${#authentication.name}" width="200" height="200" class="rounded border bg-light"></svg>
 
         </div>
 
-<!--        개인정보란-->
+    <!--   개인정보란-->
         <div class = "col-8 justify-content-center">
             <h2 th:text="${account.username}"></h2>
 
             <h3><i class="fa fa-envelope"> </i> <span th:text="${account.email}"></span></h3>
+            <h3><i class="fa fa-phone"> </i> <span th:text="${account.phoneNumber}"></span></h3>
+            <h3><i class="fa fa-home"> </i> <span th:text="${account.address}"></span></h3>
         </div>
 
     </div>
@@ -41,7 +43,6 @@
 
     </div>
     <div class="alert alert-danger" th:if="${error} !=null" th:text="${error}"></div>
-
 
 </div>
 

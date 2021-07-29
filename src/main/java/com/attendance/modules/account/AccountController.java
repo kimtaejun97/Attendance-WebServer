@@ -95,21 +95,7 @@ public class AccountController {
 
     }
 
-    @PostMapping("/account/remove")
-    public String removeAccount(@CurrentUser Account account, String confirmString, Model model){
-        String username = account.getUsername();
 
-        if(!confirmString.equals(username)){
-            model.addAttribute(account);
-            model.addAttribute("error","일치하지 않습니다.");
-            return "account/my-profile";
-        }
-        accountService.removeAccount(username);
-
-        return "redirect:/logout";
-    }
-
-    // TODO 프로필 수정. 정보 변경, 계정(패스워드, 닉네임 변경?)
 
 
 

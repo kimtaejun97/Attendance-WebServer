@@ -15,32 +15,41 @@
 
         <!--        개인정보란-->
         <div class = "col-8 justify-content-center">
-            <h2 th:text="${account.username}"></h2>
+            <form action="#" th:action="@{/settings/profile}" method="post" th:object="${profileForm}">
+                <div class="form-group">
+                    <label for="phoneNumber">전화 번호</label>
+                    <input id="phoneNumber" type="number" th:field="*{phoneNumber}" class="form-control" th:value="${profileForm.phoneNumber}"
+                           placeholder="전화 번호" aria-describedby="phoneNumberHelp" >
+                    <small id="phoneNumberHelp" class="form-text text-muted">
+                        전화번호를 입력해 주세요.
+                    </small>
+                    <small class="invalid-feedback">전화번호를 확인하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone Number Error</small>
+                </div>
 
-            <h3><i class="fa fa-envelope"> </i> <span th:text="${account.email}"></span></h3>
-        </div>
-
-    </div>
-
-    <div>
-        <a class="btn btn-outline-primary" href="#" th:href="@{/settings/profile}">프로필 및 계정 관리</a>
-    </div>
-
-
-    <div class = "row mt-5">
-        <h2>계정 삭제</h2>
-        <hr class="text-muted">
-        <div class ="col-8 justify-content-center">
-            <form action="#" th:action="@{/account/remove}" method="post">
-                <input class="mb-4 me-2" type="text" name="confirmString" id="confirmString" >
-                <button class = "btn btn-outline-danger" type="submit" >계정 삭제</button><br>
-                <small class="alert alert-danger p-2">계정을 삭제하려면 <span th:text="${account.username}"></span> 을 입력해 주세요.</small>
-
+                <div class="form-group">
+                    <label for="address">주소</label>
+                    <input id="address" type="address" th:field="*{address}" class="form-control" th:value="${profileForm.address}"
+                           placeholder="주소" aria-describedby="addressHelp" >
+                    <small id="addressHelp" class="form-text text-muted">
+                        주소를 입력해 주세요.
+                    </small>
+                    <small class="invalid-feedback">주소를 확인하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</small>
+                </div>
+                <div class="d-grid gap-2 ">
+                    <button class="btn btn-primary btn-submit" type="submit"
+                            aria-describedby="submitHelp">변경하기</button>
+                </div>
             </form>
+
+
+
         </div>
 
     </div>
-    <div class="alert alert-danger" th:if="${error} !=null" th:text="${error}"></div>
+
+
 
 
 </div>

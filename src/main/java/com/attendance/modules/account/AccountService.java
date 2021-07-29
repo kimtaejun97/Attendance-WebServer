@@ -6,6 +6,7 @@ import com.attendance.infra.mail.EmailService;
 import com.attendance.modules.account.form.SignUpForm;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.PlaceRepository;
+import com.attendance.modules.settings.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -128,4 +129,6 @@ public class AccountService implements UserDetailsService{
 
 
     }
+
+
 }
