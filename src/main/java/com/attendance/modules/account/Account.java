@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @Builder @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
+@EqualsAndHashCode(of = "username")
 @Entity
 public class Account {
 
@@ -46,7 +47,7 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private Set<AccountPlace> accountPlaces = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.REMOVE)
     private Set<Beacon> beacons = new HashSet<>();
 
 

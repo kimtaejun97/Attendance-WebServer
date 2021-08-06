@@ -16,20 +16,17 @@ public class Beacon {
     @Id
     private String beaconCode;
 
+    @ManyToOne
+    private Account creator;
+
     @Column(nullable = false, unique = true)
     private String location;
-
-    @Column(nullable = false)
-    private String creator;
 
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "beacon")
     private Place place;
-
-
-
 
 
 

@@ -1,6 +1,7 @@
 package com.attendance.modules.beacon.form;
 
 
+import com.attendance.modules.account.Account;
 import com.attendance.modules.beacon.Beacon;
 import lombok.Data;
 
@@ -17,7 +18,9 @@ public class BeaconForm {
     private String location;
 
     @NotBlank
-    private String creator;
+    private String creatorName;
+
+    private Account creator;
 
     private LocalDateTime creationDate;
 

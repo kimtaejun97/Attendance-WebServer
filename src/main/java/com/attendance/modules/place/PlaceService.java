@@ -46,7 +46,7 @@ public class PlaceService {
 
         place.setBeacon(beacon);
 
-        accountPlaceService.connectUserPlace(placeForm.getCreator(), place);
+        accountPlaceService.connectAccountPlace(placeForm.getCreator(), place);
 
 
 

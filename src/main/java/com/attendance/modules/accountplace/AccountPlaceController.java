@@ -38,24 +38,28 @@ public class AccountPlaceController {
         webDataBinder.addValidators(userFormValidator);
     }
 
-    @GetMapping("/add-user/{location}")
+    @GetMapping("place/add-user/{location}")
     public String addUser(@PathVariable String location, Model model){
-        UserForm userForm = new UserForm();
-        userForm.setLocation(location);
+        model.addAttribute("location", location);
+        model.addAttribute(new UserForm());
 
-        model.addAttribute(userForm);
         return "user/add-user";
     }
 
-    @PostMapping("place/add-user/{location}")
-    public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location){
+    @PostMapping("/place/add-user/{location}")
+    public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location, Model model){
         Place place = placeRepository.findByLocation(location);
+
+        userFormValidator.userFormValidation(place,userForm.getUsername(), errors);
+
         if(errors.hasErrors()){
+            model.addAttribute("location", place.getBeacon().getLocation());
             return "user/add-user";
         }
-        accountPlaceService.connectUserPlace(userForm.getUsername(),place);
+        Account account = accountRepository.findByUsername(userForm.getUsername());
+        accountPlaceService.connectAccountPlace(account,place);
 
-        return "redirect:/user/place/"+location;
+        return "redirect:/user/place/"+place.getBeacon().getLocation();
     }
 
     @GetMapping("/public-place/enrollment/{location}")
@@ -70,7 +74,7 @@ public class AccountPlaceController {
             return "redirect:/public-place-list";
         }
 
-        accountPlaceService.connectUserPlace(account.getUsername(), place);
+        accountPlaceService.connectAccountPlace(account, place);
         return "redirect:/my-place";
 
     }
@@ -79,8 +83,8 @@ public class AccountPlaceController {
     public String disConnectPlace(@CurrentUser Account account,@PathVariable String location){
         Place place = placeRepository.findByLocation(location);
 
-        AccountPlace accountPlace = accountPlaceRepository.findByAccountUsernameAndPlaceId(account.getUsername(), place.getId());
-        accountPlaceRepository.delete(accountPlace);
+        accountPlaceService.disconnent(account, place);
+
 
         return "redirect:/my-place";
     }
@@ -88,7 +92,7 @@ public class AccountPlaceController {
     @GetMapping("/account-place/remove-user/{username}/{location}")
     public String removeUser(@CurrentUser Account account,@PathVariable String username, @PathVariable String location){
         Place place = placeRepository.findByLocation(location);
-        if(! place.getCreator().equals(account.getUsername())){
+        if(!place.getCreator().equals(account)){
             return "redirect:/error";
         }
 

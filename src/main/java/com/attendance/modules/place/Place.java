@@ -1,5 +1,6 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.account.Account;
 import com.attendance.modules.attendance.Attendance;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.accountplace.AccountPlace;
@@ -10,10 +11,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Setter
-@Builder
+@Getter @Setter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Place {
 
@@ -24,13 +25,14 @@ public class Place {
     private String alias;
 
     @Column(nullable = false)
-    private String creator;
-
-    @Column(nullable = false)
     private String isPublic;
 
     @Column(nullable = false)
     private LocalDateTime creationDate;
+
+    @ManyToOne
+    private Account creator;
+
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private Set<AccountPlace> accountPlaces = new HashSet<>();

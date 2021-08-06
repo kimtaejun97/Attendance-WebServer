@@ -1,5 +1,7 @@
 package com.attendance.modules.place.validator;
 
+import com.attendance.modules.account.Account;
+import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.PlaceRepository;
@@ -15,6 +17,7 @@ public class PlaceFormValidator implements Validator {
 
     private final PlaceRepository placeRepository;
     private final BeaconRepository beaconRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -33,13 +36,17 @@ public class PlaceFormValidator implements Validator {
         if(beacon == null){
             errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "존재하지 않는 비콘 위치 입니다.");
         }
-        else{
-            if(!beacon.getCreator().equals(placeForm.getCreator())){
-                errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "접근할 수 없는 비콘 입니다.");
-            }
+
+
+
+
+    }
+
+    public void placeFormValidation(Account account, PlaceForm placeForm, Errors errors) {
+        Beacon beacon =  beaconRepository.findByLocation(placeForm.getLocation());
+//        Account byUsername = accountRepository.findByUsername(account.getUsername());
+        if(beacon!=null && !beacon.getCreator().equals(account)){
+            errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "접근할 수 없는 비콘 입니다.");
         }
-
-
-
     }
 }

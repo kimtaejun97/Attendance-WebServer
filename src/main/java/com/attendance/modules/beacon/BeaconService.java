@@ -26,10 +26,11 @@ public class BeaconService {
 
 
     public void addBeacon(BeaconForm beaconForm) {
+        Account account = accountRepository.findByUsername(beaconForm.getCreatorName());
         beaconForm.setCreationDate(LocalDateTime.now());
+        beaconForm.setCreator(account);
 
         Beacon beacon = beaconRepository.save(modelMapper.map(beaconForm, Beacon.class));
-        Account account = accountRepository.findByUsername(beaconForm.getCreator());
         account.getBeacons().add(beacon);
 
     }
@@ -41,4 +42,12 @@ public class BeaconService {
 
 
     }
+
+    public void removeBeacon(Account account, Beacon beacon) {
+
+        account.getBeacons().remove(beacon);
+        beaconRepository.delete(beacon);
+
+    }
+
 }

@@ -21,7 +21,7 @@
             <td th:if="${beacon.place}!=null"  th:text="${beacon.place.alias}"></td>
             <td th:if="${beacon.place}==null"></td>
             <td th:text="${beacon.creationDate}"></td>
-            <td><a class="btn btn-outline-danger" href="#" th:if="${beacon.creator} == ${#authentication.name}" th:href="@{'/beacon/remove/' + ${beacon.location}}">삭제</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:href="@{'/beacon/remove/' + ${beacon.location}}">삭제</a></td>
         </tr>
         </tbody>
     </table>

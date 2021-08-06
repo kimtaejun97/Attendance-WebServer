@@ -2,6 +2,7 @@ package com.attendance.modules.beacon;
 
 import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
+import com.attendance.modules.account.AccountFactory;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.form.SignUpForm;
@@ -43,24 +44,17 @@ class BeaconControllerTest {
     @Autowired
     AccountRepository accountRepository;
 
-
     @Autowired
-    AccountService accountService;
+    BeaconFactory beaconFactory;
+    @Autowired
+    AccountFactory accountFactory;
 
-    @BeforeEach
-    void initData(){
-        beaconRepository.save(Beacon.builder()
-                .location("광주")
-                .beaconCode("aaaa-bbbb-cccc")
-                .creator("bigave")
-                .creationDate(LocalDateTime.now())
-                .build());
-    }
+
 
     @AfterEach
     void cleanup(){
-        accountRepository.deleteAll();
         beaconRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
 
@@ -83,7 +77,7 @@ class BeaconControllerTest {
         mockMvc.perform(post("/add-beacon")
                 .param("beaconCode","asdf-asdf-aej2h3")
                 .param("location", "test-location")
-                .param("creator","bigave")
+                .param("creatorName","bigave")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
@@ -91,16 +85,18 @@ class BeaconControllerTest {
 
     }
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("비콘 등록 - 이미 등록된 위치")
     @Test
     void addBeacon_duplicated_location() throws Exception {
+        Account account= accountRepository.findByUsername("bigave");
+        beaconFactory.createNewBeacon("광주",account, null);
 
 
         mockMvc.perform(post("/add-beacon")
                 .param("beaconCode","asdf-asdf-aej2h3")
                 .param("location", "광주")
-                .param("creator","bigave")
+                .param("creatorName","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-beacon"))
@@ -108,15 +104,17 @@ class BeaconControllerTest {
 
     }
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("비콘 등록 - 이미 등록된 비콘")
     @Test
     void addBeacon_duplicated_beacon() throws Exception {
+        Account account= accountRepository.findByUsername("bigave");
+        beaconFactory.createNewBeacon("test-location",account, "aaaa-bbbb-cccc");
 
         mockMvc.perform(post("/add-beacon")
                 .param("beaconCode","aaaa-bbbb-cccc")
                 .param("location", "test-location")
-                .param("creator","bigave")
+                .param("creatorName","bigave")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add-beacon"))
@@ -128,6 +126,9 @@ class BeaconControllerTest {
     @DisplayName("내가 등록한 비콘 페이지")
     @Test
     void myBeacon() throws Exception {
+        Account account= accountRepository.findByUsername("bigave");
+        beaconFactory.createNewBeacon("광주",account, null);
+
         mockMvc.perform(get("/beacon/my-beacon"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("beacons"));
@@ -140,6 +141,8 @@ class BeaconControllerTest {
     @DisplayName("비콘 제거 - 생성자")
     @Test
     void removeBeacon_with_creator() throws Exception {
+        Account account= accountRepository.findByUsername("bigave");
+        beaconFactory.createNewBeacon("광주",account, null);
 
         mockMvc.perform(get("/beacon/remove/광주"))
                 .andExpect(status().is3xxRedirection())
@@ -154,6 +157,8 @@ class BeaconControllerTest {
     @DisplayName("비콘 제거 - 생성자가 아님.")
     @Test
     void removeBeacon_wrong() throws Exception {
+        Account account= accountFactory.createNewAccount("bigave");
+        beaconFactory.createNewBeacon("광주",account, null);
 
         mockMvc.perform(get("/beacon/remove/광주"))
                 .andExpect(status().is3xxRedirection())

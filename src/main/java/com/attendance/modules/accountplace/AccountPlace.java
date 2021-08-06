@@ -16,11 +16,9 @@ public class AccountPlace {
     private Long Id;
 
     @ManyToOne
-    @JoinColumn
     private Account account;
 
     @ManyToOne
-    @JoinColumn
     private Place place;
 
 

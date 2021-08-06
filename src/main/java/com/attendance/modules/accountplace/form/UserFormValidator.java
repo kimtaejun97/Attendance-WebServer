@@ -28,18 +28,20 @@ public class UserFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         UserForm userForm = (UserForm) target;
         Account account = accountRepository.findByUsername(userForm.getUsername());
-        Place place = placeRepository.findByLocation(userForm.getLocation());
 
         if(account == null){
             errors.rejectValue("username","invalid.username",new Object[]{userForm.getUsername()}, "존재하지 않는 사용자 입니다.");
         }
-        else{
-            if(accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId())){
-                errors.rejectValue("username","invalid.username",new Object[]{userForm.getUsername()}, "이미 등록된 사용자 입니다.");
+
+
+
+    }
+
+    public void userFormValidation(Place place, String username, Errors errors) {
+        Account account = accountRepository.findByUsername(username);
+        if(account!=null && accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId())){
+                errors.rejectValue("username","invalid.username",new Object[]{username}, "이미 등록된 사용자 입니다.");
             }
-
-        }
-
 
     }
 }

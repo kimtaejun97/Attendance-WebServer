@@ -1,11 +1,9 @@
 package com.attendance.modules.place;
 
 import com.attendance.WithAccount;
-import com.attendance.modules.account.Account;
-import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.account.AccountService;
-import com.attendance.modules.account.Role;
+import com.attendance.modules.account.*;
 import com.attendance.modules.beacon.Beacon;
+import com.attendance.modules.beacon.BeaconFactory;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.accountplace.AccountPlaceRepository;
@@ -54,30 +52,20 @@ class PlaceControllerTest {
     BeaconRepository beaconRepository;
     @Autowired
     AccountPlaceRepository accountPlaceRepository;
+    @Autowired
+    PlaceFactory placeFactory;
+    @Autowired
+    BeaconFactory beaconFactory;
+    @Autowired
+    AccountFactory accountFactory;
 
-    @BeforeEach
-    void initData(){
-        beaconRepository.save(Beacon.builder()
-                .location("광주")
-                .beaconCode("123df-3fsdf3-dsaf-3")
-                .creator("bigave")
-                .creationDate(LocalDateTime.now())
-                .build());
-
-        PlaceForm placeForm = new PlaceForm();
-        placeForm.setLocation("광주");
-        placeForm.setAlias("내 지역");
-        placeForm.setCreator("bigave");
-
-        placeService.createPlace(placeForm, "on");
-    }
 
     @AfterEach
     void cleanup(){
-        accountPlaceRepository.deleteAll();
-        placeRepository.deleteAll();
-        accountRepository.deleteAll();
         beaconRepository.deleteAll();
+        placeRepository.deleteAll();
+        accountPlaceRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
 
@@ -86,7 +74,6 @@ class PlaceControllerTest {
     @DisplayName("admin 페이지")
     @Test
     void adminPage() throws Exception {
-
 
         mockMvc.perform(get("/admin-page"))
                 .andExpect(status().isOk())
@@ -109,18 +96,14 @@ class PlaceControllerTest {
     @DisplayName("장소 추가 - 입력값 정상")
     @Test
     void createPlace_with_correct_input() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        beaconFactory.createNewBeacon("광주", account,null);
 
-        beaconRepository.save(Beacon.builder()
-                .location("광주2")
-                .beaconCode("1df-3fsdf3-dsaf-3")
-                .creator("bigave")
-                .creationDate(LocalDateTime.now())
-                .build());
 
         mockMvc.perform(post("/create-place")
-        .param("location", "광주2")
+        .param("location", "광주")
         .param("alias", "내 지역")
-        .param("creator", "bigave")
+        .param("creatorName", "bigave")
         .param("isPublic", "on")
         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
@@ -129,7 +112,7 @@ class PlaceControllerTest {
         assertTrue(placeRepository.existsByLocation("광주"));
     }
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("장소 추가 - 입력값 오류 : 존재하지 않는 비콘위치")
     @Test
     void createPlace_with_wrong_input() throws Exception {
@@ -137,7 +120,7 @@ class PlaceControllerTest {
         mockMvc.perform(post("/create-place")
                 .param("location", "nonono")
                 .param("alias", "내 지역")
-                .param("creator", "bigave")
+                .param("creatorName", "bigave")
                 .param("isPublic", "on")
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -145,15 +128,17 @@ class PlaceControllerTest {
 
     }
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @DisplayName("장소 생성 - 이미 생성되어 있는 위치")
     @Test
     void createPlace_with_exists_input() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(post("/create-place")
                 .param("location", "광주")
                 .param("alias", "내 지역")
-                .param("creator", "bigave")
+                .param("creatorName", "bigave")
                 .param("isPublic", "on")
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -161,21 +146,19 @@ class PlaceControllerTest {
                 .andExpect(view().name("user/create-place"));
     }
 
-    @WithMockUser
+    @WithAccount(Value = "other")
     @DisplayName("장소 생성 - 접근 할 수 없는 비콘")
     @Test
     void createPlace_with_invalid_creator() throws Exception {
-        beaconRepository.save(Beacon.builder()
-                .location("광주2")
-                .beaconCode("df-3fsdf3-dsaf-3")
-                .creator("bigave")
-                .creationDate(LocalDateTime.now())
-                .build());
+        Account account = accountFactory.createNewAccount("bigave");
+        beaconFactory.createNewBeacon("광주", account,"aaaa-bbbb-cccc");
+
+        Account creator = accountRepository.findByUsername("other");
 
         mockMvc.perform(post("/create-place")
-                .param("location", "광주2")
+                .param("location", "광주")
                 .param("alias", "내 지역")
-                .param("creator", "kim")
+                .param("creatorName", "other")
                 .param("isPublic", "on")
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -187,6 +170,8 @@ class PlaceControllerTest {
     @DisplayName("admin - 장소 정보 View")
     @Test
     void adminPlaceInfo() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(get("/admin/place/광주"))
                 .andExpect(status().isOk())
@@ -208,10 +193,12 @@ class PlaceControllerTest {
     }
 
 
-    @WithMockUser
+    @WithAccount(Value = "bigave")
     @Test
     @DisplayName("장소 제거")
     void removePlace() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
 
         Place place = placeRepository.findByLocation("광주");
         assertNotNull(place);
@@ -227,6 +214,8 @@ class PlaceControllerTest {
     @Test
     @DisplayName("내가 생성한 장소 관리 페이지")
     void myPlaceManagement() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(get("/place/management/광주"))
                 .andExpect(status().isOk())
@@ -240,6 +229,8 @@ class PlaceControllerTest {
     @Test
     @DisplayName("내가 생성한 장소 관리 페이지 - 생성자가 아님.")
     void myPlaceManagement_invalid_user() throws Exception {
+        Account account = accountFactory.createNewAccount("bigave");
+        placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(get("/place/management/광주"))
                 .andExpect(status().is3xxRedirection())
@@ -251,8 +242,8 @@ class PlaceControllerTest {
     @DisplayName("관리자 페이지 : 장소 제거")
     @Test
     void admin_remove_place() throws Exception {
-//        Beacon beacon = beaconRepository.findByLocation("광주");
-//        Place place = placeRepository.findbyBeacon(beacon);
+        Account account = accountFactory.createNewAccount("user");
+        placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(get("/place/admin/remove-place/광주"))
                 .andExpect(status().is3xxRedirection())
@@ -267,6 +258,9 @@ class PlaceControllerTest {
     @DisplayName("관리자 페이지 : 사용자 제거 - 권한 없는 사용자")
     @Test
     void remove_place_commonUser() throws Exception {
+        Account account = accountFactory.createNewAccount("user");
+        placeFactory.createNewPlace("광주", account);
+
         Account byUsername = accountRepository.findByUsername("bigave");
         byUsername.setRole(Role.USER);
 

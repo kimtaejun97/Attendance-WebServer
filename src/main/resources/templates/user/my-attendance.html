@@ -19,13 +19,13 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">위치</h5>
-                <p class="card-text" th:text="${place.location}"></p>
+                <p class="card-text" th:text="${place.beacon.location}"></p>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">생성자</h5>
-                <p class="card-text" th:text="${place.creator}"></p>
+                <p class="card-text" th:text="${place.creator.username}"></p>
             </div>
         </div>
     </div>

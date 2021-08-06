@@ -10,8 +10,5 @@ public class UserForm {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String location;
-
 
 }

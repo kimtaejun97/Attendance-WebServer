@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">생성자</h5>
-                <p class="card-text" th:text="${place.creator}"></p>
+                <p class="card-text" th:text="${place.creator.username}"></p>
             </div>
         </div>
 <!--        TODO 별칭 변경-->
@@ -45,6 +45,8 @@
         </tr>
         </tbody>
     </table>
+    <a href="#" th:href="@{'/place/add-user/' + ${place.beacon.location}}" class="btn btn-outline-primary">사용자 추가</a>
+
     <!--    TODO 이메일 등 정보를 추가할지?-->
 </div>
 

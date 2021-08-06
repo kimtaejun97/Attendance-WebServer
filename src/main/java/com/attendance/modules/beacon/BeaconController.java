@@ -43,7 +43,7 @@ public class BeaconController {
         BeaconForm beaconForm = new BeaconForm();
         //TODO 나중에 비콘 수신하는걸로 변경.
         beaconForm.setBeaconCode(UUID.randomUUID().toString());
-        beaconForm.setCreator(account.getUsername());
+        beaconForm.setCreatorName(account.getUsername());
 
         model.addAttribute(beaconForm);
         return "user/add-beacon";
@@ -70,18 +70,21 @@ public class BeaconController {
     }
 
     @GetMapping("/beacon/remove/{location}")
-    public String removeBeacon(@CurrentUser Account account, @PathVariable String location){
+    public String removeBeacon(@CurrentUser Account account, @PathVariable String location) throws IllegalAccessException {
         Beacon beacon = beaconRepository.findByLocation(location);
         Account byUsername = accountRepository.findByUsername(account.getUsername());
 
-        if(!beacon.getCreator().equals(account.getUsername())){
+        if(!beacon.getCreator().equals(byUsername)){
             return "redirect:/error";
         }
 
-        byUsername.getBeacons().remove(beacon);
-        beaconRepository.delete(beacon);
+        beaconService.removeBeacon(byUsername, beacon);
+
+
         return "redirect:/beacon/my-beacon";
     }
+
+    //TODO 관리자 비콘 리스트 페이지.
 
 
 

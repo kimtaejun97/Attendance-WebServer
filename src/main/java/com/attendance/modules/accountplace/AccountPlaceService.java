@@ -18,14 +18,17 @@ public class AccountPlaceService {
 
     private final AccountPlaceRepository accountPlaceRepository;
 
-    public void connectUserPlace(String username, Place place) {
-        Account account= accountRepository.findByUsername(username);
+    public void connectAccountPlace(Account creator, Place place) {
 
             accountPlaceRepository.save(
                     AccountPlace.builder()
-                            .account(account)
+                            .account(creator)
                             .place(place)
                             .build());
     }
 
+    public void disconnent(Account account, Place place) {
+        AccountPlace accountPlace = accountPlaceRepository.findByAccountUsernameAndPlaceId(account.getUsername(), place.getId());
+        accountPlaceRepository.delete(accountPlace);
+    }
 }

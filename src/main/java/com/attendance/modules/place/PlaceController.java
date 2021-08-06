@@ -25,6 +25,7 @@ public class PlaceController {
     private final PlaceFormValidator placeFormValidator;
 
 
+
     @InitBinder("placeForm")
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(placeFormValidator);
@@ -53,14 +54,17 @@ public class PlaceController {
     @GetMapping("/create-place")
     public String CreatePlaceForm(@CurrentUser Account account,Model model){
         PlaceForm placeForm = new PlaceForm();
-        placeForm.setCreator(account.getUsername());
+        placeForm.setCreatorName(account.getUsername());
         model.addAttribute(placeForm);
 
         return "user/create-place";
     }
 
     @PostMapping("/create-place")
-    public String createPlace(@Valid PlaceForm placeForm, Errors errors, String isPublic){
+    public String createPlace(@CurrentUser Account account, @Valid PlaceForm placeForm, Errors errors, String isPublic){
+
+        placeFormValidator.placeFormValidation(account,placeForm, errors);
+        placeForm.setCreator(account);
 
         if(errors.hasErrors()){
             return "user/create-place";
@@ -102,7 +106,7 @@ public class PlaceController {
     public String placeManagement(@CurrentUser Account account,@PathVariable String location, Model model){
 
         Place place = placeRepository.findByLocation(location);
-        if(!account.getUsername().equals(place.getCreator())){
+        if(!account.equals(place.getCreator())){
             return "redirect:/error";
         }
 

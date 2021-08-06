@@ -36,8 +36,8 @@
 
             <div class="form-group">
                 <label for="constructor">생성자</label>
-                <input id="constructor" type="text" th:field="*{creator}" class="form-control"
-                       th:value="${placeForm.creator}" aria-describedby="constructorHelp" readonly>
+                <input id="constructor" type="text" th:field="*{creatorName}" class="form-control"
+                       th:value="${placeForm.creatorName}" aria-describedby="constructorHelp" readonly>
                 <small id="constructorHelp" class="form-text text-muted">
                     장소를 생성하는 사용자의 이름입니다. 변경할 수 없습니다.
                 </small>

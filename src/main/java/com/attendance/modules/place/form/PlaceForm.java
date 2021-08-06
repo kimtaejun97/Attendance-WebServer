@@ -1,5 +1,6 @@
 package com.attendance.modules.place.form;
 
+import com.attendance.modules.account.Account;
 import com.attendance.modules.place.Place;
 import lombok.*;
 
@@ -16,7 +17,9 @@ public class PlaceForm {
     private String alias;
 
     @NotBlank
-    private String creator;
+    private String creatorName;
+    private Account creator;
+
 
     private LocalDateTime creationDate;
 
