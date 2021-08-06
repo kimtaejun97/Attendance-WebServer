@@ -1,5 +1,6 @@
 package com.attendance.modules.place;
 
+import com.attendance.modules.attendance.Attendance;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.accountplace.AccountPlace;
 import lombok.*;
@@ -36,6 +37,9 @@ public class Place {
 
     @OneToOne
     private Beacon beacon;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
+    private Set<Attendance> attendances = new HashSet<>();
 
 
 }

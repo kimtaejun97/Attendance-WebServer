@@ -4,7 +4,7 @@ import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.account.Role;
 import com.attendance.modules.place.form.PlaceForm;
-import com.attendance.modules.place.form.PlaceFormValidator;
+import com.attendance.modules.place.validator.PlaceFormValidator;
 import com.attendance.modules.place.form.PlaceListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

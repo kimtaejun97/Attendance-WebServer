@@ -1,6 +1,7 @@
-package com.attendance.modules.beacon.form;
+package com.attendance.modules.beacon.validator;
 
 import com.attendance.modules.beacon.BeaconRepository;
+import com.attendance.modules.beacon.form.BeaconForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

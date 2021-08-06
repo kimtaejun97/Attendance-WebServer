@@ -1,16 +1,10 @@
-package com.attendance.modules.settings;
+package com.attendance.modules.account;
 
-import com.attendance.modules.account.Account;
-import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.account.AccountService;
-import com.attendance.modules.account.CurrentUser;
-import com.attendance.modules.settings.form.PasswordForm;
-import com.attendance.modules.settings.form.PasswordFormValidator;
-import com.attendance.modules.settings.form.ProfileForm;
+import com.attendance.modules.account.form.PasswordForm;
+import com.attendance.modules.account.validator.PasswordFormValidator;
+import com.attendance.modules.account.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;

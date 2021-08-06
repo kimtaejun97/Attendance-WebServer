@@ -1,9 +1,8 @@
-package com.attendance.modules.settings;
+package com.attendance.modules.account;
 
 import com.attendance.WithAccount;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
-import com.attendance.modules.settings.form.PasswordForm;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

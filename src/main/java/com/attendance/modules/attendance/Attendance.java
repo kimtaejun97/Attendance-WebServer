@@ -1,14 +1,15 @@
 package com.attendance.modules.attendance;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.attendance.modules.account.Account;
+import com.attendance.modules.place.Place;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 @Entity
 public class Attendance {
 
@@ -16,11 +17,11 @@ public class Attendance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String username;
+    @ManyToOne
+    private Account account;
 
-    @Column(nullable = false)
-    private String location;
+    @ManyToOne
+    private Place place;
 
     @Column(nullable = false)
     private LocalDateTime attendanceDate;
@@ -28,13 +29,5 @@ public class Attendance {
     @Column(nullable = false)
     private String attendanceCode;
 
-
-    @Builder
-    public Attendance(String username, String location, LocalDateTime attendanceDate, String attendanceCode){
-        this.username = username;
-        this.location = location;
-        this.attendanceDate = attendanceDate;
-        this.attendanceCode = attendanceCode;
-    }
 
 }

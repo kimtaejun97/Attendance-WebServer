@@ -1,11 +1,11 @@
-package com.attendance.modules.settings.form;
+package com.attendance.modules.account.validator;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
+import com.attendance.modules.account.form.PasswordForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

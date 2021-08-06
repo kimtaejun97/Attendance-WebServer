@@ -4,8 +4,7 @@ import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.beacon.form.BeaconForm;
-import com.attendance.modules.beacon.form.BeaconFormValidator;
-import com.attendance.modules.place.PlaceRepository;
+import com.attendance.modules.beacon.validator.BeaconFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
