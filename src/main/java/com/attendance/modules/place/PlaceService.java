@@ -105,4 +105,11 @@ public class PlaceService {
     }
 
 
+    public Place findByLocation(String location) {
+        Place place = placeRepository.findByLocation(location);
+        if(place == null){
+            throw new IllegalArgumentException("존재하지 않는 위치 입니다.");
+        }
+        return place;
+    }
 }

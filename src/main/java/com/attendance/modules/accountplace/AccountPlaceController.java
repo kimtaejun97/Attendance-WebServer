@@ -7,6 +7,7 @@ import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
 import com.attendance.modules.accountplace.form.UserForm;
 import com.attendance.modules.accountplace.form.UserFormValidator;
+import com.attendance.modules.place.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +27,9 @@ public class AccountPlaceController {
 
     private final AccountPlaceService accountPlaceService;
     private final UserFormValidator userFormValidator;
-
     private final PlaceRepository placeRepository;
-
+    private final PlaceService placeService;
     private final AccountPlaceRepository accountPlaceRepository;
-
     private final AccountRepository accountRepository;
 
     @InitBinder("userForm")
@@ -48,7 +47,7 @@ public class AccountPlaceController {
 
     @PostMapping("/place/add-user/{location}")
     public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location, Model model){
-        Place place = placeRepository.findByLocation(location);
+        Place place = placeService.findByLocation(location);
 
         userFormValidator.userFormValidation(place,userForm.getUsername(), errors);
 

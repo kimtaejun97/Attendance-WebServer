@@ -38,14 +38,13 @@ public class AccountController {
         }
         Account account = accountService.createAccount(signUpForm);
         accountService.login(account);
-
         return "redirect:/";
     }
 
     @GetMapping("/email-authentication-token")
     public String validEmailAuthenticationToken(String token, String email, Model model){
         Account account = accountService.findByEmail(email);
-        accountService.validateAuthentication(account,token);
+        accountService.validateToken(token,account);
         accountService.completeSignUp(account);
 
         return "account/checked-email";

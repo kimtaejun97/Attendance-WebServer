@@ -19,9 +19,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Controller
 public class SettingsController {
-    private final AccountRepository accountRepository;
     private final SettingsService settingsService;
-
     private final ModelMapper modelMapper;
     private final PasswordFormValidator passwordFormValidator;
     private final AccountService accountService;
@@ -42,8 +40,7 @@ public class SettingsController {
 
     @PostMapping("/settings/profile")
     public String profileUpdate(@CurrentUser Account account,ProfileForm profileForm){
-        Account newAccount = settingsService.profileSetting(account.getUsername(), profileForm);
-
+        settingsService.setProfile(account, profileForm);
         return "redirect:/account/my-profile";
     }
 
@@ -59,12 +56,10 @@ public class SettingsController {
 
     @PostMapping("/settings/password")
     public String passwordUpdate(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors, RedirectAttributes attributes){
-
         if(errors.hasErrors()){
             return "settings/account";
         }
-
-        settingsService.changePassword(account.getUsername(), passwordForm);
+        settingsService.changePassword(account, passwordForm);
         attributes.addFlashAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
         return "redirect:/settings/password";
 

@@ -15,22 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class SettingsService {
-    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final AccountService accountService;
 
 
-    public void changePassword(String username, PasswordForm passwordForm) {
-        Account account = accountRepository.findByUsername(username);
-        account.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
-
+    public void changePassword(Account account, PasswordForm passwordForm) {
+        Account persistenceAccount = accountService.findByUsername(account.getUsername());
+        persistenceAccount.setPassword(encodePassword(passwordForm.getNewPassword()));
     }
 
-    public Account profileSetting(String username, ProfileForm profileForm) {
-        Account account = accountRepository.findByUsername(username);
+    private String encodePassword(String newPassword) {
+        return passwordEncoder.encode(newPassword);
+    }
 
-        modelMapper.map(profileForm, account);
-
-        return account;
+    public void setProfile(Account account, ProfileForm profileForm) {
+        Account persistenceAccount = accountService.findByUsername(account.getUsername());
+        persistenceAccount.setProfile(profileForm);
     }
 }

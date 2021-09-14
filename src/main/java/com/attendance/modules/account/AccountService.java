@@ -5,7 +5,6 @@ import com.attendance.infra.mail.EmailMessage;
 import com.attendance.infra.mail.EmailService;
 import com.attendance.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -159,27 +158,28 @@ public class AccountService implements UserDetailsService{
         accountRepository.delete(account);
     }
 
-    public void validateAuthentication(Account account, String token) {
-        validateAccount(account);
-        validateToken(token, account);
-    }
 
-    private void validateToken(String token, Account account) {
+    public void validateToken(String token, Account account) {
         if(!account.isValidToken(token)){
             throw new IllegalArgumentException("인증 토큰이 유효하지 않습니다.");
         }
     }
-    private void validateAccount(Account account) {
+
+    public Account findByUsername(String username) {
+        Account account =  accountRepository.findByUsername(username);
+        checkIfAccountNull(account);
+        return account;
+    }
+
+    private void checkIfAccountNull(Account account) {
         if(account == null){
-            throw new IllegalArgumentException("이메일 정보가 올바르지 않습니다.");
+            throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
         }
     }
 
-    public Account findByUsername(String username) {
-        return accountRepository.findByUsername(username);
-    }
-
     public Account findByEmail(String email) {
-        return accountRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email);
+        checkIfAccountNull(account);
+        return account;
     }
 }

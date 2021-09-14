@@ -25,7 +25,6 @@ public class UserFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         UserForm userForm = (UserForm) target;
         Account account = accountRepository.findByUsername(userForm.getUsername());
-
         if(account == null){
             errors.rejectValue("username","invalid.username",new Object[]{userForm.getUsername()}, "존재하지 않는 사용자 입니다.");
         }
@@ -36,7 +35,6 @@ public class UserFormValidator implements Validator {
         if(isEnrolledAtPlace(place, account)){
                 errors.rejectValue("username","invalid.username",new Object[]{username}, "이미 등록된 사용자 입니다.");
             }
-
     }
 
     private boolean isEnrolledAtPlace(Place place, Account account) {

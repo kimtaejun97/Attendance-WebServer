@@ -1,5 +1,6 @@
 package com.attendance.modules.account;
 
+import com.attendance.modules.account.form.ProfileForm;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.accountplace.AccountPlace;
 import lombok.*;
@@ -69,5 +70,11 @@ public class Account {
             return true;
         }
         return this.emailTokenLastGeneration.isBefore(LocalDateTime.now().minusMinutes(10));
+    }
+
+    public void setProfile(ProfileForm profileForm) {
+        this.profileImage = profileForm.getProfileImage();
+        this.address = profileForm.getAddress();
+        this.phoneNumber = profileForm.getPhoneNumber();
     }
 }
