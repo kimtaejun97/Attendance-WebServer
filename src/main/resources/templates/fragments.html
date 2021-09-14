@@ -32,7 +32,7 @@
                 </a>
                 <ul class="dropdown-menu bg-dark" aria-labelledby="navDropDown">
                     <li>
-                        <a class="dropdown-item text-muted" href="#" th:href="@{/account/my-profile}" sec:authorize="isAuthenticated()">Profile</a>
+                        <a class="dropdown-item text-muted" href="#" th:href="@{/account}" sec:authorize="isAuthenticated()">Profile</a>
                     </li>
                     <li>
                         <a class="dropdown-item text-muted" href="#" th:href="@{/admin-page}" sec:authorize="hasRole('ROLE_ADMIN')">Admin Page</a>

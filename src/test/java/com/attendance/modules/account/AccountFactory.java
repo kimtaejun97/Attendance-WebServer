@@ -1,7 +1,6 @@
 package com.attendance.modules.account;
 
 import com.attendance.modules.account.form.SignUpForm;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ public class AccountFactory {
         signUpForm.setPassword("123123123");
         signUpForm.setAdminCode("Admin1234");
 
-        return accountService.createNewAccount(signUpForm);
+        return accountService.createAccount(signUpForm);
     }
 
 }

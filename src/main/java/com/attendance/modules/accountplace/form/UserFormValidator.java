@@ -14,14 +14,11 @@ import org.springframework.validation.Validator;
 @RequiredArgsConstructor
 public class UserFormValidator implements Validator {
     private final AccountRepository accountRepository;
-
     private final AccountPlaceRepository accountPlaceRepository;
-    private final PlaceRepository placeRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.isAssignableFrom(UserForm.class);
-
     }
 
     @Override
@@ -32,16 +29,17 @@ public class UserFormValidator implements Validator {
         if(account == null){
             errors.rejectValue("username","invalid.username",new Object[]{userForm.getUsername()}, "존재하지 않는 사용자 입니다.");
         }
-
-
-
     }
 
     public void userFormValidation(Place place, String username, Errors errors) {
         Account account = accountRepository.findByUsername(username);
-        if(account!=null && accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId())){
+        if(isEnrolledAtPlace(place, account)){
                 errors.rejectValue("username","invalid.username",new Object[]{username}, "이미 등록된 사용자 입니다.");
             }
 
+    }
+
+    private boolean isEnrolledAtPlace(Place place, Account account) {
+        return account != null && accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId());
     }
 }

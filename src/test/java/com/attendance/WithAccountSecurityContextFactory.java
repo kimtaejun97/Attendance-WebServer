@@ -1,6 +1,5 @@
 package com.attendance;
 
-import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
         signUpForm.setPassword("123123123");
         signUpForm.setAdminCode("Admin1234");
 
-        accountService.createNewAccount(signUpForm);
+        accountService.createAccount(signUpForm);
 
         UserDetails principal = accountService.loadUserByUsername(withAccount.Value());
 

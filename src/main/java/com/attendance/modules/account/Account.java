@@ -39,7 +39,7 @@ public class Account {
 
     private boolean emailVerified;
 
-    private String emailCheckToken;
+    private String emailAuthenticationToken;
 
     private LocalDateTime emailTokenLastGeneration;
 
@@ -51,8 +51,8 @@ public class Account {
     private Set<Beacon> beacons = new HashSet<>();
 
 
-    public void generateEmailCheckToken() {
-        this.emailCheckToken = UUID.randomUUID().toString();
+    public void generateEmailAuthenticationToken() {
+        this.emailAuthenticationToken = UUID.randomUUID().toString();
         this.emailTokenLastGeneration = LocalDateTime.now();
     }
 
@@ -61,7 +61,7 @@ public class Account {
     }
 
     public boolean isValidToken(String token) {
-        return this.emailCheckToken.equals(token);
+        return this.emailAuthenticationToken.equals(token);
     }
 
     public boolean canSendEmail(){

@@ -41,7 +41,7 @@ class MainControllerTest {
         signUpForm.setPassword("12345678");
         signUpForm.setAdminCode("");
 
-        accountService.createNewAccount(signUpForm);
+        accountService.createAccount(signUpForm);
 
     }
 

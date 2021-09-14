@@ -41,6 +41,9 @@ class AccountControllerTest {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    AccountFactory accountFactory;
+
     @MockBean
     EmailService emailService;
 
@@ -54,7 +57,7 @@ class AccountControllerTest {
                 .creationDate(LocalDateTime.now())
                 .build();
         Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
+        newAccount.generateEmailAuthenticationToken();
         newAccount.setRole(Role.USER);
 
 
@@ -121,7 +124,7 @@ class AccountControllerTest {
         assertThat(account.getUsername()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
-        assertNotNull(account.getEmailCheckToken());
+        assertNotNull(account.getEmailAuthenticationToken());
         assertThat(account.getRole()).isEqualTo(Role.USER);
 
 
@@ -148,7 +151,7 @@ class AccountControllerTest {
         assertThat(account.getUsername()).isEqualTo("test");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123123123");
-        assertNotNull(account.getEmailCheckToken());
+        assertNotNull(account.getEmailAuthenticationToken());
         assertThat(account.getRole()).isEqualTo(Role.ADMIN);
 
         then(emailService).should().send(any(EmailMessage.class));
@@ -181,37 +184,28 @@ class AccountControllerTest {
     }
     @DisplayName("인증 메일 - 잘못된 입력")
     @Test
-    void checkEmailToken_with_wrong_input() throws Exception {
+    void authenticationToken_with_wrong_input() throws Exception {
 
-
-        mockMvc.perform(get("/check-email-token")
-                .param("token","asdasd")
+        mockMvc.perform(get("/email-authentication-token")
+                .param("token","wrong")
                 .param("email","test@email.com"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("account/checked-email"))
-                .andExpect(model().attributeExists("error"));
-
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("/error/4xx"));
     }
 
     @DisplayName("인증 메일 - 정상 입력")
     @Test
-    void checkEmailToken_with_correct_input() throws Exception {
-        Account account = Account.builder()
-                .username("test")
-                .email("test@your.com")
-                .password("12345678")
-                .creationDate(LocalDateTime.now())
-                .build();
+    void authenticationToken_with_correct_input() throws Exception {
+        Account account = accountFactory.createNewAccount("bigave");
         Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
+        newAccount.generateEmailAuthenticationToken();
         newAccount.setRole(Role.USER);
 
-        mockMvc.perform(get("/check-email-token")
-        .param("token",newAccount.getEmailCheckToken())
+        mockMvc.perform(get("/email-authentication-token")
+        .param("token",newAccount.getEmailAuthenticationToken())
         .param("email",newAccount.getEmail()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("account/checked-email"))
-                .andExpect(model().attributeDoesNotExist("error"));
+                .andExpect(view().name("account/checked-email"));
     }
 
 
@@ -231,7 +225,7 @@ class AccountControllerTest {
     @Test
     void resendCheckEmail_invalid() throws Exception {
 
-        mockMvc.perform(get("/resend-check-email"))
+        mockMvc.perform(get("/resend-authentication-email"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/check-email"))
                 .andExpect(model().attributeExists("email"))
@@ -246,7 +240,7 @@ class AccountControllerTest {
         Account account = accountRepository.findByUsername("bigave");
         account.setEmailTokenLastGeneration(LocalDateTime.now().minusMinutes(20));
 
-        mockMvc.perform(get("/resend-check-email"))
+        mockMvc.perform(get("/resend-authentication-email"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/check-email"))
                 .andExpect(model().attributeExists("email"))
@@ -261,7 +255,7 @@ class AccountControllerTest {
     @Test
     void myProfile() throws Exception {
 
-        mockMvc.perform(get("/account/my-profile"))
+        mockMvc.perform(get("/account"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/my-profile"))
                 .andExpect(model().attributeExists("account"));

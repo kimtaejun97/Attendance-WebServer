@@ -1,7 +1,6 @@
 package com.attendance.modules.beacon;
 
 import com.attendance.modules.account.Account;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

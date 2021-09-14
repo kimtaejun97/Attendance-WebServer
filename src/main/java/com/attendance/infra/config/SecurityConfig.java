@@ -26,14 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
         http
                 .csrf().disable()
                 .headers().frameOptions().disable()
                         .and()
         .authorizeRequests()
-                .antMatchers("/","/sign-up","/login", "/check-email-token","/h2-console/**").permitAll()
+                .antMatchers("/","/sign-up","/login", "/email-authentication-token","/h2-console/**").permitAll()
                 .antMatchers("/admin-page", "/admin/place/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated();
 
@@ -45,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe()
                 .userDetailsService(userDetailsService)
                 .tokenRepository(tokenRepository());
+
     }
 
     private PersistentTokenRepository tokenRepository() {
@@ -59,7 +58,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .mvcMatchers("/node_modules/**")
                 .requestMatchers((PathRequest.toStaticResources().atCommonLocations()));
-
-
     }
 }

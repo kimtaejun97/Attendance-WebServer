@@ -21,22 +21,29 @@ public class HtmlEmailService implements EmailService{
 
     @Override
     public void send(EmailMessage emailMessage) {
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
         try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false,"UTF-8");
-            mimeMessageHelper.setTo(emailMessage.getTo());
-            mimeMessageHelper.setSubject(emailMessage.getSubject());
-            mimeMessageHelper.setText(emailMessage.getText(),true);
-
+            MimeMessage mimeMessage = makeMimeMessage(emailMessage);
             javaMailSender.send(mimeMessage);
+
             log.info("메일 전송 : {}",emailMessage.getTo());
-
-
         }catch (MessagingException e){
             log.error("메일 전송 실패 : ",e);
         }
 
 
+    }
+
+    private MimeMessage makeMimeMessage(EmailMessage emailMessage) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        setMessageContents(emailMessage, mimeMessage);
+
+        return mimeMessage;
+    }
+
+    private void setMessageContents(EmailMessage emailMessage, MimeMessage mimeMessage) throws MessagingException {
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false,"UTF-8");
+        mimeMessageHelper.setTo(emailMessage.getTo());
+        mimeMessageHelper.setSubject(emailMessage.getSubject());
+        mimeMessageHelper.setText(emailMessage.getText(),true);
     }
 }

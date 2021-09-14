@@ -33,5 +33,7 @@ public class SignUpForm {
 
     private String adminCode;
 
+    private Role role;
+
 
 }

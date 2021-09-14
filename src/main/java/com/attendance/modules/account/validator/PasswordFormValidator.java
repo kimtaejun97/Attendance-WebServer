@@ -27,19 +27,19 @@ public class PasswordFormValidator implements Validator {
         PasswordForm passwordForm = (PasswordForm) target;
         Account account = accountRepository.findByUsername(passwordForm.getUsername());
 
-        if(!passwordEncoder.matches(passwordForm.getCurrentPassword(), account.getPassword())){
+        if(!isMatchesCurrentPassword(account, passwordForm.getCurrentPassword())){
             errors.rejectValue("currentPassword","wrong.currentPassword","현재 비밀번호와 일치하지 않습니다.");
         }
         if(!passwordForm.getNewPassword().equals(passwordForm.getConfirmPassword())){
             errors.rejectValue("confirmPassword","wrong.confirmPassword","새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-
         }
-        if(passwordEncoder.matches(passwordForm.getNewPassword(), account.getPassword())){
+        if(isMatchesCurrentPassword(account, passwordForm.getNewPassword())){
             errors.rejectValue("newPassword","wrong.newPassword","현재와 동일한 비밀번호로 변경할 수 없습니다.");
 
         }
+    }
 
-
-
+    private boolean isMatchesCurrentPassword(Account account, String currentPassword) {
+        return passwordEncoder.matches(currentPassword, account.getPassword());
     }
 }

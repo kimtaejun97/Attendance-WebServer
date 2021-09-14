@@ -12,7 +12,7 @@
 
 
 <div class="alert alert-info text-center">이메일이 오지 않았나요?
-    <a class= "btn btn-outline-primary "href="#" th:href="@{/resend-check-email}">인증 메일 재전송</a>
+    <a class= "btn btn-outline-primary "href="#" th:href="@{/resend-authentication-email}">인증 메일 재전송</a>
 </div>
 <div class =text-center>
     <div class ="alert alert-success" th:if="${success != null}" th:text="${success}">메일전송 성공</div>
