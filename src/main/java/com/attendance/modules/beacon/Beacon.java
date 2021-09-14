@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Beacon {
 
-    @Id
+    @Id @GeneratedValue
+    private Long Id;
+
+    @Column(nullable = false, unique = true)
     private String beaconCode;
 
     @ManyToOne

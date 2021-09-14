@@ -26,4 +26,16 @@ public class ExceptionAdvice {
 
         return "/error/4xx";
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public String handleIllegalAccessException(IllegalAccessException exception, @CurrentUser Account account, HttpServletRequest request){
+        String username ="";
+        if(account != null){
+            username = account.getUsername();
+        }
+        log.error("[{} Requested {}] But, throw IllegalAccessException {}",username, request.getRequestURI(),exception.getMessage());
+
+        return "/error/4xx";
+    }
 }

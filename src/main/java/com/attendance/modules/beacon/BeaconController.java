@@ -25,10 +25,7 @@ import java.util.UUID;
 public class BeaconController {
 
     private final BeaconFormValidator beaconFormValidator;
-
     private final BeaconRepository beaconRepository;
-    private final ModelMapper modelMapper;
-
     private final BeaconService beaconService;
     private final AccountRepository accountRepository;
 
@@ -36,7 +33,6 @@ public class BeaconController {
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(beaconFormValidator);
     }
-
 
     @GetMapping("/add-beacon")
     public String BeaconForm(Model model, @CurrentUser Account account){
@@ -55,7 +51,6 @@ public class BeaconController {
             return "user/add-beacon";
         }
         beaconService.addBeacon(beaconForm);
-
         return "redirect:/";
     }
 

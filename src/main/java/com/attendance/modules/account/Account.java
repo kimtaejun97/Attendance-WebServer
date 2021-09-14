@@ -4,6 +4,7 @@ import com.attendance.modules.account.form.ProfileForm;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.accountplace.AccountPlace;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,9 +12,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Builder @Getter @Setter
+@Builder
+@Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @EqualsAndHashCode(of = "username")
+
 @Entity
 public class Account {
 

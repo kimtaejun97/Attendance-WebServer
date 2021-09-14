@@ -2,6 +2,7 @@ package com.attendance.modules.accountplace;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
+import com.attendance.modules.account.AccountService;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.place.Place;
 import com.attendance.modules.place.PlaceRepository;
@@ -24,13 +25,10 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Controller
 public class AccountPlaceController {
-
     private final AccountPlaceService accountPlaceService;
     private final UserFormValidator userFormValidator;
-    private final PlaceRepository placeRepository;
     private final PlaceService placeService;
-    private final AccountPlaceRepository accountPlaceRepository;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @InitBinder("userForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -48,67 +46,55 @@ public class AccountPlaceController {
     @PostMapping("/place/add-user/{location}")
     public String addStudentForm(@Valid UserForm userForm, Errors errors, @PathVariable String location, Model model){
         Place place = placeService.findByLocation(location);
-
-        userFormValidator.userFormValidation(place,userForm.getUsername(), errors);
-
+        userFormValidator.validateIfEnrolledUser(place,userForm.getUsername(), errors);
         if(errors.hasErrors()){
             model.addAttribute("location", place.getBeacon().getLocation());
             return "user/add-user";
         }
-        Account account = accountRepository.findByUsername(userForm.getUsername());
+        Account account = accountService.findByUsername(userForm.getUsername());
         accountPlaceService.connectAccountPlace(account,place);
 
-        return "redirect:/user/place/"+place.getBeacon().getLocation();
+        return "redirect:/place/management/"+place.getEncodedLocation();
     }
 
     @GetMapping("/public-place/enrollment/{location}")
-    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, Model model, RedirectAttributes attributes){
-        Place place = placeRepository.findByLocation(location);
-        account = accountRepository.findById(account.getUsername()).get();
+    public String enrollmentPublicPlace(@PathVariable String location, @CurrentUser Account account, RedirectAttributes attributes){
+        Place place = placeService.findByLocation(location);
+        account = accountService.findByUsername(account.getUsername());
 
-
-        if(accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId())) {
+        if(accountPlaceService.isEnrolled(account,place)) {
             attributes.addFlashAttribute("message", "이미 등록된 장소입니다.");
-
             return "redirect:/public-place-list";
         }
-
         accountPlaceService.connectAccountPlace(account, place);
-        return "redirect:/my-place";
 
+        return "redirect:/my-place";
     }
 
-    @GetMapping("/account-place/disconnect-place/{location}")
+    @GetMapping("/place/leave/{location}")
     public String disConnectPlace(@CurrentUser Account account,@PathVariable String location){
-        Place place = placeRepository.findByLocation(location);
-
-        accountPlaceService.disconnent(account, place);
-
-
+        accountPlaceService.leave(account, location);
         return "redirect:/my-place";
     }
 
-    @GetMapping("/account-place/remove-user/{username}/{location}")
-    public String removeUser(@CurrentUser Account account,@PathVariable String username, @PathVariable String location){
-        Place place = placeRepository.findByLocation(location);
-        if(!place.getCreator().equals(account)){
-            return "redirect:/error";
-        }
-
-        Account byUsername = accountRepository.findByUsername(username);
-
-        AccountPlace accountPlace = accountPlaceRepository.findByAccountUsernameAndPlaceId(byUsername.getUsername(), place.getId());
-        accountPlaceRepository.delete(accountPlace);
+    @GetMapping("/place/remove-user/{targetUsername}/{location}")
+    public String removeUser(@CurrentUser Account account,@PathVariable String targetUsername, @PathVariable String location) throws IllegalAccessException {
+        Place place = placeService.findByLocation(location);
+        checkAuthority(account, place);
+        accountPlaceService.removeUser(targetUsername, place);
 
         return "redirect:/place/management/"+location;
     }
 
+    private void checkAuthority(Account account, Place place) throws IllegalAccessException {
+        if(!requesterIsEqualsToCreator(account, place)){
+            throw new IllegalAccessException("접근 권한이 없습니다.");
+        }
+    }
 
-
-
-
-
-
+    private boolean requesterIsEqualsToCreator(Account account, Place place) {
+        return place.getCreator().equals(account);
+    }
 
 
 }

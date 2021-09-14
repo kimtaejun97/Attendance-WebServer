@@ -26,7 +26,6 @@ public class BeaconFormValidator implements Validator {
         if(beaconRepository.existsByLocation(beaconForm.getLocation())){
             errors.rejectValue("location","invalid.location",new Object[]{beaconForm.getLocation()}, "이미 사용중인 위치명 입니다.");
         }
-
         if(beaconRepository.existsByBeaconCode(beaconForm.getBeaconCode())){
             errors.rejectValue("beaconCode","invalid.beaconCode",new Object[]{beaconForm.getBeaconCode()}, "이미 등록된 비콘코드 입니다.");
         }

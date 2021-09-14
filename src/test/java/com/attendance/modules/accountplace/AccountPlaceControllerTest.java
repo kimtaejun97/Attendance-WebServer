@@ -16,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,6 +82,7 @@ class AccountPlaceControllerTest {
     void addUser_with_correct_input() throws Exception {
         Account account = accountRepository.findByUsername("bigave");
         placeFactory.createNewPlace("광주", account);
+        String encodedLocation = URLEncoder.encode("광주", StandardCharsets.UTF_8);
 
         Account user = accountFactory.createNewAccount("user");
 
@@ -88,7 +91,7 @@ class AccountPlaceControllerTest {
                 .param("username","user")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/user/place/광주"))
+                .andExpect(view().name("redirect:/place/management/"+encodedLocation))
                 .andExpect(model().attributeDoesNotExist("errors"));
 
         Place place = placeRepository.findByLocation("광주");
@@ -150,16 +153,14 @@ class AccountPlaceControllerTest {
                 .andExpect(redirectedUrl("/my-place"));
     }
     @WithAccount(Value = "bigave")
-    @DisplayName("장소에서 탈퇴.")
+    @DisplayName("장소에서 탈퇴")
     @Test
     void disconnectPlace() throws Exception {
         Account account = accountRepository.findByUsername("bigave");
         Place place = placeFactory.createNewPlace("광주", account);
-
-
         accountPlaceService.connectAccountPlace(account,place);
 
-        mockMvc.perform(get("/account-place/disconnect-place/광주"))
+        mockMvc.perform(get("/place/leave/광주"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/my-place"));
 
@@ -178,7 +179,7 @@ class AccountPlaceControllerTest {
         Account kim = accountFactory.createNewAccount("kim");
         accountPlaceService.connectAccountPlace(kim,place);
 
-        mockMvc.perform(get("/account-place/remove-user/kim/광주"))
+        mockMvc.perform(get("/place/remove-user/kim/광주"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/place/management/광주"));
 
@@ -186,7 +187,7 @@ class AccountPlaceControllerTest {
 
     }
     @WithAccount(Value = "wrong")
-    @DisplayName("장소에서 사용자 제거 - 생성자가 아닌 사용자의 요청.")
+    @DisplayName("장소에서 사용자 제거 - 생성자가 아닌 사용자의 요청")
     @Test
     void removeUser_invalid_userRequest() throws Exception {
         Account account = accountFactory.createNewAccount("bigave");
@@ -195,9 +196,8 @@ class AccountPlaceControllerTest {
         Account kim = accountFactory.createNewAccount("kim");
         accountPlaceService.connectAccountPlace(kim,place);
 
-        mockMvc.perform(get("/account-place/remove-user/kim/광주"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+        mockMvc.perform(get("/place/remove-user/kim/광주"))
+                .andExpect(status().is4xxClientError());
 
         assertTrue(accountPlaceRepository.existsByAccountUsernameAndPlaceId(kim.getUsername(), place.getId()));
 

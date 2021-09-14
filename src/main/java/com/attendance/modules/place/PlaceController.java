@@ -3,6 +3,8 @@ package com.attendance.modules.place;
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.account.Role;
+import com.attendance.modules.accountplace.AccountPlace;
+import com.attendance.modules.accountplace.AccountPlaceService;
 import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.place.validator.PlaceFormValidator;
 import com.attendance.modules.place.form.PlaceListResponseDto;
@@ -23,6 +25,7 @@ public class PlaceController {
     private final PlaceService placeService;
     private final PlaceRepository placeRepository;
     private final PlaceFormValidator placeFormValidator;
+    private final AccountPlaceService accountPlaceService;
 
 
 
@@ -70,7 +73,6 @@ public class PlaceController {
             return "user/create-place";
         }
         placeService.createPlace(placeForm, isPublic);
-
         return "redirect:/";
     }
 

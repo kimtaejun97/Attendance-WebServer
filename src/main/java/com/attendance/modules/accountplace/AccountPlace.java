@@ -21,5 +21,8 @@ public class AccountPlace {
     @ManyToOne
     private Place place;
 
-
+    public AccountPlace(Account creator, Place place) {
+        this.account = creator;
+        this.place = place;
+    }
 }

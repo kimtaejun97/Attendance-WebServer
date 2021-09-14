@@ -2,6 +2,7 @@ package com.attendance.modules.place;
 
 import com.attendance.modules.account.Account;
 import com.attendance.modules.account.AccountRepository;
+import com.attendance.modules.accountplace.AccountPlaceRepository;
 import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.place.form.PlaceForm;
@@ -25,12 +26,10 @@ import java.util.stream.Collectors;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
-
-    private final AccountPlaceService accountPlaceService;
-
     private final AccountRepository accountRepository;
     private final BeaconRepository beaconRepository;
     private final ModelMapper modelMapper;
+    private final AccountPlaceService accountPlaceService;
 
     public void createPlace(PlaceForm placeForm, String isPublic) {
         if(isPublic == null){
@@ -45,11 +44,7 @@ public class PlaceService {
         Beacon beacon =  beaconRepository.findByLocation(placeForm.getLocation());
 
         place.setBeacon(beacon);
-
         accountPlaceService.connectAccountPlace(placeForm.getCreator(), place);
-
-
-
     }
 
     public List<PlaceListResponseDto> getAllPlaces() {
@@ -60,7 +55,7 @@ public class PlaceService {
 
 //        return placeRepository.findAll().stream()
 //                .map(p->{
-//                    String location = beaconRepository.findByPlace(p).getLocation();
+//                    String location = beaconRepository.findByPlace(p).getEncodedLocation();
 //                    PlaceListResponseDto map = modelMapper.map(p, PlaceListResponseDto.class);
 //                    map.setLocation(location);
 //                    return map;

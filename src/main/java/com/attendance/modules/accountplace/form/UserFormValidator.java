@@ -30,7 +30,7 @@ public class UserFormValidator implements Validator {
         }
     }
 
-    public void userFormValidation(Place place, String username, Errors errors) {
+    public void validateIfEnrolledUser(Place place, String username, Errors errors) {
         Account account = accountRepository.findByUsername(username);
         if(isEnrolledAtPlace(place, account)){
                 errors.rejectValue("username","invalid.username",new Object[]{username}, "이미 등록된 사용자 입니다.");

@@ -22,8 +22,8 @@
             <td th:text="${place.creationDate}"></td>
             <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendance/my/' + ${place.beacon.location}}">출입 현황</a></td>
             <td th:if="${place.creator.username} == ${#authentication.name}" ><a class="btn btn-outline-secondary" href="#" th:href="@{'/place/management/' + ${place.beacon.location}}">관리</a></td>
-            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator.username} == ${#authentication.name}" th:href="@{'/place/remove-place/' + ${place.beacon.location}}">삭제</a></td>
-            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator.username} != ${#authentication.name}" th:href="@{'/account-place/disconnect-place/' + ${place.beacon.location}}">탈퇴</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator.username} == ${#authentication.name}" th:href="@{'/place/remove-user/' + ${place.beacon.location}}">삭제</a></td>
+            <td><a class="btn btn-outline-danger" href="#" th:if="${place.creator.username} != ${#authentication.name}" th:href="@{'/place/leave-user/' + ${place.beacon.location}}">탈퇴</a></td>
             <td></td>
         </tr>
         </tbody>

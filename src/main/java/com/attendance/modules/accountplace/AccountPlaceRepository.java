@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AccountPlaceRepository extends JpaRepository<AccountPlace, Long> {
 
     boolean existsByAccountAndPlace(Account account, Place place);
-
-    AccountPlace findByAccountUsernameAndPlaceId(String username, Long Id);
-
     boolean existsByAccountUsernameAndPlaceId(String username, Long Id);
+
+    AccountPlace findByAccountAndPlace(Account account, Place place);
 }
