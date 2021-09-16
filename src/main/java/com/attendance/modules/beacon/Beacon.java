@@ -32,5 +32,9 @@ public class Beacon {
     private Place place;
 
 
-
+    public void validateEqualsToCreator(Account account) throws IllegalAccessException {
+        if(!creator.equals(account)){
+            throw new IllegalAccessException("접근 권한이 없습니다.");
+        }
+    }
 }

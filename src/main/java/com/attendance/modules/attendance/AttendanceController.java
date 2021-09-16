@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 @Controller
 public class AttendanceController {
-    private final HttpSession httpSession;
 
     private final PlaceService placeService;
 
@@ -36,7 +35,7 @@ public class AttendanceController {
 
     @GetMapping("/attendance/my/{location}")
     public String userPlaceInfo(@PathVariable String location, @CurrentUser Account account, Model model){
-        boolean isConstructor = placeService.isCreator(location, account.getUsername());
+        boolean isConstructor = placeService.isCreator(location, account);
 
         model.addAttribute("place", placeService.getPlace(location));
         if(isConstructor){

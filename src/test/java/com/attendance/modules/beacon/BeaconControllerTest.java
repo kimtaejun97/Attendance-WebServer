@@ -161,8 +161,7 @@ class BeaconControllerTest {
         beaconFactory.createNewBeacon("광주",account, null);
 
         mockMvc.perform(get("/beacon/remove/광주"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(status().is4xxClientError());
 
         assertTrue(beaconRepository.existsByLocation("광주"));
 

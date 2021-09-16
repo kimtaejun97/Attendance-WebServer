@@ -25,7 +25,6 @@ public class PlaceController {
     private final PlaceService placeService;
     private final PlaceRepository placeRepository;
     private final PlaceFormValidator placeFormValidator;
-    private final AccountPlaceService accountPlaceService;
 
 
 

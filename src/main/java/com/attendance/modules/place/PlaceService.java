@@ -81,10 +81,10 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isCreator(String location, String username) {
+    public boolean isCreator(String location, Account CurrentAccount) {
         Place byLocation = placeRepository.findByLocation(location);
 
-        return byLocation.getCreator().equals(username);
+        return byLocation.getCreator().equals(CurrentAccount);
     }
 
     public Place getPlace(String location){

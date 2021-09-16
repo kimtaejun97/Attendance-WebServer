@@ -93,7 +93,8 @@ public class AccountPlaceController {
     }
 
     private boolean requesterIsEqualsToCreator(Account account, Place place) {
-        return place.getCreator().equals(account);
+        return placeService.isCreator(place.getLocation(), account);
+
     }
 
 

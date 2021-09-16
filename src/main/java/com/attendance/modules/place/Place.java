@@ -48,4 +48,8 @@ public class Place {
     public String getEncodedLocation() {
         return URLEncoder.encode(this.beacon.getLocation(), StandardCharsets.UTF_8);
     }
+
+    public String getLocation() {
+        return this.beacon.getLocation();
+    }
 }

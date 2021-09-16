@@ -6,7 +6,6 @@ import com.attendance.modules.account.CurrentUser;
 import com.attendance.modules.beacon.form.BeaconForm;
 import com.attendance.modules.beacon.validator.BeaconFormValidator;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -25,9 +24,7 @@ import java.util.UUID;
 public class BeaconController {
 
     private final BeaconFormValidator beaconFormValidator;
-    private final BeaconRepository beaconRepository;
     private final BeaconService beaconService;
-    private final AccountRepository accountRepository;
 
     @InitBinder("beaconForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -55,26 +52,20 @@ public class BeaconController {
     }
 
     @GetMapping("/beacon/my-beacon")
-    public String myBeacon(@CurrentUser Account account, Model model){
-        Set<Beacon> beacons =  beaconService.getBeaconByAccount(account.getUsername());
-
+    public String myBeacon(@CurrentUser Account account, Model model) {
+        Set<Beacon> beacons = beaconService.getBeaconByAccount(account.getUsername());
         model.addAttribute("beacons", beacons);
 
         return "user/my-beacon";
-
     }
+
+
 
     @GetMapping("/beacon/remove/{location}")
     public String removeBeacon(@CurrentUser Account account, @PathVariable String location) throws IllegalAccessException {
-        Beacon beacon = beaconRepository.findByLocation(location);
-        Account byUsername = accountRepository.findByUsername(account.getUsername());
-
-        if(!beacon.getCreator().equals(byUsername)){
-            return "redirect:/error";
-        }
-
-        beaconService.removeBeacon(byUsername, beacon);
-
+        Beacon beacon = beaconService.findByLocation(location);
+        beacon.validateEqualsToCreator(account);
+        beaconService.removeBeacon(account, beacon);
 
         return "redirect:/beacon/my-beacon";
     }
