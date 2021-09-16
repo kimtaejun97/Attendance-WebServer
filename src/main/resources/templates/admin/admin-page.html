@@ -17,13 +17,16 @@
         </thead>
         <tbody>
         <tr th:each="place : ${places}">
-            <td><a th:text="${place.beacon.location}" href="#" th:href="@{'admin/place/' + ${place.beacon.location}}"></a></td>
+            <td><a th:text="${place.beacon.location}" href="#" th:href="@{'admin/place-users/' + ${place.beacon.location}}"></a></td>
             <td th:text="${place.alias}"></td>
             <td th:text="${place.creator.username}"></td>
-            <td th:text="${place.isPublic}"></td>
+            <td th:if="${place.isPublic}">공개</td>
+            <td th:if="${!place.isPublic}">비공개</td>
             <td>
                 <div class="d-grid gap-2">
-                    <a class ="btn btn-outline-danger " id="btn-del-place" th:href="@{'/place/admin/remove-place/' + ${place.beacon.location}}">제거</a>
+                    <form action="#" th:action="@{'/place/admin/remove/' + ${place.beacon.location}}" method="post">
+                        <button class ="btn btn-outline-danger " id="btn-del-place">제거</button>
+                    </form>
                 </div>
             </td>
         </tr>

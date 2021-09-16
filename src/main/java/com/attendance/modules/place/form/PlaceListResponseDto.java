@@ -13,9 +13,12 @@ import java.time.LocalDateTime;
 @Data
 public class PlaceListResponseDto {
     private String alias;
+
     private Account creator;
+
     private LocalDateTime creationDate;
-    private String isPublic;
+
+    private boolean isPublic;
 
     private Beacon beacon;
 }

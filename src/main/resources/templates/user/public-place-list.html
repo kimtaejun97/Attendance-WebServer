@@ -33,7 +33,9 @@
             <td th:text="${place.creator.username}"></td>
             <td>
                 <div class="d-grid gap-2">
-                    <a class ="btn btn-outline-primary" id="btn-enroll-public-place" th:href="@{'/public-place/enrollment/' + ${place.beacon.location}}">등록하기</a>
+                    <form action="#" th:action="@{'/place/join/' + ${place.beacon.location}}" method="post">
+                        <button class ="btn btn-outline-primary">등록하기</button>
+                    </form>
                 </div>
             </td>
 

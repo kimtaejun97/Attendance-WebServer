@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="isPublic" name="isPublic">
+                <input class="form-check-input" type="checkbox" id="isPublic" th:field="*{public}">
                 <label class="form-check-label" for="isPublic" aria-describedby="isPublicHelp">Public</label>
                 <div id="isPublicHelp" class="form-text text-muted">
                     공개 여부를 결정해주세요, 스위치가 켜져있으면 장소가 모두에게 공개됩니다.

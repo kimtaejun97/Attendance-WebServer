@@ -80,4 +80,10 @@ public class Account {
         this.address = profileForm.getAddress();
         this.phoneNumber = profileForm.getPhoneNumber();
     }
+
+    public void validateIsAdmin() throws IllegalAccessException {
+        if(!this.role.equals(Role.ADMIN)){
+            throw new IllegalAccessException("접근 권한이 없습니다.");
+        }
+    }
 }

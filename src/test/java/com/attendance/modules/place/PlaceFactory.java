@@ -30,7 +30,7 @@ public class PlaceFactory {
                 Place.builder()
                         .alias(location)
                         .creator(account)
-                        .isPublic("on")
+                        .isPublic(true)
                         .creationDate(LocalDateTime.now())
                         .beacon(beacon)
                         .build());

@@ -2,27 +2,26 @@ package com.attendance.modules.place;
 
 import com.attendance.WithAccount;
 import com.attendance.modules.account.*;
-import com.attendance.modules.beacon.Beacon;
+import com.attendance.modules.accountplace.AccountPlace;
 import com.attendance.modules.beacon.BeaconFactory;
 import com.attendance.modules.beacon.BeaconRepository;
-import com.attendance.modules.place.form.PlaceForm;
 import com.attendance.modules.accountplace.AccountPlaceRepository;
+import com.attendance.modules.place.form.AddUserForm;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,19 +34,14 @@ class PlaceControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
     @Autowired
     PlaceService placeService;
-
     @Autowired
     PlaceRepository placeRepository;
-
     @Autowired
     AccountService accountService;
-
     @Autowired
     AccountRepository accountRepository;
-
     @Autowired
     BeaconRepository beaconRepository;
     @Autowired
@@ -67,7 +61,6 @@ class PlaceControllerTest {
         accountPlaceRepository.deleteAll();
         accountRepository.deleteAll();
     }
-
 
 
     @WithAccount(Value = "bigave")
@@ -107,7 +100,7 @@ class PlaceControllerTest {
         .param("isPublic", "on")
         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/my-place"));
 
         assertTrue(placeRepository.existsByLocation("광주"));
     }
@@ -125,7 +118,6 @@ class PlaceControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/create-place"));
-
     }
 
     @WithAccount(Value = "bigave")
@@ -173,7 +165,7 @@ class PlaceControllerTest {
         Account account = accountRepository.findByUsername("bigave");
         placeFactory.createNewPlace("광주", account);
 
-        mockMvc.perform(get("/admin/place/광주"))
+        mockMvc.perform(get("/admin/place-users/광주"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/place"))
                 .andExpect(model().attributeExists("place"))
@@ -203,7 +195,7 @@ class PlaceControllerTest {
         Place place = placeRepository.findByLocation("광주");
         assertNotNull(place);
 
-        mockMvc.perform(get("/place/remove-place/광주"))
+        mockMvc.perform(post("/place/remove/광주"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/my-place"));
 
@@ -233,8 +225,7 @@ class PlaceControllerTest {
         placeFactory.createNewPlace("광주", account);
 
         mockMvc.perform(get("/place/management/광주"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(status().is4xxClientError());
 
     }
 
@@ -245,12 +236,11 @@ class PlaceControllerTest {
         Account account = accountFactory.createNewAccount("user");
         placeFactory.createNewPlace("광주", account);
 
-        mockMvc.perform(get("/place/admin/remove-place/광주"))
+        mockMvc.perform(post("/place/admin/remove/광주"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin-page"));
 
         assertFalse(placeRepository.existsByLocation("광주"));
-
     }
 
     @Transactional
@@ -264,11 +254,150 @@ class PlaceControllerTest {
         Account byUsername = accountRepository.findByUsername("bigave");
         byUsername.setRole(Role.USER);
 
-        mockMvc.perform(get("/place/admin/remove-place/광주"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+        mockMvc.perform(get("/place/admin/remove/광주"))
+                .andExpect(status().is4xxClientError());
 
         assertTrue(placeRepository.existsByLocation("광주"));
+
+    }
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("생성자 :: 사용자 추가 화면")
+    @Test
+    void addUserView() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
+
+        mockMvc.perform(get("/user/광주"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user/add-user"));
+    }
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("생성자 :: 사용자 추가 - 정상 입력")
+    @Test
+    void addUser_with_correct_input() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
+        String encodedLocation = URLEncoder.encode("광주", StandardCharsets.UTF_8);
+
+        Account user = accountFactory.createNewAccount("user");
+
+
+        mockMvc.perform(post("/user")
+                .param("username","user")
+                .param("location","광주")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/place/management/"+encodedLocation))
+                .andExpect(model().attributeDoesNotExist("errors"));
+
+        Place place = placeRepository.findByLocation("광주");
+
+        boolean isRegistered = accountPlaceRepository.existsByAccountAndPlace(user,place);
+
+        assertTrue(isRegistered);
+
+
+    }
+    @WithAccount(Value = "bigave")
+    @DisplayName("생성자 :: 사용자 추가 - 존재하지 않는 사용자")
+    @Test
+    void addUser_with_nonexist_user() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
+
+        mockMvc.perform(post("/user")
+                .param("location", "광주")
+                .param("username", "none")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user/add-user"))
+                .andExpect(model().hasErrors());
+    }
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("생성자 :: 사용자 추가 - 이미 등록된 사용자")
+    @Test
+    void addUser_duplicated_user() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        Place place = placeFactory.createNewPlace("광주",account);
+
+        accountPlaceRepository.save(AccountPlace.builder()
+                .account(account)
+                .place(place)
+                .build());
+
+        mockMvc.perform(post("/user")
+                .param("username","bigave")
+                .param("location","광주")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user/add-user"))
+                .andExpect(model().hasErrors());
+
+    }
+
+    @WithAccount(Value = "kim")
+    @DisplayName("공개된 장소 :: 나를 추가")
+    @Test
+    void publicPlace_join() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        placeFactory.createNewPlace("광주", account);
+
+        mockMvc.perform(post("/place/join/광주")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/my-place"));
+    }
+    @WithAccount(Value = "bigave")
+    @DisplayName("장소에서 탈퇴")
+    @Test
+    void disconnectPlace() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        Place place = placeFactory.createNewPlace("광주", account);
+        placeService.connectAccountPlace(account,place);
+
+        mockMvc.perform(post("/place/leave/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/my-place"));
+
+        assertFalse(accountPlaceRepository.existsByAccountUsernameAndPlaceId(account.getUsername(), place.getId()));
+    }
+
+
+
+    @WithAccount(Value = "bigave")
+    @DisplayName("장소에서 사용자 제거")
+    @Test
+    void removeUser() throws Exception {
+        Account account = accountRepository.findByUsername("bigave");
+        Place place = placeFactory.createNewPlace("광주", account);
+
+        Account kim = accountFactory.createNewAccount("kim");
+        placeService.connectAccountPlace(kim,place);
+
+        mockMvc.perform(get("/place/remove-user/kim/광주"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/place/management/광주"));
+
+        assertFalse(accountPlaceRepository.existsByAccountUsernameAndPlaceId(kim.getUsername(), place.getId()));
+
+    }
+    @WithAccount(Value = "wrong")
+    @DisplayName("장소에서 사용자 제거 - 생성자가 아닌 사용자의 요청")
+    @Test
+    void removeUser_invalid_userRequest() throws Exception {
+        Account account = accountFactory.createNewAccount("bigave");
+        Place place = placeFactory.createNewPlace("광주", account);
+
+        Account kim = accountFactory.createNewAccount("kim");
+        placeService.connectAccountPlace(kim,place);
+
+        mockMvc.perform(get("/user/kim/광주"))
+                .andExpect(status().is4xxClientError());
+
+        assertTrue(accountPlaceRepository.existsByAccountUsernameAndPlaceId(kim.getUsername(), place.getId()));
 
     }
 

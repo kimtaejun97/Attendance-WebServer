@@ -1,6 +1,7 @@
 package com.attendance.modules.place.form;
 
 import com.attendance.modules.account.Account;
+import com.attendance.modules.beacon.Beacon;
 import com.attendance.modules.place.Place;
 import lombok.*;
 
@@ -18,12 +19,16 @@ public class PlaceForm {
 
     @NotBlank
     private String creatorName;
-    private Account creator;
 
+    private Account creator;
 
     private LocalDateTime creationDate;
 
-    private String isPublic;
+    private boolean isPublic;
+
+    private Beacon beacon;
+
+
 
 
 }

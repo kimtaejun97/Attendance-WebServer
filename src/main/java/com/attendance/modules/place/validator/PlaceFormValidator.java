@@ -32,21 +32,16 @@ public class PlaceFormValidator implements Validator {
         if(placeRepository.existsByLocation(placeForm.getLocation())){
             errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "이미 생성되어 있는 장소 입니다.");
         }
-
         if(beacon == null){
             errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "존재하지 않는 비콘 위치 입니다.");
         }
 
-
-
-
     }
 
-    public void placeFormValidation(Account account, PlaceForm placeForm, Errors errors) {
-        Beacon beacon =  beaconRepository.findByLocation(placeForm.getLocation());
-//        Account byUsername = accountRepository.findByUsername(account.getUsername());
+    public void validateEqualsToBeaconCreator(Account account, String location, Errors errors) {
+        Beacon beacon =  beaconRepository.findByLocation(location);
         if(beacon!=null && !beacon.getCreator().equals(account)){
-            errors.rejectValue("location","invalid.locatiaon",new Object[]{placeForm.getLocation()}, "접근할 수 없는 비콘 입니다.");
+            errors.rejectValue("location","invalid.locatiaon", "접근할 수 없는 비콘 입니다.");
         }
     }
 }

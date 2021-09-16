@@ -5,4 +5,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
+
 }

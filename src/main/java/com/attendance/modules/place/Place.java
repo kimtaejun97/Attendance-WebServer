@@ -27,14 +27,13 @@ public class Place {
     private String alias;
 
     @Column(nullable = false)
-    private String isPublic;
+    private boolean isPublic;
 
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
     @ManyToOne
     private Account creator;
-
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private Set<AccountPlace> accountPlaces = new HashSet<>();
@@ -51,5 +50,12 @@ public class Place {
 
     public String getLocation() {
         return this.beacon.getLocation();
+    }
+
+    public void validateEqualsToCreator(Account account) throws IllegalAccessException {
+        if(!this.creator.equals(account)){
+            throw new IllegalAccessException("접근 권한이 없습니다.");
+        }
+
     }
 }

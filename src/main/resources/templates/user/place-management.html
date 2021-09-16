@@ -41,11 +41,11 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td ><a th:href="@{'/attendance/'+ ${user + '/' + place.beacon.location}}" th:text="${user}"></a></td>
-            <td><a class="btn btn-outline-danger" th:href="@{'/account-place/remove-user/' + ${user + '/' + place.beacon.location}}">제거</a></td>
+            <td><a class="btn btn-outline-danger" th:href="@{'/place/remove-user/' + ${user + '/' + place.beacon.location}}" th:if="${#authentication.name != user}">제거</a></td>
         </tr>
         </tbody>
     </table>
-    <a href="#" th:href="@{'/place/add-user/' + ${place.beacon.location}}" class="btn btn-outline-primary">사용자 추가</a>
+    <a href="#" th:href="@{'/user/' + ${place.beacon.location}}" class="btn btn-outline-primary">사용자 추가</a>
 
     <!--    TODO 이메일 등 정보를 추가할지?-->
 </div>
