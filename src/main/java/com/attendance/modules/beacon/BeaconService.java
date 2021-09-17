@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Transactional
 @RequiredArgsConstructor
@@ -54,5 +55,18 @@ public class BeaconService {
             throw new IllegalArgumentException("존재하지 않는 위치 입니다.");
         }
         return beacon;
+    }
+
+    public BeaconForm initBeaconForm(Account account) {
+        BeaconForm beaconForm = new BeaconForm();
+        //TODO 나중에 비콘 수신하는걸로 변경.
+        setProperties(account, beaconForm);
+
+        return beaconForm;
+    }
+
+    private void setProperties(Account account, BeaconForm beaconForm) {
+        beaconForm.setBeaconCode(UUID.randomUUID().toString());
+        beaconForm.setCreatorName(account.getUsername());
     }
 }

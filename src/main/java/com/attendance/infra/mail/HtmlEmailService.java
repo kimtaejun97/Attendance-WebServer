@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Profile("real")
+@Profile("real | heroku")
 @RequiredArgsConstructor
 @Slf4j
 @Component
