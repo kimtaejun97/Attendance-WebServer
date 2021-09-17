@@ -175,12 +175,4 @@ public class PlaceController {
     private boolean requesterIsEqualsToCreator(Account account, Place place) {
         return placeService.isCreator(place.getLocation(), account);
     }
-
-
-
-
-
-
-
-
 }
