@@ -130,4 +130,8 @@ public class PlaceService {
         Account account = accountService.findByUsername(username);
         connectAccountPlace(account, place);
     }
+
+    public Place findByBeaconCode(String beaconCode) {
+        return placeRepository.findByBeaconCode(beaconCode);
+    }
 }

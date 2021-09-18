@@ -1,6 +1,7 @@
 package com.attendance.modules.attendance;
 
 import com.attendance.modules.account.Account;
+import com.attendance.modules.attendance.form.AttendanceRequestDto;
 import com.attendance.modules.place.Place;
 import lombok.*;
 
@@ -30,4 +31,10 @@ public class Attendance {
     private String attendanceCode;
 
 
+    public Attendance(AttendanceRequestDto requestDto) {
+        this.account = requestDto.getAccount();
+        this.place = requestDto.getPlace();
+        this.attendanceCode = requestDto.getAttendanceCode();
+        this.attendanceDate = requestDto.getAttendanceDate();
+    }
 }

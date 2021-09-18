@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                         .and()
         .authorizeRequests()
-                .antMatchers("/","/sign-up","/login", "/email-authentication-token","/h2-console/**").permitAll()
+                .antMatchers("/","/sign-up","/login", "/email-authentication-token","/beaconCode").permitAll()
                 .antMatchers("/admin-page", "/admin/place/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated();
 
