@@ -6,7 +6,6 @@ import com.attendance.modules.accountplace.AccountPlace;
 import com.attendance.modules.beacon.BeaconFactory;
 import com.attendance.modules.beacon.BeaconRepository;
 import com.attendance.modules.accountplace.AccountPlaceRepository;
-import com.attendance.modules.place.form.AddUserForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -192,7 +191,7 @@ class PlaceControllerTest {
         Account account = accountRepository.findByUsername("bigave");
         placeFactory.createNewPlace("광주", account);
 
-        Place place = placeRepository.findByLocation("광주");
+        Place place = placeRepository.findByLocationFromBeacon("광주");
         assertNotNull(place);
 
         mockMvc.perform(post("/place/remove/광주"))
@@ -292,7 +291,7 @@ class PlaceControllerTest {
                 .andExpect(view().name("redirect:/place/management/"+encodedLocation))
                 .andExpect(model().attributeDoesNotExist("errors"));
 
-        Place place = placeRepository.findByLocation("광주");
+        Place place = placeRepository.findByLocationFromBeacon("광주");
 
         boolean isRegistered = accountPlaceRepository.existsByAccountAndPlace(user,place);
 

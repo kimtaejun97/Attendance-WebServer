@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: headerFragment"></head>
+
+<body>
+<nav th:replace="fragments :: navFragment"> </nav>
+
+<h3 class="py-3 card-title text-center">출입 현황</h3>
+<hr>
+<div class="card text-center">
+    <div class="card-group">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">별칭</h5>
+                <p class="card-text" th:text="${place.alias}"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">위치</h5>
+                <p class="card-text" th:text="${place.beacon.location}"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">생성자</h5>
+                <p class="card-text" th:text="${place.creator.username}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <th scope="col">이름</th><th scope="col">날짜</th><th scope="col">출입 코드</th>
+        </thead>
+        <tbody>
+        <tr th:each="attendance : ${attendances}">
+            <td th:text="${attendance.account.username}"</td>
+            <td th:text="${attendance.attendanceDate}"</td>
+            <td th:text="${attendance.attendanceCode}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<th:block th:replace="fragments :: footerFragment"/>
+</body>
+</html>

@@ -60,7 +60,7 @@ public class AttendanceService {
         requestDto.setPlace(placeService.findByLocation(location));
     }
 
-    public boolean canCheckIn(Account account, Place place) {
+    public boolean canCheckin(Account account, Place place) {
         String lastCheckCode = getLastCheckCode(account, place);
         if(lastCheckCode == null){
             return true;
@@ -84,10 +84,6 @@ public class AttendanceService {
     }
 
     public List<Attendance> getAttendances(Place place, Account account) {
-        boolean isConstructor = placeService.isCreator(place.getLocation(), account);
-        if(isConstructor){
-            return getAllUsersAttendance(place);
-        }
         return getCurrentUserAttendance(place, account);
     }
 
@@ -95,7 +91,8 @@ public class AttendanceService {
         return attendanceRepository.findByAccountAndPlaceOrderByAttendanceDateDesc(account, place);
     }
 
-    private List<Attendance> getAllUsersAttendance(Place place) {
+    public List<Attendance> getAttendancesForAdmin(Place place, Account account) throws IllegalAccessException {
+        account.validateIsAdmin();
         return attendanceRepository.findByPlaceOrderByAttendanceDateDesc(place);
     }
 }

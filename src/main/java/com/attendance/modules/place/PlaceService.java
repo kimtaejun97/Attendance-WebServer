@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -75,13 +73,10 @@ public class PlaceService {
     }
 
     public boolean isCreator(String location, Account CurrentAccount) {
-        Place byLocation = placeRepository.findByLocation(location);
+        Place byLocation = placeRepository.findByLocationFromBeacon(location);
         return byLocation.getCreator().equals(CurrentAccount);
     }
 
-    public Place getPlace(String location){
-        return placeRepository.findByLocation(location);
-    }
 
     public List<PlaceListResponseDto> getPublicPlaceList() {
         return placeRepository.findByIsPublicOrderByCreationDateDesc(true).stream()
@@ -91,7 +86,7 @@ public class PlaceService {
 
 
     public Place findByLocation(String location) {
-        Place place = placeRepository.findByLocation(location);
+        Place place = placeRepository.findByLocationFromBeacon(location);
         if(place == null){
             throw new IllegalArgumentException("존재하지 않는 위치 입니다.");
         }

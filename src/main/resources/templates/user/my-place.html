@@ -20,7 +20,7 @@
             <td th:text="${place.beacon.location}"></td>
             <td th:text="${place.creator.username}"></td>
             <td th:text="${place.creationDate}"></td>
-            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendance/my/' + ${place.beacon.location}}">출입 현황</a></td>
+            <td><a class="btn btn-outline-primary" href="#" th:href="@{'/attendances/my/' + ${place.beacon.location}}">출입 현황</a></td>
             <td th:if="${place.creator.username} == ${#authentication.name}" ><a class="btn btn-outline-secondary" href="#" th:href="@{'/place/management/' + ${place.beacon.location}}">관리</a></td>
                 <td>
                     <form action="#" th:action="@{'/place/remove/' + ${place.beacon.location}}" th:if="${place.creator.username} == ${#authentication.name}" method="post">

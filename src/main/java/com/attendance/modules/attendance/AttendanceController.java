@@ -27,14 +27,23 @@ public class AttendanceController {
     // 그냥 사용자일 경우 자신의 출결 현황 반환, Template : user/attendance
 
 
-    @GetMapping("/attendance/my/{location}")
-    public String userPlaceInfo(@PathVariable String location, @CurrentUser Account account, Model model){
-        Place place =placeService.getPlace(location);
+    @GetMapping("/attendances/my/{location}")
+    public String userAttendance(@PathVariable String location, @CurrentUser Account account, Model model){
+        Place place = placeService.findByLocation(location);
         List<Attendance> attendances =  attendanceService.getAttendances(place, account);
         model.addAttribute("place", place);
         model.addAttribute("attendances", attendances);
 
-        return "user/my-attendance";
+        return "attendance/my-attendance";
+    }
+    @GetMapping("/attendances/{location}")
+    public String placeAttendanceForAdmin(@PathVariable String location, @CurrentUser Account account, Model model) throws IllegalAccessException {
+        Place place = placeService.findByLocation(location);
+        List<Attendance> attendances = attendanceService.getAttendancesForAdmin(place, account);
+        model.addAttribute("place", place);
+        model.addAttribute("attendances", attendances);
+
+        return "/attendance/admin-attendance";
     }
 
     @GetMapping("/check")
@@ -63,7 +72,7 @@ public class AttendanceController {
         Place place = placeService.findByBeaconCode(beaconCode);
         model.addAttribute(new AttendanceRequestDto());
         model.addAttribute("place", place);
-        model.addAttribute("canCheckIn",attendanceService.canCheckIn(account, place));
+        model.addAttribute("canCheckIn",attendanceService.canCheckin(account, place));
 
         return "attendance/check";
     }

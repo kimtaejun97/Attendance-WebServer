@@ -24,6 +24,9 @@
             <td th:if="${!place.isPublic}">비공개</td>
             <td>
                 <div class="d-grid gap-2">
+                    <form action="#" th:action="@{'/attendances/' + ${place.beacon.location}}">
+                        <button class ="btn btn-outline-secondary" id="btn-attendance">출입 현황</button>
+                    </form>
                     <form action="#" th:action="@{'/place/admin/remove/' + ${place.beacon.location}}" method="post">
                         <button class ="btn btn-outline-danger " id="btn-del-place">제거</button>
                     </form>

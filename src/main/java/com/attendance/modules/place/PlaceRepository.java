@@ -14,7 +14,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     boolean existsByLocation(String location);
 
     @Query("select P From Place P where P.beacon = (select B FROM Beacon B where B.location like ?1)")
-    Place findByLocation(String location);
+    Place findByLocationFromBeacon(String location);
 
     List<Place> findByIsPublicOrderByCreationDateDesc(boolean isPublic);
 
