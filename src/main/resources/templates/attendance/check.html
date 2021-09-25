@@ -54,6 +54,8 @@
         //     '{"id":"d6e65950-5293-47b4-8551-3815daf73517"}]}';
         const beaconIds = window.Android.getBeaconCode();
         let jsonBeaconIds = JSON.parse(beaconIds);
+        alert("beaconIds = " + beaconIds + "type = " + typeof beaconIds)
+
 
         const itemList = document.getElementById("beacon-list");
         while(itemList.firstChild){
