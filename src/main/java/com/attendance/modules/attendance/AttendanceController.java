@@ -54,7 +54,7 @@ public class AttendanceController {
     @PostMapping("/checkIn")
     public String checkIn(@CurrentUser Account account, String location){
         attendanceService.checkIn(location, account);
-        return "redirect:/attendance/my/"+ encode(location);
+        return "redirect:/attendances/my/"+ encode(location);
     }
 
     private String encode(String location) {
@@ -64,7 +64,7 @@ public class AttendanceController {
     @PostMapping("/checkOut")
     public String checkOut(@CurrentUser Account account, String location){
         attendanceService.checkOut(location, account);
-        return "redirect:/attendance/my/"+encode(location);
+        return "redirect:/attendances/my/"+encode(location);
     }
 
     @GetMapping("/check/{beaconCode}")

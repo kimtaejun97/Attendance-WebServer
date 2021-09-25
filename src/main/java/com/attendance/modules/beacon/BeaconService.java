@@ -59,14 +59,8 @@ public class BeaconService {
 
     public BeaconForm initBeaconForm(Account account) {
         BeaconForm beaconForm = new BeaconForm();
-        //TODO 나중에 비콘 수신하는걸로 변경.
-        setProperties(account, beaconForm);
+        beaconForm.setCreatorName(account.getUsername());
 
         return beaconForm;
-    }
-
-    private void setProperties(Account account, BeaconForm beaconForm) {
-        beaconForm.setBeaconCode(UUID.randomUUID().toString());
-        beaconForm.setCreatorName(account.getUsername());
     }
 }

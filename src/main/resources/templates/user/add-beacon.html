@@ -25,10 +25,15 @@
                 <div class="form-group">
                     <label for="beaconCode">비콘 코드</label>
                     <input id="beaconCode" type="text" class="form-control" name="beaconCode" th:field="*{beaconCode}"
-                           th:value="${beaconForm.beaconCode}" aria-describedby="beaconCodeHelp" readonly>
+                            aria-describedby="beaconCodeHelp" readonly>
                     <small id="beaconCodeHelp" class="form-text text-muted">
-                        현재 연결되어 있는 비콘의 고유 코드입니다. 비콘이 연결되면 자동으로 채워집니다.
+                        연결할 비콘의 고유 식별 코드 입니다. 비콘 찾기 버튼을 누른 후 선택해주세요.
                     </small>
+                    <div class ="container" id="item-list-container">
+                        <button id = "btn-getBeaconCode" class = "btn btn-primary btn-getBeaconCode" onclick="getBeaconCode()">비콘 찾기</button>
+                        <ul class="list-group" id = "beacon-list">
+                        </ul>
+                    </div>
                     <small class="invalid-feedback">비콘을 확인하세요.</small>
                     <div>
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('beaconCode')}"  th:errors="*{beaconCode}">Location Error</small>
@@ -48,7 +53,7 @@
 
             <div class="form-group">
                 <div class="d-grid gap-2 ">
-                    <button class="btn btn-primary" type="submit"
+                    <button class="btn btn-primary prevent-duplicate-submit" type="submit"
                             aria-describedby="submitHelp">등록하기</button>
                 </div>
             </div>
@@ -59,8 +64,42 @@
 <th:block th:replace="fragments :: footerFragment"/>
 <script th:replace="fragments :: form-validation"></script>
 <script th:replace="fragments :: prevent-duplicate-submit"></script>
+<script th:fragment="getBeaconCode">
+    function getBeaconCode() {
+        // const beaconIds = '{"ids":[{"id":"0aaa6305-9670-42b3-9fdf-897da796b8ea"},' +
+        //     '{"id":"d6e65950-5293-47b4-8551-3815daf73517"}]}';
+        const beaconIds = window.Android.getBeaconCode();
+        let jsonBeaconIds = JSON.parse(beaconIds);
+        if(jsonBeaconIds.ids.length == 0){
+            alert("검색된 비콘이 없습니다.");
+            return 0;
+        }
+        const beaconCodeForm = document.getElementById("beaconCode")
+        const itemList = document.getElementById("beacon-list");
+        while(itemList.firstChild){
+            itemList.removeChild(itemList.firstChild);
+        }
 
-
-
+        for(let i=0; i < jsonBeaconIds.ids.length; i++){
+            let beaconCode = jsonBeaconIds.ids[i].id;
+            let item = document.createElement("li");
+            item.innerHTML = beaconCode;
+            item.onclick = function () {
+                beaconCodeForm.value = beaconCode;
+            }
+            let initClassName ="list-group-item beaconItem"
+            item.className = initClassName
+            item.onmouseover = function (){
+                item.className = initClassName + " active"
+            }
+            item.onmouseout = function (){
+                item.className = initClassName
+            }
+            itemList.append(item);
+        }
+        //TODO 서버로 전송, 장소 찾아오고 넣어준 뒤 리다이렉트.
+    }
+</script>
 </body>
+
 </html>

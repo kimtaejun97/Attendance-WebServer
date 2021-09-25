@@ -30,7 +30,7 @@
     </div>
 </div>
 <div class ="container" id="item-list-container">
-    <button id = "btn-getBeaconCode" class = "btn btn-primary" onclick="getBeaconCode()">비콘 찾기</button>
+    <button class = "btn btn-primary btn-getBeaconCode" onclick="getBeaconCode()">비콘 찾기</button>
     <ul class="list-group" id = "beacon-list">
     </ul>
 </div>
@@ -45,36 +45,8 @@
 </form>
 
 <th:block th:replace="fragments :: footerFragment"/>
+<script th:replace="fragments :: getBeaconCode"></script>
+
 </body>
 </html>
 
-<script>
-    function getBeaconCode() {
-        // const beaconIds = '{"ids":[{"id":"0aaa6305-9670-42b3-9fdf-897da796b8ea"},' +
-        //     '{"id":"d6e65950-5293-47b4-8551-3815daf73517"}]}';
-        const beaconIds = window.Android.getBeaconCode();
-        let jsonBeaconIds = JSON.parse(beaconIds);
-        alert("beaconIds = " + beaconIds + "type = " + typeof beaconIds)
-
-
-        const itemList = document.getElementById("beacon-list");
-        while(itemList.firstChild){
-            itemList.removeChild(itemList.firstChild);
-        }
-
-        for(let i=0; i < jsonBeaconIds.ids.length; i++){
-            let beaconCode = jsonBeaconIds.ids[i].id;
-            let item = document.createElement("li");
-            let itemLink = document.createElement("a");
-
-            itemLink.href ="/check/"+beaconCode;
-            itemLink.text = beaconCode;
-
-            item.append(itemLink)
-            item.className="list-group-item beaconItem"
-
-            itemList.append(item);
-        }
-        //TODO 서버로 전송, 장소 찾아오고 넣어준 뒤 리다이렉트.
-    }
-</script>

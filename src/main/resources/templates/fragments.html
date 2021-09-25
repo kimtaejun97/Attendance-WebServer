@@ -103,13 +103,48 @@
 <script th:fragment="prevent-duplicate-submit" type="application/javascript" >
     $(".prevent-duplicate-submit").on("submit", function (e){
         var btn = document.querySelector(".btn-submit");
-        console.log("=======================");
-        console.log(btn);
         btn.disabled=true
     })
 
 </script>
 
+<script th:fragment="getBeaconCode">
+    function getBeaconCode() {
+        // const beaconIds = '{"ids":[{"id":"0aaa6305-9670-42b3-9fdf-897da796b8ea"},' +
+        //     '{"id":"d6e65950-5293-47b4-8551-3815daf73517"}]}';
+        const beaconIds = window.Android.getBeaconCode();
+        let jsonBeaconIds = JSON.parse(beaconIds);
+        if(jsonBeaconIds.ids.length == 0){
+            alert("검색된 비콘이 없습니다.");
+            return 0;
+        }
 
+        const itemList = document.getElementById("beacon-list");
+        while(itemList.firstChild){
+            itemList.removeChild(itemList.firstChild);
+        }
+
+        for(let i=0; i < jsonBeaconIds.ids.length; i++){
+            let beaconCode = jsonBeaconIds.ids[i].id;
+            let item = document.createElement("li");
+            item.innerHTML = beaconCode;
+            item.onclick = function (){
+                window.location.href ="/check/"+beaconCode;
+            }
+
+            let initClassName ="list-group-item beaconItem"
+            item.className = initClassName
+            item.onmouseover = function (){
+                item.className = initClassName + " active"
+            }
+            item.onmouseout = function (){
+                item.className = initClassName
+            }
+
+            itemList.append(item);
+        }
+        //TODO 서버로 전송, 장소 찾아오고 넣어준 뒤 리다이렉트.
+    }
+</script>
 
 </html>
