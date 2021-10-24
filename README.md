@@ -44,7 +44,7 @@ QR코드 인증은 자신의 동선을 확인하는 것이 번거롭지만, 해�
 
 ![image](https://user-images.githubusercontent.com/61380786/138601081-0473e497-62e5-4212-bab1-adb2196c607d.png)
 
+![image](https://user-images.githubusercontent.com/61380786/138601154-292b9e98-fe8f-40fd-8c98-d55a3d93c547.png)
 
-![image](https://user-images.githubusercontent.com/61380786/138600871-78f6ae25-1855-4cb4-8ae0-7ff11fba6739.png)
 
 
