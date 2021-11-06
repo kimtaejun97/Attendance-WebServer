@@ -30,13 +30,13 @@
                         연결할 비콘의 고유 식별 코드 입니다. 비콘 찾기 버튼을 누른 후 선택해주세요.
                     </small>
                     <div class ="container" id="item-list-container">
-                        <button id = "btn-getBeaconCode" class = "btn btn-primary btn-getBeaconCode" onclick="getBeaconCode()">비콘 찾기</button>
+                        <button id = "btn-getBeaconCode" type="button" class = "btn btn-primary btn-getBeaconCode" onclick="getBeaconCode()">비콘 찾기</button>
                         <ul class="list-group" id = "beacon-list">
                         </ul>
                     </div>
                     <small class="invalid-feedback">비콘을 확인하세요.</small>
                     <div>
-                        <small class="form-text text-danger" th:if="${#fields.hasErrors('beaconCode')}"  th:errors="*{beaconCode}">Location Error</small>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('beaconCode')}" th:errors="*{beaconCode}">Location Error</small>
                     </div>
                 </div>
 
@@ -98,6 +98,7 @@
             itemList.append(item);
         }
         //TODO 서버로 전송, 장소 찾아오고 넣어준 뒤 리다이렉트.
+
     }
 </script>
 </body>
