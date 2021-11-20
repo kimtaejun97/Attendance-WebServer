@@ -29,8 +29,6 @@ public class HtmlEmailService implements EmailService{
         }catch (MessagingException e){
             log.error("메일 전송 실패 : ",e);
         }
-
-
     }
 
     private MimeMessage makeMimeMessage(EmailMessage emailMessage) throws MessagingException {

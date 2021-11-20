@@ -43,7 +43,7 @@ public class AttendanceController {
         model.addAttribute("place", place);
         model.addAttribute("attendances", attendances);
 
-        return "/attendance/admin-attendance";
+        return "attendance/admin-attendance";
     }
 
     @GetMapping("/check")
